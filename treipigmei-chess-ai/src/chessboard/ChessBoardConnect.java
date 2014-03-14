@@ -3,6 +3,12 @@ package chessboard;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * Class ChessBoardConnect implements the comunication protocol between XBoard and
+ * the chess engine
+ * @author mey
+ *
+ */
 public class ChessBoardConnect {
     //  private ChessBoard chessBoard;
     private static final ArrayList<String> protocolCommands = new ArrayList<String>();
@@ -17,7 +23,7 @@ public class ChessBoardConnect {
         // TODO Auto-generated constructor stub
     }
     /**
-     * 
+     * The method below set all recognizible protocol commands 
      */
     public static void setProtocolCommands(){
         protocolCommands.add("xboard");
@@ -32,7 +38,7 @@ public class ChessBoardConnect {
     }
 
     /**
-     * @param args
+     * Takes an input from the input stream 
      */
 
     public void readInput(){
@@ -57,11 +63,16 @@ public class ChessBoardConnect {
         catch (Exception e) { 
             e.printStackTrace(System.out);
         }		
-
     }
+    
+    /**
+     * Recive a string and interpret it
+     * @param input - the string that must be processed by the chess engine
+     */ 
     private void processInput(String input) {
         input = input.trim();
 
+        // check if the input is a command or a move
         if(protocolCommands.contains(input)){
 
             switch(input){
@@ -112,22 +123,32 @@ public class ChessBoardConnect {
                  
                 break;
             }
+               
+        /* If the input is not a command then it must be a move. If it is a legal one,
+         * the Chess engine will apply it.
+         */
         } else {
             //legalMove = identifyMove(input);
             //if(legalMove)
-            //processMove(input);
+                System.out.println("Error: Illegal move");
             //else 
-            //System.out.println("a primit mutarea: input");
-            processMove(input);
-            //System.out.println("Error: Illegal move");
+                processMove(input);
         }
     }
+    
+    /**
+     * Apply the move recived as parameter
+     * @param input - move to apply
+     */
 
     private void processMove(String input){
         //chessBoard.makeMove(input);
-        //System.out.println("Ar trebui sa faca mutarea: input");
-        //if(!forceMode) 
-        //chessBoard.makeOwnMove();
-
+        System.out.println("Ar trebui sa faca mutarea: " + input);
+        
+        //If we are not in force mode, then the chess engine should make a move itself too.
+        if(!forceMode){
+            System.out.println("The engine is not in force mode, so it must make a move");
+          //chessBoard.makeOwnMove();
+        }
     }
 }

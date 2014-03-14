@@ -3,25 +3,23 @@ package chessboard;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-//import org.apache.log4j.Logger;
-//import org.apache.log4j.PropertyConfigurator;
-
-
 public class ChessBoardConnect {
-  //  private ChessBoard chessBoard;
+    //  private ChessBoard chessBoard;
     private static final ArrayList<String> protocolCommands = new ArrayList<String>();
-    private boolean legalMove;
-  //  private static Logger logger = Logger.getLogger(ChessBoardConnection.class);
+    private boolean legalMove = false;
+    private boolean whiteOnTurn = false;
+    private boolean blackOnTurn = false;
 
-   // static {
-   //     PropertyConfigurator.configure("log4j.properties");
-    //}
+    private boolean forceMode = false;
+
 
     public ChessBoardConnect() {
         // TODO Auto-generated constructor stub
     }
-
-    private static void setProtocolCommands(){
+    /**
+     * 
+     */
+    public static void setProtocolCommands(){
         protocolCommands.add("xboard");
         protocolCommands.add("new");
         protocolCommands.add("force");
@@ -33,13 +31,11 @@ public class ChessBoardConnect {
         protocolCommands.add("resign");
     }
 
-    private boolean forceMode = false;
-
     /**
      * @param args
      */
 
-    private void readInput(){
+    public void readInput(){
 
         int character;
         String input = "";
@@ -69,31 +65,51 @@ public class ChessBoardConnect {
         if(protocolCommands.contains(input)){
 
             switch(input){
-            case "xboard": 		//chessBoard = new ChessBoard();
-                                //System.out.println("Input: xboard");
-            break;
-
-            case "new":			//chessBoard = new ChessBoard();
-                                //System.out.println("Input: new");
-            break;
-
-            case "force":		forceMode = true;
-                                //System.out.println("Input: force");
-            break;
-
-            case "go":			forceMode = false;
-                                //System.out.println("Input: go");
-            break;
-
-            case "white":		//System.out.println("Input: white");
+            case "xboard": 		
+                System.out.println("S-a realizat comunicarea cu Xboard");
                 break;
 
-            case "black" :		//System.out.println("Input: black");
+            case "new":			
+               // chessBoard = new ChessBoard();
+                System.out.println("Se creeaza un nou joc; jucatorul alb este primul care va muta");
+                whiteOnTurn = true;
+                blackOnTurn = false;
                 break;
 
-            case "quit" :		System.exit(0);
+            case "force":		
+                forceMode = true;
+                System.out.println("Masina intra in modul fortat; va tine locul ambilor jucatori");
+                break;
 
-            case "resign" :		//System.out.println("Input: resign");
+            case "go":			
+                forceMode = false;
+                System.out.println("Masina paraseste modul fortat si va juca doar pentru cel care e la rand");
+
+                break;
+
+            case "white":	
+                System.out.println("Randul este dat juacatorului cu alb; masina ma juca cu negru");
+                whiteOnTurn	= true;
+                blackOnTurn = false;
+                break;
+
+            case "black" :		
+                blackOnTurn = true;
+                whiteOnTurn = false;
+                System.out.println("Randul este dat jucatorului cu negru; masina va juca cu alb");
+                break;
+
+            case "quit" :		
+                System.out.println("Jocul se termina");
+                System.exit(0);
+
+            case "resign" :		
+                 System.out.println("Masina renunta");
+                 if(whiteOnTurn)
+                     System.out.println("0 - 1 {White resigns");
+                 else
+                     System.out.println("1 - 0 {Black resigns");
+                 
                 break;
             }
         } else {
@@ -112,14 +128,6 @@ public class ChessBoardConnect {
         //System.out.println("Ar trebui sa faca mutarea: input");
         //if(!forceMode) 
         //chessBoard.makeOwnMove();
-
-    }
-
-    public static void main(String[] args) {
-        setProtocolCommands();
-
-        ChessBoardConnect chessProtocol = new ChessBoardConnect();
-        chessProtocol.readInput();
 
     }
 }

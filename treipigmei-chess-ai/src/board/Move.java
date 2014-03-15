@@ -2,11 +2,11 @@ package board;
 
 public class Move {
     private String move;
-    private int [] pos;
+    private byte [] pos;
     
     public Move(String s) {
         this.move = new String(s);
-        this.pos = new int[4];
+        this.pos = new byte[4];
         decodeMove();
     }
     
@@ -14,8 +14,8 @@ public class Move {
      * 
      * @return Source position
      */
-    public int [] getFrom() {
-        int [] aux = new int[2];
+    public byte [] getFrom() {
+        byte [] aux = new byte[2];
         aux[0] = this.pos[0];
         aux[1] = this.pos[1];
         
@@ -26,8 +26,8 @@ public class Move {
      * 
      * @return Destination position
      */
-    public int [] getTo() {
-        int [] aux = new int[2];
+    public byte [] getTo() {
+        byte [] aux = new byte[2];
         aux[0] = this.pos[2];
         aux[1] = this.pos[3];
         
@@ -39,10 +39,10 @@ public class Move {
      * store in pos array.
      */
      private void decodeMove() {
-         pos[0] = 8 - (move.charAt(1) - '0');
-         pos[1] = move.charAt(0) - 'a';
-         pos[2] = 8 - (move.charAt(3) - '0') % 8;
-         pos[3] = move.charAt(2) - 'a';
+         pos[0] = (byte)(8 - (move.charAt(1) - '0'));
+         pos[1] = (byte)(move.charAt(0) - 'a');
+         pos[2] = (byte)(8 - (move.charAt(3) - '0'));
+         pos[3] = (byte)(move.charAt(2) - 'a');
     }
     
 }

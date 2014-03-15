@@ -1,42 +1,44 @@
 package board;
+import Piece.Bishop;
+import Piece.BlackPawn;
+import Piece.King;
+import Piece.Knight;
+import Piece.Piece;
+import Piece.Queen;
+import Piece.Rook;
+import Piece.WhitePawn;
 
-/**
- * Chess board
- * 
- * @author Florin
- *
- */
 public class Board {
-    private String [][] field;
+    private Piece[][] field;
     
     public Board() {
-        field = new String[8][8];
+        field = new Piece[8][8];
         
-        setPiece(new byte[]{0, 0}, "BR");
-        setPiece(new byte[]{0, 1}, "BN");
-        setPiece(new byte[]{0, 2}, "BB");
-        setPiece(new byte[]{0, 3}, "BQ");
-        setPiece(new byte[]{0, 4}, "BK");
-        setPiece(new byte[]{0, 5}, "BB");
-        setPiece(new byte[]{0, 6}, "BN");
-        setPiece(new byte[]{0, 7}, "BR");
+        setPiece(new byte[]{0, 0}, new Rook());
+        setPiece(new byte[]{0, 1}, new Knight());
+        setPiece(new byte[]{0, 2}, new Bishop());
+        setPiece(new byte[]{0, 3}, new Queen());
+        setPiece(new byte[]{0, 4}, new King());
+        setPiece(new byte[]{0, 5}, new Bishop());
+        setPiece(new byte[]{0, 6}, new Knight());
+        setPiece(new byte[]{0, 7}, new Rook());
         
         for (byte i = 0; i < 8; i++) {
-            setPiece(new byte[]{1, i}, "BP");
+            setPiece(new byte[]{1, i}, new BlackPawn());
             for (byte j = 2; j <= 5; j++) {
-                setPiece(new byte[]{j, i}, "##");
+                setPiece(new byte[]{j, i}, null);
             }
-            setPiece(new byte[]{6, i}, "WP");
+            setPiece(new byte[]{6, i}, new WhitePawn());
         }
         
-        setPiece(new byte[]{7, 0}, "WR");
-        setPiece(new byte[]{7, 1}, "WN");
-        setPiece(new byte[]{7, 2}, "WB");
-        setPiece(new byte[]{7, 3}, "WQ");
-        setPiece(new byte[]{7, 4}, "WK");
-        setPiece(new byte[]{7, 5}, "WB");
-        setPiece(new byte[]{7, 6}, "WN");
-        setPiece(new byte[]{7, 7}, "WR");
+        setPiece(new byte[]{7, 0}, new Rook());
+        setPiece(new byte[]{7, 1}, new Knight());
+        setPiece(new byte[]{7, 2}, new Bishop());
+        setPiece(new byte[]{7, 3}, new Queen());
+        setPiece(new byte[]{7, 4}, new King());
+        setPiece(new byte[]{7, 5}, new Bishop());
+        setPiece(new byte[]{7, 6}, new Knight());
+        setPiece(new byte[]{7, 7}, new Rook());
     }
     
     /**
@@ -44,7 +46,7 @@ public class Board {
      * @param pos
      * @param piece
      */
-    public void setPiece(byte [] pos, String piece) {
+    public void setPiece(byte [] pos, Piece piece) {
         byte i = pos[0];
         byte j = pos[1];
         field[i][j] = piece;
@@ -55,7 +57,7 @@ public class Board {
      * @param pos
      * @return
      */
-    public String getPiece(byte [] pos) {
+    public Piece getPiece(byte [] pos) {
         byte i = pos[0];
         byte j = pos[1];
         return field[i][j];
@@ -63,7 +65,7 @@ public class Board {
     
     public void applyMove(Move move) {
         setPiece(move.getTo(), getPiece(move.getFrom()));
-        setPiece(move.getFrom(), "##");
+        setPiece(move.getFrom(), null);
     }
     
     public void print() {

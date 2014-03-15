@@ -1,4 +1,5 @@
 package board;
+import chessboard.ChessBoardConnect;
 import Piece.Bishop;
 import Piece.BlackPawn;
 import Piece.King;
@@ -14,14 +15,14 @@ public class Board {
     public Board() {
         field = new Piece[8][8];
         
-        setPiece(new byte[]{0, 0}, new Rook());
-        setPiece(new byte[]{0, 1}, new Knight());
-        setPiece(new byte[]{0, 2}, new Bishop());
-        setPiece(new byte[]{0, 3}, new Queen());
-        setPiece(new byte[]{0, 4}, new King());
-        setPiece(new byte[]{0, 5}, new Bishop());
-        setPiece(new byte[]{0, 6}, new Knight());
-        setPiece(new byte[]{0, 7}, new Rook());
+        setPiece(new byte[]{0, 0}, new Rook("BLACK"));
+        setPiece(new byte[]{0, 1}, new Knight("BLACK"));
+        setPiece(new byte[]{0, 2}, new Bishop("BLACK"));
+        setPiece(new byte[]{0, 3}, new Queen("BLACK"));
+        setPiece(new byte[]{0, 4}, new King("BLACK"));
+        setPiece(new byte[]{0, 5}, new Bishop("BLACK"));
+        setPiece(new byte[]{0, 6}, new Knight("BLACK"));
+        setPiece(new byte[]{0, 7}, new Rook("BLACK"));
         
         for (byte i = 0; i < 8; i++) {
             setPiece(new byte[]{1, i}, new BlackPawn());
@@ -31,14 +32,14 @@ public class Board {
             setPiece(new byte[]{6, i}, new WhitePawn());
         }
         
-        setPiece(new byte[]{7, 0}, new Rook());
-        setPiece(new byte[]{7, 1}, new Knight());
-        setPiece(new byte[]{7, 2}, new Bishop());
-        setPiece(new byte[]{7, 3}, new Queen());
-        setPiece(new byte[]{7, 4}, new King());
-        setPiece(new byte[]{7, 5}, new Bishop());
-        setPiece(new byte[]{7, 6}, new Knight());
-        setPiece(new byte[]{7, 7}, new Rook());
+        setPiece(new byte[]{7, 0}, new Rook("WHITE"));
+        setPiece(new byte[]{7, 1}, new Knight("WHITE"));
+        setPiece(new byte[]{7, 2}, new Bishop("WHITE"));
+        setPiece(new byte[]{7, 3}, new Queen("WHITE"));
+        setPiece(new byte[]{7, 4}, new King("WHITE"));
+        setPiece(new byte[]{7, 5}, new Bishop("WHITE"));
+        setPiece(new byte[]{7, 6}, new Knight("WHITE"));
+        setPiece(new byte[]{7, 7}, new Rook("WHITE"));
     }
     
     /**
@@ -64,7 +65,16 @@ public class Board {
     }
     
     public boolean movePiece(Move move) {
- //       if (getPiece(move.getFrom()) instanceof )
+        ChessBoardConnect chessBoardConnect = new ChessBoardConnect();
+        
+        if (chessBoardConnect.getWhiteOnTurn()) {
+            if (getPiece(move.getFrom()) instanceof WhitePawn) {
+                if (getPiece(move.getTo()) instanceof Piece) {
+                    return false;
+                }
+            }
+        }
+        
         
         return false;
     }

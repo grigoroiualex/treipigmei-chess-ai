@@ -1,6 +1,16 @@
 package Piece;
 
 public abstract class Piece {
+    
+    String color;
+    
+    public Piece() {
+        
+    }
+    
+    public Piece(String color) {
+        this.color = new String(color);
+    }
 
 	public boolean isValid(byte x, byte y) {
 		

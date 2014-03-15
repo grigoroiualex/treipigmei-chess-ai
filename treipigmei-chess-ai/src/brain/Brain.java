@@ -17,9 +17,9 @@ public class Brain {
                 i --;
             }
             moveToDo[0] = (char)('a' + j);
-            moveToDo[0] = (char)('8' - i);
-            moveToDo[0] = (char)('a' + j);
-            moveToDo[0] = (char)('8' - i - 1);
+            moveToDo[1] = (char)('8' - i);
+            moveToDo[2] = (char)('a' + j);
+            moveToDo[3] = (char)('8' - i - 1);
         } else {
             byte i = 1;
             byte j = 0;
@@ -27,9 +27,9 @@ public class Brain {
                 i ++;
             }
             moveToDo[0] = (char)('a' + j);
-            moveToDo[0] = (char)(i);
-            moveToDo[0] = (char)('a' + j);
-            moveToDo[0] = (char)(i + 1);
+            moveToDo[1] = (char)(i);
+            moveToDo[2] = (char)('a' + j);
+            moveToDo[3] = (char)(i + 1);
         }
         
         return moveToDo.toString();

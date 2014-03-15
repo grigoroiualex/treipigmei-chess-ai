@@ -69,25 +69,26 @@ public class Board {
     
     public boolean movePiece(Move move) {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        
-        if (chessBoardConnect.getWhiteOnTurn()) {
-            if (getPiece(move.getFrom()) instanceof WhitePawn) {
-                if (getPiece(move.getTo()) instanceof Piece) {
-                    return false;
+        if (getPiece(move.getTo()) != null) {
+            if (chessBoardConnect.getWhiteOnTurn()) {
+                if (getPiece(move.getFrom()) instanceof WhitePawn) {
+                    if (getPiece(move.getTo()) instanceof Piece) {
+                        return false;
+                    }
+                } else {
+                    if (getPiece(move.getTo()).getColor().compareTo("WHITE") == 0) {
+                        return false;
+                    }
                 }
             } else {
-                if (getPiece(move.getTo()).getColor().compareTo("WHITE") == 0) {
-                    return false;
-                }
-            }
-        } else {
-            if (getPiece(move.getFrom()) instanceof BlackPawn) {
-                if (getPiece(move.getTo()) instanceof Piece) {
-                    return false;
-                }
-            } else {
-                if (getPiece(move.getTo()).getColor().compareTo("BLACK") == 0) {
-                    return false;
+                if (getPiece(move.getFrom()) instanceof BlackPawn) {
+                    if (getPiece(move.getTo()) instanceof Piece) {
+                        return false;
+                    }
+                } else {
+                    if (getPiece(move.getTo()).getColor().compareTo("BLACK") == 0) {
+                        return false;
+                    }
                 }
             }
         }
@@ -100,7 +101,8 @@ public class Board {
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);
     }
-    
+
+    /*
     public void print() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -109,5 +111,6 @@ public class Board {
             System.out.println();
         }
     }
+    */
     
 }

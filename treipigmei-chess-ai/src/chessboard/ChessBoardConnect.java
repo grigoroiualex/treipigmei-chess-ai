@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Class ChessBoardConnect implements the communication protocol between XBoard and
+ * Class ChessBoardConnect implements the comunication protocol between XBoard and
  * the chess engine
  * @author mey
  *
@@ -22,7 +22,7 @@ public class ChessBoardConnect {
         // TODO Auto-generated constructor stub
     }
     /**
-     * The method below sets all recognizable protocol commands 
+     * The method below set all recognizible protocol commands 
      */
     public static void setProtocolCommands(){
         protocolCommands.add("xboard");
@@ -70,7 +70,7 @@ public class ChessBoardConnect {
     }
 
     /**
-     * Receive a string and interpret it
+     * Recive a string and interpret it
      * @param input - the string that must be processed by the chess engine
      */ 
     private void processInput(String input) {

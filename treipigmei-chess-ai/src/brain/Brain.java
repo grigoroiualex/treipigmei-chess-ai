@@ -5,14 +5,11 @@ import chessboard.ChessBoardConnect;
 
 public class Brain {
     
-    ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-    Board board = Board.getInstance();
-    
-    char [] moveToDo = new char[4];
-    String sWhite = new String("a6");
-    String sBlack = new String("h1");
-    
-    public String think() {
+    public static String think() {
+        char [] moveToDo = new char[4];
+        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+        Board board = Board.getInstance();
+        
         if (chessBoardConnect.getWhiteOnTurn()) {
             byte i = 6;
             byte j = 0;

@@ -9,18 +9,28 @@ import java.util.ArrayList;
  * @author mey
  *
  */
-public class ChessBoardConnect {
+public class ChessBoardConnect{
+    
+    private static ChessBoardConnect instance = null;
+    
+    private ChessBoardConnect(){
+        
+    }
+    
+    public static ChessBoardConnect getInstance(){
+        if(instance == null){
+            instance = new ChessBoardConnect();
+        }
+        return instance;
+    }
     //  private ChessBoard chessBoard;
     private static final ArrayList<String> protocolCommands = new ArrayList<String>();
     private boolean legalMove = true;
     private boolean whiteOnTurn = false;
     private boolean blackOnTurn = false;
     private boolean forceMode = false;
-
-
-    public ChessBoardConnect() {
-        // TODO Auto-generated constructor stub
-    }
+    
+    
     /**
      * The method below set all recognizible protocol commands 
      */

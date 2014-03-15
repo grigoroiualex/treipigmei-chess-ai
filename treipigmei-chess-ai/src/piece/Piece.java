@@ -1,9 +1,13 @@
-package Piece;
+package piece;
 
-public abstract class Piece {
+public class Piece {
     
-    String color;
+    private String color;
     
+    public String getColor() {
+        return color;
+    }
+
     public Piece() {
         
     }

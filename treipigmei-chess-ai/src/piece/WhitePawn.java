@@ -1,4 +1,4 @@
-package Piece;
+package piece;
 
 public class WhitePawn extends Piece {
     

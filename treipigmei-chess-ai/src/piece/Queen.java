@@ -1,12 +1,12 @@
-package Piece;
+package piece;
 
-public class King extends Piece {
+public class Queen extends Piece {
     
-    public King(String color) {
+    public Queen(String color) {
         super(color);
     }
-	
+
 	byte[] x = {-1, -1, 1, 1, -1, 1, 0, 0};
 	byte[] y = {1, -1, -1, 1, 0, 0, -1, 1};
-
+	
 }

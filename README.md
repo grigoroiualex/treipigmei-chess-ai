@@ -1,11 +1,14 @@
 treipigmei-chess-ai
 ===================
 
-rulare proiect xboard :
-1.trebuie creat fisierulSursa.jar : jar  cf JAR_FILE_NAME FILE_NAMES_OR_DIRECTORY_NAME
-2. fisierul.jar trebuie sa se afle in acelasi director in care e instalat xboard/winboard
-2.se ruleaza Xboard din terminal cu parametrul "java -jar fisierSursa.jar" : 
+1. Instalează utilitarul ant
       
-        xboard -cp -fcp "java -jar Frittle.jar"
+      sudo apt-get install ant
 
-pentru mai multe detalii: man xboard
+2. Creează fișierul jar asociat proiectului. Mergi în rădăcina proiectului (unde e src) și apoi rulează
+ 
+      ant -f build.xml
+
+3. Rulează XBoard
+
+      xboard -cp -fcp "java -jar ./jar/TreiPigMei.jar"

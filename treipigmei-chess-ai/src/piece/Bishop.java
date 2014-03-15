@@ -1,4 +1,4 @@
-package Piece;
+package piece;
 
 public class Bishop extends Piece {
     

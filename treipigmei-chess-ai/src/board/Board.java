@@ -1,18 +1,13 @@
 package board;
+
+import piece.*;
 import chessboard.ChessBoardConnect;
-import Piece.Bishop;
-import Piece.BlackPawn;
-import Piece.King;
-import Piece.Knight;
-import Piece.Piece;
-import Piece.Queen;
-import Piece.Rook;
-import Piece.WhitePawn;
 
 public class Board {
+    private static Board instance = null;
     private Piece[][] field;
     
-    public Board() {
+    private Board() {
         field = new Piece[8][8];
         
         setPiece(new byte[]{0, 0}, new Rook("BLACK"));
@@ -42,6 +37,14 @@ public class Board {
         setPiece(new byte[]{7, 7}, new Rook("WHITE"));
     }
     
+    public static Board getInstance() {
+        if (instance == null) {
+            instance = new Board();
+        }
+        
+        return instance;
+    }
+    
     /**
      * Put "piece" at position "pos".
      * @param pos
@@ -65,18 +68,32 @@ public class Board {
     }
     
     public boolean movePiece(Move move) {
-        ChessBoardConnect chessBoardConnect = new ChessBoardConnect();
+        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         
         if (chessBoardConnect.getWhiteOnTurn()) {
             if (getPiece(move.getFrom()) instanceof WhitePawn) {
                 if (getPiece(move.getTo()) instanceof Piece) {
                     return false;
                 }
+            } else {
+                if (getPiece(move.getTo()).getColor().compareTo("WHITE") == 0) {
+                    return false;
+                }
+            }
+        } else {
+            if (getPiece(move.getFrom()) instanceof BlackPawn) {
+                if (getPiece(move.getTo()) instanceof Piece) {
+                    return false;
+                }
+            } else {
+                if (getPiece(move.getTo()).getColor().compareTo("BLACK") == 0) {
+                    return false;
+                }
             }
         }
         
-        
-        return false;
+        applyPieceMove(move);
+        return true;
     }
     
     public void applyPieceMove(Move move) {

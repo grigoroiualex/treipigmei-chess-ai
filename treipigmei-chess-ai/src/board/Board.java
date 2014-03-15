@@ -39,12 +39,22 @@ public class Board {
         setPiece(new int[]{7, 7}, "WR");
     }
     
+    /**
+     * Put "piece" at position "pos".
+     * @param pos
+     * @param piece
+     */
     public void setPiece(int [] pos, String piece) {
         int i = pos[0];
         int j = pos[1];
         field[i][j] = piece;
     }
     
+    /**
+     * Get piese from position "pos".
+     * @param pos
+     * @return
+     */
     public String getPiece(int [] pos) {
         int i = pos[0];
         int j = pos[1];

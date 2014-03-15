@@ -12,10 +12,9 @@ import java.util.ArrayList;
 public class ChessBoardConnect {
     //  private ChessBoard chessBoard;
     private static final ArrayList<String> protocolCommands = new ArrayList<String>();
-    private boolean legalMove = false;
+    private boolean legalMove = true;
     private boolean whiteOnTurn = false;
     private boolean blackOnTurn = false;
-
     private boolean forceMode = false;
 
 
@@ -35,6 +34,11 @@ public class ChessBoardConnect {
         protocolCommands.add("go");
         protocolCommands.add("quit");
         protocolCommands.add("resign");
+        protocolCommands.add("protover 2");
+    }
+    
+    public boolean getWhiteOnTurn(){
+        return this.whiteOnTurn;
     }
 
     /**
@@ -64,13 +68,14 @@ public class ChessBoardConnect {
             e.printStackTrace(System.out);
         }		
     }
-    
+
     /**
      * Recive a string and interpret it
      * @param input - the string that must be processed by the chess engine
      */ 
     private void processInput(String input) {
         input = input.trim();
+        System.out.println("Inputul este: " + input);
 
         // check if the input is a command or a move
         if(protocolCommands.contains(input)){
@@ -80,8 +85,13 @@ public class ChessBoardConnect {
                 System.out.println("S-a realizat comunicarea cu Xboard");
                 break;
 
+            case "protover 2":
+                System.out.println("feature myname = TreiPigMei");
+                System.out.println("feature usermove = 0");
+                break;
+
             case "new":			
-               // chessBoard = new ChessBoard();
+                // chessBoard = new ChessBoard();
                 System.out.println("Se creeaza un nou joc; jucatorul alb este primul care va muta");
                 whiteOnTurn = true;
                 blackOnTurn = false;
@@ -107,7 +117,7 @@ public class ChessBoardConnect {
             case "black" :		
                 blackOnTurn = true;
                 whiteOnTurn = false;
-                System.out.println("Randul este dat jucatorului cu negru; masina va juca cu alb");
+                System.out.println("Masina va juca cu negru; jucatorul cu ab va face primul mutarea");
                 break;
 
             case "quit" :		
@@ -115,40 +125,31 @@ public class ChessBoardConnect {
                 System.exit(0);
 
             case "resign" :		
-                 System.out.println("Masina renunta");
-                 if(whiteOnTurn)
-                     System.out.println("0 - 1 {White resigns");
-                 else
-                     System.out.println("1 - 0 {Black resigns");
-                 
+                System.out.println("Masina renunta");
+                if(whiteOnTurn)
+                    System.out.println("0 - 1 {White resigns");
+                else
+                    System.out.println("1 - 0 {Black resigns");
+
                 break;
             }
-               
-        /* If the input is not a command then it must be a move. If it is a legal one,
-         * the Chess engine will apply it.
-         */
-        } else {
-            //legalMove = identifyMove(input);
-            //if(legalMove)
-                System.out.println("Error: Illegal move");
-            //else 
-                processMove(input);
-        }
-    }
-    
-    /**
-     * Apply the move recived as parameter
-     * @param input - move to apply
-     */
 
-    private void processMove(String input){
-        //chessBoard.makeMove(input);
-        System.out.println("Ar trebui sa faca mutarea: " + input);
-        
-        //If we are not in force mode, then the chess engine should make a move itself too.
-        if(!forceMode){
-            System.out.println("The engine is not in force mode, so it must make a move");
-          //chessBoard.makeOwnMove();
+            /* If the input is not a command then it must be a move. If it is a legal one,
+             * the Chess engine will apply it.
+             */
+        } else if(input.matches("[a-h][1-8][a-h][1-8]")){
+            System.out.println("se potriveste cu regex-ul");
+
+            //legalMove = identifyMove(input);
+            if(!legalMove){
+                System.out.println("Error: Illegal move");
+                return;
+            }
+
+            if(!forceMode){
+                System.out.println("The engine is not in force mode, so it must make a move");
+                //chessBoard.makeOwnMove();
+            }
         }
     }
 }

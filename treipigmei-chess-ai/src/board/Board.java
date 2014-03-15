@@ -63,7 +63,13 @@ public class Board {
         return field[i][j];
     }
     
-    public void applyMove(Move move) {
+    public boolean movePiece(Move move) {
+ //       if (getPiece(move.getFrom()) instanceof )
+        
+        return false;
+    }
+    
+    public void applyPieceMove(Move move) {
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);
     }

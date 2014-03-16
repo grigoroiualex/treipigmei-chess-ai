@@ -1,7 +1,7 @@
 package brain;
 
+import connection.ChessBoardConnect;
 import board.Board;
-import chessboard.ChessBoardConnect;
 
 public class Brain {
 

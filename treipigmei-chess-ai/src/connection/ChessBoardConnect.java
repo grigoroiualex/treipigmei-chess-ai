@@ -1,4 +1,4 @@
-package chessboard;
+package connection;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -97,7 +97,7 @@ public class ChessBoardConnect {
 				break;
 
 			case "protover 2":
-				// System.out.println("feature myname = TreiPigMei");
+				 output("feature myname=TreiPigMei sigterm=0 sigint=0");
 				// System.out.println("feature usermove = 0");
 				break;
 
@@ -182,5 +182,10 @@ public class ChessBoardConnect {
 				}
 			}
 		}
+	}
+	
+	private void output(String output) {
+	    System.out.println(output);
+	    System.out.flush();
 	}
 }

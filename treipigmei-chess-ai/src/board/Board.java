@@ -1,7 +1,7 @@
 package board;
 
+import connection.ChessBoardConnect;
 import piece.*;
-import chessboard.ChessBoardConnect;
 
 public class Board {
     private static Board instance = null;

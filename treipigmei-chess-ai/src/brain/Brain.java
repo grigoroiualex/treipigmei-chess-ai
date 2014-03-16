@@ -34,7 +34,6 @@ public class Brain {
 			moveToDo[1] = (char) ('8' - blackRow + 1);
 			moveToDo[2] = (char) ('a' + j);
 			moveToDo[3] = (char) ('8' - blackRow);
-			System.out.println("BLACK <----");
 		}
 
 		// schimbat din moveToDo.toString();

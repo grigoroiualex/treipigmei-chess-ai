@@ -22,12 +22,12 @@ public class Brain {
         byte[] opponent2 = new byte[] { whiteRow, (byte)(j + 1) };
 
 		if (chessBoardConnect.getWhiteOnTurn()) {
-
+		    byte whiteRowAux = whiteRow;
 			if (board.getPiece(new byte[] { whiteRow, j }) != null) {
 				whiteRow--;
 			}
 			
-			if (board.getPiece(new byte[] { (byte)(whiteRow + 1), j }).getColor() == "WHITE") {
+			if (board.getPiece(new byte[] { whiteRowAux, j }).getColor() == "WHITE") {
 			    
     			moveToDo[0] = (char) ('a' + j);
     			moveToDo[1] = (char) ('8' - whiteRow - 1);
@@ -57,11 +57,12 @@ public class Brain {
 			    // resign
 			}
 		} else {
+		    byte blackRowAux = blackRow;
 			if (board.getPiece(new byte[] { blackRow, j }) != null) {
 				blackRow++;
 			}
 			
-			if (board.getPiece(new byte[] { (byte)(blackRow - 1), j }).getColor() == "BLACK") {
+			if (board.getPiece(new byte[] { blackRowAux, j }).getColor() == "BLACK") {
 			
     			moveToDo[0] = (char) ('a' + j);
     			moveToDo[1] = (char) ('8' - blackRow + 1);

@@ -26,62 +26,70 @@ public class Brain {
 			if (board.getPiece(new byte[] { whiteRow, j }) != null) {
 				whiteRow--;
 			}
-			moveToDo[0] = (char) ('a' + j);
-			moveToDo[1] = (char) ('8' - whiteRow - 1);
 			
-			opponent1 = new byte[] { whiteRow, (byte)(j - 1) };
-			opponent2 = new byte[] { whiteRow, (byte)(j + 1) };
-			
-			if (Piece.isValid(opponent1[0], opponent1[1])) {
-			    if (board.getPiece(opponent1) instanceof Piece) {
+			if (board.getPiece(new byte[] { (byte)(whiteRow + 1), j }).getColor() == "WHITE") {
+			    
+    			moveToDo[0] = (char) ('a' + j);
+    			moveToDo[1] = (char) ('8' - whiteRow - 1);
+    			
+    			opponent1 = new byte[] { whiteRow, (byte)(j - 1) };
+    			opponent2 = new byte[] { whiteRow, (byte)(j + 1) };
+    			
+    			if (Piece.isValid(opponent1[0], opponent1[1]) && board.getPiece(opponent1) instanceof Piece) {
 			        if (board.getPiece(opponent1).getColor() == "BLACK") {
 			            moveToDo[2] = (char) ('a' + opponent1[1]);
 			            moveToDo[3] = (char) ('8' - opponent1[0]); 
+			            j--;
 			        }
-			    }
-			} else {
-    			if (Piece.isValid(opponent2[0], opponent2[1])) {
-                    if (board.getPiece(opponent2) instanceof Piece) {
+    			} else {
+        			if (Piece.isValid(opponent2[0], opponent2[1]) && board.getPiece(opponent2) instanceof Piece) {
                         if (board.getPiece(opponent2).getColor() == "BLACK") {
                             moveToDo[2] = (char) ('a' + opponent2[1]);
                             moveToDo[3] = (char) ('8' - opponent2[0]); 
+                            j++;
                         }
+                    } else {
+            			moveToDo[2] = (char) ('a' + j);
+            			moveToDo[3] = (char) ('8' - whiteRow);
                     }
-                } else {
-        			moveToDo[2] = (char) ('a' + j);
-        			moveToDo[3] = (char) ('8' - whiteRow);
-                }
+    			}
+			} else {
+			    // resign
 			}
 		} else {
 			if (board.getPiece(new byte[] { blackRow, j }) != null) {
 				blackRow++;
 			}
-			moveToDo[0] = (char) ('a' + j);
-			moveToDo[1] = (char) ('8' - blackRow + 1);
 			
-			opponent1 = new byte[] { blackRow, (byte)(j - 1) };
-            opponent2 = new byte[] { blackRow, (byte)(j + 1) };
+			if (board.getPiece(new byte[] { (byte)(blackRow - 1), j }).getColor() == "BLACK") {
 			
-			if (Piece.isValid(opponent1[0], opponent1[1])) {
-                if (board.getPiece(opponent1) instanceof Piece) {
+    			moveToDo[0] = (char) ('a' + j);
+    			moveToDo[1] = (char) ('8' - blackRow + 1);
+    			
+    			opponent1 = new byte[] { blackRow, (byte)(j - 1) };
+                opponent2 = new byte[] { blackRow, (byte)(j + 1) };
+    			
+    			if (Piece.isValid(opponent1[0], opponent1[1]) && board.getPiece(opponent1) instanceof Piece) {
                     if (board.getPiece(opponent1).getColor() == "WHITE") {
                         moveToDo[2] = (char) ('a' + opponent1[1]);
                         moveToDo[3] = (char) ('8' - opponent1[0]); 
-                    }
-                }
-            } else {
-                if (Piece.isValid(opponent2[0], opponent2[1])) {
-                    if (board.getPiece(opponent2) instanceof Piece) {
-                        if (board.getPiece(opponent2).getColor() == "WHITE") {
-                            moveToDo[2] = (char) ('a' + opponent2[1]);
-                            moveToDo[3] = (char) ('8' - opponent2[0]); 
-                        }
+                        j--;
                     }
                 } else {
-                    moveToDo[2] = (char) ('a' + j);
-                    moveToDo[3] = (char) ('8' - blackRow);
+                    if (Piece.isValid(opponent2[0], opponent2[1]) && board.getPiece(opponent2) instanceof Piece) {
+                        if (board.getPiece(opponent2).getColor() == "WHITE") {
+                            moveToDo[2] = (char) ('a' + opponent2[1]);
+                            moveToDo[3] = (char) ('8' - opponent2[0]);
+                            j++;
+                        }
+                    } else {
+                        moveToDo[2] = (char) ('a' + j);
+                        moveToDo[3] = (char) ('8' - blackRow);
+                    }
                 }
-            }
+			} else {
+			    // resign
+			}
 		}
 		
 		

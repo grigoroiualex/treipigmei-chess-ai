@@ -97,7 +97,7 @@ public class ChessBoardConnect {
 				break;
 
 			case "protover 2":
-				 output("feature myname=TreiPigMei sigterm=0 sigint=0");
+				 output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0");
 				// System.out.println("feature usermove = 0");
 				break;
 
@@ -143,10 +143,11 @@ public class ChessBoardConnect {
 
 			case "resign":
 				// System.out.println("Masina renunta");
-				if (whiteOnTurn)
-					System.out.println("0 - 1 {White resigns");
-				else
-					System.out.println("1 - 0 {Black resigns");
+				if (whiteOnTurn) {
+					output("0 - 1 {White resigns");
+				} else {
+					output("1 - 0 {Black resigns");
+				}
 
 				System.exit(0);
 				break;
@@ -164,7 +165,7 @@ public class ChessBoardConnect {
 				if (chessBoard.movePiece(new Move(input))) {
 					// System.out.println("a trecut de nullPointerExcep.");
 				} else {
-					System.out.println("Error: Illegal move!");
+					output("Error: Illegal move!");
 					return;
 				}
 
@@ -174,10 +175,9 @@ public class ChessBoardConnect {
 					String move = Brain.think();
 
 					if (chessBoard.movePiece(new Move(move))) {
-						System.out.println("move " + move);
+						output("move " + move);
 					} else {
-						System.out.println("quit");
-						System.exit(0);
+						output("resign");
 					}
 				}
 			}

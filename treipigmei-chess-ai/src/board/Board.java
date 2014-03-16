@@ -5,7 +5,8 @@ import connection.ChessBoardConnect.Colour;
 import piece.*;
 
 /**
- * 
+ * Class that has the chess board representation.
+ * It is initialised with all pieces on it.
  * 
  * @author grigoroiualex
  *
@@ -44,6 +45,12 @@ public class Board {
         setPiece(new byte[]{7, 7}, new Rook("WHITE"));
     }
     
+    /**
+     * Creates an instance of the class (if there wasn't one created
+     * else it uses the same) and returns it.
+     * 
+     * @return instance of the class
+     */
     public static Board getInstance() {
         if(instance == null) {
             instance = new Board();
@@ -52,6 +59,11 @@ public class Board {
         return instance;
     }
     
+    /**
+     * Creates a new instance of the class and returns it.
+     * 
+     * @return new instance of the class
+     */
     public static Board getNewInstance() {
         instance = new Board();
         
@@ -59,9 +71,9 @@ public class Board {
     }
     
     /**
-     * Put "piece" at position "pos".
-     * @param pos 
-     * @param piece
+     * Put <i>piece</i> at position <i>pos</i>.
+     * @param position wanted
+     * @param piece that is at position <i>pos</i>
      */
     public void setPiece(byte [] pos, Piece piece) {
         byte i = pos[0];
@@ -70,7 +82,7 @@ public class Board {
     }
     
     /**
-     * Get "piece" from position "pos".
+     * Get <i>piece</i> from position <i>pos</i>.
      * @param position on the board
      * @return the piece that is at position pos
      */
@@ -81,6 +93,7 @@ public class Board {
     }
     
     /**
+     * Moves a piece on the chess board
      * 
      * @param move
      * @return
@@ -89,7 +102,7 @@ public class Board {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         
         if (getPiece(move.getTo()) != null) {
-            if (chessBoardConnect.getChessEngineColour() == Colour.WHITE) {
+            if (chessBoardConnect.getChessEngineColour() == Colour.BLACK) {
                 if (getPiece(move.getFrom()) instanceof WhitePawn) {
                     if (getPiece(move.getTo()) instanceof Piece) {
                         return false;

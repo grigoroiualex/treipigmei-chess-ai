@@ -2,7 +2,7 @@
 import connection.*;
 
 /**
- * Main entry in the the program. 
+ * Main entry in the program. 
  * 
  * @author grigoroiualex
  *

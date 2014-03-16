@@ -101,13 +101,13 @@ public class ChessBoardConnect {
 
         // check if the input is a command or a move and if in force mode
         if ((protocolCommands.contains(input) && !forceMode)
-                || input.equals("go")) {
+                || input.equals("go") || input.equals("new")) {
             switch (input) {
             case "xboard":
                 break;
 
             case "protover 2":
-                output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0");
+                output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0 san=0 done=1");
                 break;
 
             case "new":
@@ -115,6 +115,7 @@ public class ChessBoardConnect {
                 chessEngineColour = Colour.BLACK;
                 whiteOnTurn = true;
                 blackOnTurn = false;
+                forceMode = false;
                 break;
 
             case "force":
@@ -163,7 +164,7 @@ public class ChessBoardConnect {
                     legalMove = false;
                 }
 
-                if (!forceMode && legalMove) {
+                if (legalMove) {
                     String move = Brain.think();
 
                     if (chessBoard.movePiece(new Move(move))) {

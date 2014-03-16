@@ -15,7 +15,7 @@ public class DebugToFile {
         }
     }
     
-    public DebugToFile getInstance() {
+    public static DebugToFile getInstance() {
         if(instance == null) {
             instance = new DebugToFile();
         }

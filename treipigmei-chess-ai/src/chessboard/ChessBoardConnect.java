@@ -1,9 +1,9 @@
 package chessboard;
 
 import java.io.InputStreamReader;
-
 import java.util.ArrayList;
 
+import debugging.DebugToFile;
 import board.Board;
 import board.Move;
 import brain.Brain;
@@ -177,6 +177,9 @@ public class ChessBoardConnect {
 					// System.out
 					// .println("The engine is not in force mode, so it must make a move");
 					String move = Brain.think();
+					DebugToFile debug = DebugToFile.getInstance();
+					
+					debug.output("Mutarea a fost gandita si urmeaza a fi aplicata.");
 					if (chessBoard.movePiece(new Move(move))) {
 						System.out.println("move " + move);
 					} else {

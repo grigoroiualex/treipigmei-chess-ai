@@ -2,10 +2,12 @@ package board;
 
 import piece.*;
 import chessboard.ChessBoardConnect;
+import debugging.DebugToFile;
 
 public class Board {
     private static Board instance = null;
     private Piece[][] field;
+    private static DebugToFile debug = DebugToFile.getInstance();
     
     private Board() {
         field = new Piece[8][8];
@@ -69,6 +71,8 @@ public class Board {
     
     public boolean movePiece(Move move) {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+        
+        debug.output("inauntrul metodei movePiece");
         if (getPiece(move.getTo()) != null) {
             if (chessBoardConnect.getWhiteOnTurn()) {
                 if (getPiece(move.getFrom()) instanceof WhitePawn) {
@@ -98,6 +102,7 @@ public class Board {
     }
     
     public void applyPieceMove(Move move) {
+    	debug.output("inauntrul metodei applyPieceMove");
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);
     }

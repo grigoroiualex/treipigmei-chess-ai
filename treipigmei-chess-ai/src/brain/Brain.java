@@ -1,6 +1,7 @@
 package brain;
   
 import connection.ChessBoardConnect;
+import connection.ChessBoardConnect.Colour;
 import board.Board;
   
 public class Brain {
@@ -17,7 +18,7 @@ public class Brain {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Board board = Board.getInstance();
         
-        if (chessBoardConnect.getWhiteOnTurn()) {
+        if (chessBoardConnect.getChessEngineColour() == Colour.WHITE) {
             
             if (board.getPiece(new byte[] { whiteRow, j }) != null) {
                 whiteRow--;

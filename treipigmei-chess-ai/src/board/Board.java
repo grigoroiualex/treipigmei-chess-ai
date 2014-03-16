@@ -1,8 +1,15 @@
 package board;
 
 import connection.ChessBoardConnect;
+import connection.ChessBoardConnect.Colour;
 import piece.*;
 
+/**
+ * 
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Board {
     private static Board instance = null;
     private Piece[][] field;
@@ -53,7 +60,7 @@ public class Board {
     
     /**
      * Put "piece" at position "pos".
-     * @param pos
+     * @param pos 
      * @param piece
      */
     public void setPiece(byte [] pos, Piece piece) {
@@ -64,8 +71,8 @@ public class Board {
     
     /**
      * Get "piece" from position "pos".
-     * @param pos
-     * @return
+     * @param position on the board
+     * @return the piece that is at position pos
      */
     public Piece getPiece(byte [] pos) {
         byte i = pos[0];
@@ -73,11 +80,16 @@ public class Board {
         return field[i][j];
     }
     
+    /**
+     * 
+     * @param move
+     * @return
+     */
     public boolean movePiece(Move move) {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         
         if (getPiece(move.getTo()) != null) {
-            if (chessBoardConnect.getWhiteOnTurn()) {
+            if (chessBoardConnect.getChessEngineColour() == Colour.WHITE) {
                 if (getPiece(move.getFrom()) instanceof WhitePawn) {
                     if (getPiece(move.getTo()) instanceof Piece) {
                         return false;
@@ -104,6 +116,10 @@ public class Board {
         return true;
     }
     
+    /**
+     * 
+     * @param move
+     */
     public void applyPieceMove(Move move) {
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);

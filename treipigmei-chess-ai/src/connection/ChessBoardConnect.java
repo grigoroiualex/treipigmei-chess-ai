@@ -26,7 +26,7 @@ public class ChessBoardConnect {
     /**
      * Gets the current instance of the singleton class
      * 
-     * @return - class instance
+     * @return class instance
      */
     public static ChessBoardConnect getInstance() {
         if (instance == null) {
@@ -38,10 +38,9 @@ public class ChessBoardConnect {
     private Board chessBoard;
     private static final ArrayList<String> protocolCommands = new ArrayList<String>();
     private boolean legalMove = true;
-    private boolean whiteOnTurn = false;
-    private boolean blackOnTurn = false;
     private boolean forceMode = false;
-    private boolean ourColour;
+    private boolean blackOnTurn, whiteOnTurn;
+    private Colour chessEngineColour;
 
     /**
      * The method below sets all recognizable protocol commands
@@ -58,14 +57,18 @@ public class ChessBoardConnect {
         protocolCommands.add("resign");
         protocolCommands.add("protover 2");
     }
+    
+    public enum Colour {
+        WHITE, BLACK;
+    }
 
     /**
      * Tells if the white is on turn
      * 
-     * @return - true if the white is on turn, false otherwise
+     * @return true if the white is on turn, false otherwise
      */
-    public boolean getWhiteOnTurn() {
-        return this.whiteOnTurn;
+    public Colour getChessEngineColour() {
+        return this.chessEngineColour;
     }
 
     /**
@@ -91,7 +94,7 @@ public class ChessBoardConnect {
     /**
      * Receive a string and interpret it
      * 
-     * @param input - the string that must be processed by the chess engine
+     * @param the string that must be processed by the chess engine
      */
     private void processInput(String input) {
         input = input.trim();
@@ -109,6 +112,7 @@ public class ChessBoardConnect {
 
             case "new":
                 chessBoard = Board.getNewInstance();
+                chessEngineColour = Colour.BLACK;
                 whiteOnTurn = true;
                 blackOnTurn = false;
                 break;
@@ -122,11 +126,13 @@ public class ChessBoardConnect {
                 break;
 
             case "white":
+                chessEngineColour = Colour.WHITE;
                 whiteOnTurn = true;
                 blackOnTurn = false;
                 break;
 
             case "black":
+                chessEngineColour = Colour.BLACK;
                 blackOnTurn = true;
                 whiteOnTurn = false;
                 break;
@@ -135,7 +141,7 @@ public class ChessBoardConnect {
                 System.exit(0);
 
             case "resign":
-                if (whiteOnTurn) {
+                if(whiteOnTurn) {
                     output("0 - 1 {White resigns");
                 } else {
                     output("1 - 0 {Black resigns");
@@ -173,7 +179,7 @@ public class ChessBoardConnect {
     /**
      * Prints the desired string and makes a flush afterwards
      *  
-     * @param output - the desired string to be printed
+     * @param the desired string to be printed
      */
     private void output(String output) {
         System.out.println(output);

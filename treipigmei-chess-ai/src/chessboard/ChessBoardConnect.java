@@ -1,9 +1,9 @@
 package chessboard;
 
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import debugging.DebugToFile;
 import board.Board;
 import board.Move;
 import brain.Brain;
@@ -63,22 +63,16 @@ public class ChessBoardConnect {
 
 	public void readInput() {
 
-		int character;
-		String input = "";
-
 		try {
-			InputStreamReader inputReader = new InputStreamReader(System.in);
+			BufferedReader buffer = new BufferedReader(new InputStreamReader(
+					System.in));
+			String line;
 
 			while (true) {
-				character = inputReader.read();
-				if (character != -1) {
-					input += (char) character;
-				}
-				if (character == '\n') {
-					processInput(input);
-					input = "";
-				}
+				line = buffer.readLine();
+				processInput(line);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
@@ -92,46 +86,46 @@ public class ChessBoardConnect {
 	 */
 	private void processInput(String input) {
 		input = input.trim();
-//		System.out.println("Inputul este: " + input);
+		// System.out.println("Inputul este: " + input);
 
 		// check if the input is a command or a move
 		if (protocolCommands.contains(input)) {
 
 			switch (input) {
 			case "xboard":
-//				System.out.println("S-a realizat comunicarea cu Xboard");
+				// System.out.println("S-a realizat comunicarea cu Xboard");
 				break;
 
 			case "protover 2":
-//				System.out.println("feature myname = TreiPigMei");
-//				System.out.println("feature usermove = 0");
+				// System.out.println("feature myname = TreiPigMei");
+				// System.out.println("feature usermove = 0");
 				break;
 
 			case "new":
 				chessBoard = Board.getInstance();
-//				System.out
-//						.println("Se creeaza un nou joc; jucatorul alb este primul care va muta");
-//				whiteOnTurn = true;
-//				blackOnTurn = false;
+				// System.out
+				// .println("Se creeaza un nou joc; jucatorul alb este primul care va muta");
+				// whiteOnTurn = true;
+				// blackOnTurn = false;
 				whiteOnTurn = false;
 				break;
 
 			case "force":
 				forceMode = true;
-//				System.out
-//						.println("Masina intra in modul fortat; va tine locul ambilor jucatori");
+				// System.out
+				// .println("Masina intra in modul fortat; va tine locul ambilor jucatori");
 				break;
 
 			case "go":
 				forceMode = false;
-//				System.out
-//						.println("Masina paraseste modul fortat si va juca doar pentru cel care e la rand");
+				// System.out
+				// .println("Masina paraseste modul fortat si va juca doar pentru cel care e la rand");
 
 				break;
-//explicatii despre white si black, daca white == true ce inseamna?
+			// explicatii despre white si black, daca white == true ce inseamna?
 			case "white":
-//				System.out
-//						.println("Randul este dat jucatorului cu alb; masina ma juca cu negru");
+				// System.out
+				// .println("Randul este dat jucatorului cu alb; masina ma juca cu negru");
 				whiteOnTurn = true;
 				blackOnTurn = false;
 				break;
@@ -139,8 +133,8 @@ public class ChessBoardConnect {
 			case "black":
 				blackOnTurn = true;
 				whiteOnTurn = false;
-//				System.out
-//						.println("Masina va juca cu negru; jucatorul cu alb va face primul mutarea");
+				// System.out
+				// .println("Masina va juca cu negru; jucatorul cu alb va face primul mutarea");
 				break;
 
 			case "quit":
@@ -154,6 +148,7 @@ public class ChessBoardConnect {
 				else
 					System.out.println("1 - 0 {Black resigns");
 
+				System.exit(0);
 				break;
 			}
 
@@ -177,9 +172,7 @@ public class ChessBoardConnect {
 					// System.out
 					// .println("The engine is not in force mode, so it must make a move");
 					String move = Brain.think();
-					DebugToFile debug = DebugToFile.getInstance();
-					
-					debug.output("Mutarea a fost gandita si urmeaza a fi aplicata.");
+
 					if (chessBoard.movePiece(new Move(move))) {
 						System.out.println("move " + move);
 					} else {

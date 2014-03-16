@@ -38,9 +38,15 @@ public class Board {
     }
     
     public static Board getInstance() {
-        if (instance == null) {
+        if(instance == null) {
             instance = new Board();
         }
+        
+        return instance;
+    }
+    
+    public static Board getNewInstance() {
+        instance = new Board();
         
         return instance;
     }
@@ -102,16 +108,4 @@ public class Board {
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);
     }
-
-    /*
-    public void print() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                System.out.print(field[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-    */
-    
 }

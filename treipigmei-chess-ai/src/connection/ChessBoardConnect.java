@@ -30,7 +30,7 @@ public class ChessBoardConnect {
 		return instance;
 	}
 
-	private Board chessBoard = Board.getInstance();
+	private Board chessBoard;
 	private static final ArrayList<String> protocolCommands = new ArrayList<String>();
 	private boolean legalMove = true;
 	private boolean whiteOnTurn = false;
@@ -89,8 +89,7 @@ public class ChessBoardConnect {
 		// System.out.println("Inputul este: " + input);
 
 		// check if the input is a command or a move
-		if (protocolCommands.contains(input)) {
-
+		if (protocolCommands.contains(input) && !forceMode) {
 			switch (input) {
 			case "xboard":
 				// System.out.println("S-a realizat comunicarea cu Xboard");
@@ -102,7 +101,8 @@ public class ChessBoardConnect {
 				break;
 
 			case "new":
-				chessBoard = Board.getInstance();
+			    output("Am primit new. Hai la inca o partida!");
+				chessBoard = Board.getNewInstance();
 				// System.out
 				// .println("Se creeaza un nou joc; jucatorul alb este primul care va muta");
 				// whiteOnTurn = true;
@@ -148,8 +148,6 @@ public class ChessBoardConnect {
 				} else {
 					output("1 - 0 {Black resigns");
 				}
-
-				System.exit(0);
 				break;
 			}
 

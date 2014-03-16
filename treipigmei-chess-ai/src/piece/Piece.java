@@ -16,7 +16,7 @@ public class Piece {
         this.color = new String(color);
     }
 
-	public boolean isValid(byte x, byte y) {
+	public static boolean isValid(byte x, byte y) {
 		
 		if(x >= 0 && x <= 7 && y >= 0 && y <= 7)
 			return true;

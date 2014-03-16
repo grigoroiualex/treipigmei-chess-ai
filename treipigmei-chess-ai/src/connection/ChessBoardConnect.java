@@ -9,7 +9,7 @@ import board.Move;
 import brain.Brain;
 
 /**
- * Class ChessBoardConnect implements the comunication protocol between XBoard
+ * Class ChessBoardConnect implements the communication protocol between XBoard
  * and the chess engine
  * 
  * @author mey
@@ -17,173 +17,166 @@ import brain.Brain;
  */
 public class ChessBoardConnect {
 
-	private static ChessBoardConnect instance = null;
+    private static ChessBoardConnect instance = null;
 
-	private ChessBoardConnect() {
+    private ChessBoardConnect() {
 
-	}
+    }
 
-	public static ChessBoardConnect getInstance() {
-		if (instance == null) {
-			instance = new ChessBoardConnect();
-		}
-		return instance;
-	}
+    /**
+     * Gets the current instance of the singleton class
+     * 
+     * @return - class instance
+     */
+    public static ChessBoardConnect getInstance() {
+        if (instance == null) {
+            instance = new ChessBoardConnect();
+        }
+        return instance;
+    }
 
-	private Board chessBoard;
-	private static final ArrayList<String> protocolCommands = new ArrayList<String>();
-	private boolean legalMove = true;
-	private boolean whiteOnTurn = false;
-	private boolean blackOnTurn = false;
-	private boolean forceMode = false;
+    private Board chessBoard;
+    private static final ArrayList<String> protocolCommands = new ArrayList<String>();
+    private boolean legalMove = true;
+    private boolean whiteOnTurn = false;
+    private boolean blackOnTurn = false;
+    private boolean forceMode = false;
+    private boolean ourColour;
 
-	/**
-	 * The method below set all recognizible protocol commands
-	 */
-	public static void setProtocolCommands() {
-		protocolCommands.add("xboard");
-		protocolCommands.add("new");
-		protocolCommands.add("force");
-		protocolCommands.add("white");
-		protocolCommands.add("black");
-		protocolCommands.add("move");
-		protocolCommands.add("go");
-		protocolCommands.add("quit");
-		protocolCommands.add("resign");
-		protocolCommands.add("protover 2");
-	}
+    /**
+     * The method below sets all recognizable protocol commands
+     */
+    public static void setProtocolCommands() {
+        protocolCommands.add("xboard");
+        protocolCommands.add("new");
+        protocolCommands.add("force");
+        protocolCommands.add("white");
+        protocolCommands.add("black");
+        protocolCommands.add("move");
+        protocolCommands.add("go");
+        protocolCommands.add("quit");
+        protocolCommands.add("resign");
+        protocolCommands.add("protover 2");
+    }
 
-	public boolean getWhiteOnTurn() {
-		return this.whiteOnTurn;
-	}
+    /**
+     * Tells if the white is on turn
+     * 
+     * @return - true if the white is on turn, false otherwise
+     */
+    public boolean getWhiteOnTurn() {
+        return this.whiteOnTurn;
+    }
 
-	/**
-	 * Takes an input from the input stream
-	 */
+    /**
+     * Takes an input from the input stream
+     */
+    public void readInput() {
 
-	public void readInput() {
+        try {
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(
+                    System.in));
+            String line;
 
-		try {
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(
-					System.in));
-			String line;
+            while (true) {
+                line = buffer.readLine();
+                processInput(line);
+            }
 
-			while (true) {
-				line = buffer.readLine();
-				processInput(line);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace(System.out);
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+    }
 
-	/**
-	 * Recive a string and interpret it
-	 * 
-	 * @param input
-	 *            - the string that must be processed by the chess engine
-	 */
-	private void processInput(String input) {
-		input = input.trim();
-		// System.out.println("Inputul este: " + input);
+    /**
+     * Receive a string and interpret it
+     * 
+     * @param input - the string that must be processed by the chess engine
+     */
+    private void processInput(String input) {
+        input = input.trim();
 
-		// check if the input is a command or a move
-		if (protocolCommands.contains(input) && !forceMode) {
-			switch (input) {
-			case "xboard":
-				// System.out.println("S-a realizat comunicarea cu Xboard");
-				break;
+        // check if the input is a command or a move and if in force mode
+        if ((protocolCommands.contains(input) && !forceMode)
+                || input.equals("go")) {
+            switch (input) {
+            case "xboard":
+                break;
 
-			case "protover 2":
-				 output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0");
-				// System.out.println("feature usermove = 0");
-				break;
+            case "protover 2":
+                output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0");
+                break;
 
-			case "new":
-			    output("Am primit new. Hai la inca o partida!");
-				chessBoard = Board.getNewInstance();
-				// System.out
-				// .println("Se creeaza un nou joc; jucatorul alb este primul care va muta");
-				// whiteOnTurn = true;
-				// blackOnTurn = false;
-				whiteOnTurn = false;
-				break;
+            case "new":
+                chessBoard = Board.getNewInstance();
+                whiteOnTurn = true;
+                blackOnTurn = false;
+                break;
 
-			case "force":
-				forceMode = true;
-				// System.out
-				// .println("Masina intra in modul fortat; va tine locul ambilor jucatori");
-				break;
+            case "force":
+                forceMode = true;
+                break;
 
-			case "go":
-				forceMode = false;
-				// System.out
-				// .println("Masina paraseste modul fortat si va juca doar pentru cel care e la rand");
+            case "go":
+                forceMode = false;
+                break;
 
-				break;
-			// explicatii despre white si black, daca white == true ce inseamna?
-			case "white":
-				// System.out
-				// .println("Randul este dat jucatorului cu alb; masina ma juca cu negru");
-				whiteOnTurn = true;
-				blackOnTurn = false;
-				break;
+            case "white":
+                whiteOnTurn = true;
+                blackOnTurn = false;
+                break;
 
-			case "black":
-				blackOnTurn = true;
-				whiteOnTurn = false;
-				// System.out
-				// .println("Masina va juca cu negru; jucatorul cu alb va face primul mutarea");
-				break;
+            case "black":
+                blackOnTurn = true;
+                whiteOnTurn = false;
+                break;
 
-			case "quit":
-				// System.out.println("Jocul se termina");
-				System.exit(0);
+            case "quit":
+                System.exit(0);
 
-			case "resign":
-				// System.out.println("Masina renunta");
-				if (whiteOnTurn) {
-					output("0 - 1 {White resigns");
-				} else {
-					output("1 - 0 {Black resigns");
-				}
-				break;
-			}
+            case "resign":
+                if (whiteOnTurn) {
+                    output("0 - 1 {White resigns");
+                } else {
+                    output("1 - 0 {Black resigns");
+                }
+                break;
+            }
 
-			/*
-			 * If the input is not a command then it must be a move. If it is a
-			 * legal one, the Chess engine will apply it.
-			 */
-		} else {
-			if (input.matches("[a-h][1-8][a-h][1-8]")) {
-				// System.out.println("se potriveste cu regex-ul");
-				// System.out.println("inputul este: " + input);
+    /*
+     * If the input is not a command then it must be a move. If it is a
+     * legal one, the Chess engine will apply it.
+     */
+        } else {
+            if (input.matches("[a-h][1-8][a-h][1-8]")) {
 
-				if (chessBoard.movePiece(new Move(input))) {
-					// System.out.println("a trecut de nullPointerExcep.");
-				} else {
-					output("Error: Illegal move!");
-					return;
-				}
+                if (chessBoard.movePiece(new Move(input))) {
+                    legalMove = true;
+                } else {
+                    output("Error: Illegal move!");
+                    legalMove = false;
+                }
 
-				if (!forceMode) {
-					// System.out
-					// .println("The engine is not in force mode, so it must make a move");
-					String move = Brain.think();
+                if (!forceMode && legalMove) {
+                    String move = Brain.think();
 
-					if (chessBoard.movePiece(new Move(move))) {
-						output("move " + move);
-					} else {
-						output("resign");
-					}
-				}
-			}
-		}
-	}
-	
-	private void output(String output) {
-	    System.out.println(output);
-	    System.out.flush();
-	}
+                    if (chessBoard.movePiece(new Move(move))) {
+                        output("move " + move);
+                    } else {
+                        output("resign");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Prints the desired string and makes a flush afterwards
+     *  
+     * @param output - the desired string to be printed
+     */
+    private void output(String output) {
+        System.out.println(output);
+        System.out.flush();
+    }
 }

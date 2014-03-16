@@ -63,7 +63,7 @@ public class Board {
     }
     
     /**
-     * Get piese from position "pos".
+     * Get "piece" from position "pos".
      * @param pos
      * @return
      */

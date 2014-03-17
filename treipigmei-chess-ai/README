@@ -1,0 +1,7 @@
+To represent pieces we created an abstract class named Piece and then for each type we extended this class and set two vectors for each possible move of that piece type.
+
+The Board is a matrix of 8x8 of pieces which uses a singleton pattern because we want to use the same board in every class which need the board.
+
+We start to move a pawn from column “a” until it can’t move anymore from different reasons: there is a piece in front of it and the pawn cannot attack in front or the pawn is taken by one of the adversary pieces. In case that we have the possibility to attack with the pawn we attack and then continue to move ahead. 
+
+The protocol is implemented in class ChessBoardConnect, establishes connections between our engine and board engine and takes commands from System.in. It makes what is necessary for each of them and eventually when is necessary sends to the board engine moves. When we receive a move, we verify if that move is valid and we do it or in the other case we print the string “Invalid Move!”.

@@ -1,9 +1,12 @@
 TreiPigMei Chess Engine
+===============================================================
 
 Team: - Florin-George Boștinaru
       - Alexandru Marian Grigoroiu
       - Remus Mazilu
       - Andreea Meiroșu (captain)
+      
+===============================================================
       
 Engine:
 
@@ -50,3 +53,13 @@ engine, taking commands from System.in.
   If none of the commands stated above were read from the input we assume that there was a move command stated.
 It applies a regex pattern on the input and if it matches, the engine verifies if it is a legal move. It
 then prints a valid move or "resign" if there is no valid move left.
+
+
+===============================================================
+
+
+Obtain the .jar file and the docs:
+  - Run ant on build.xml which is located in the root directory
+  - The jar file will be created in the jar folder
+  - The Javadoc docs will be generated in the doc folder
+  

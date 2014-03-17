@@ -101,7 +101,7 @@ public class ChessBoardConnect {
 
         // check if the input is a command or a move and if in force mode
         if ((protocolCommands.contains(input) && !forceMode)
-                || input.equals("go") || input.equals("new")) {
+                || input.equals("go") || input.equals("new") || input.equals("quit")) {
             switch (input) {
             case "xboard":
                 break;

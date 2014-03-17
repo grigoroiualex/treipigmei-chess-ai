@@ -160,7 +160,7 @@ public class ChessBoardConnect {
                 if (chessBoard.movePiece(new Move(input))) {
                     legalMove = true;
                 } else {
-                    output("Error: Illegal move!");
+                    output("Illegal move: " + input);
                     legalMove = false;
                 }
 

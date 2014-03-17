@@ -4,6 +4,11 @@ public class Move {
     private String move;
     private byte [] pos;
     
+    /**
+     * 
+     * 
+     * @param s
+     */
     public Move(String s) {
         this.move = new String(s);
         this.pos = new byte[4];
@@ -11,6 +16,7 @@ public class Move {
     }
     
     /**
+     * 
      * 
      * @return Source position
      */
@@ -24,6 +30,7 @@ public class Move {
     
     /**
      * 
+     * 
      * @return Destination position
      */
     public byte [] getTo() {
@@ -35,8 +42,8 @@ public class Move {
     }
     
     /**
-     * Transform move String in i and j position for "from" and "to" and
-     * store in pos array.
+     * Transforms move String at position i and j for <i>from</i>, <i>to</i>
+     * and stores it in <i>pos</i> array.
      */
      private void decodeMove() {
          pos[0] = (byte)(8 - (move.charAt(1) - '0'));

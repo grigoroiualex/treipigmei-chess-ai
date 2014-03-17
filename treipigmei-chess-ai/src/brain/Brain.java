@@ -13,6 +13,11 @@ public class Brain {
     static byte blackRow = 1;
     static byte j = 0;
     
+    /**
+     * 
+     * 
+     * @return
+     */
     public static String think() {
         
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();

@@ -72,6 +72,7 @@ public class Board {
     
     /**
      * Put <i>piece</i> at position <i>pos</i>.
+     * 
      * @param position wanted
      * @param piece that is at position <i>pos</i>
      */
@@ -83,6 +84,7 @@ public class Board {
     
     /**
      * Get <i>piece</i> from position <i>pos</i>.
+     * 
      * @param position on the board
      * @return the piece that is at position pos
      */
@@ -93,10 +95,10 @@ public class Board {
     }
     
     /**
-     * Moves a piece on the chess board
+     * Moves a piece on the chess board if possible
      * 
-     * @param move
-     * @return
+     * @param the move to execute
+     * @return true if the move is executed, false otherwise
      */
     public boolean movePiece(Move move) {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
@@ -130,8 +132,9 @@ public class Board {
     }
     
     /**
+     * Applies a move on the chess board without verifying if it is valid  
      * 
-     * @param move
+     * @param the move to be executes
      */
     public void applyPieceMove(Move move) {
         setPiece(move.getTo(), getPiece(move.getFrom()));

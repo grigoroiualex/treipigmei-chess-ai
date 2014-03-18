@@ -33,16 +33,16 @@ public class Brain {
      * 
      * @return  true if it's possible, false otherwise
      */
-    public static boolean changePawn() {
+    public static byte changePawn() {
         byte aux = j;
         initialize();
         j = (byte)(aux + 1);
        
         // verific sa nu ies din tabla
         if (j < 8) {
-            return true;
+            return j;
         }
-        return false;
+        return -1;
     }
     
     /**

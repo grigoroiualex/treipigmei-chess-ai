@@ -139,17 +139,19 @@ public class Board {
         }
         
         if (!test) {
-            if (Brain.changePawn()) {
-                moveMyPiece(new Move(Brain.think()));
-            } else {
-                test = false;
+            while (Brain.changePawn() != -1) {
+                Move auxMove = new Move(Brain.think());
+                if (moveMyPiece(auxMove)) {
+                    applyPieceMove(auxMove);
+                    return true;
+                }
             }
-        } else {
-            applyPieceMove(move);
         }
+        
         
         return test;
     }
+    
     
     /**
      * Applies a move on the chess board without verifying if it is valid  

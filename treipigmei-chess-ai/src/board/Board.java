@@ -1,5 +1,6 @@
 package board;
 
+import brain.Brain;
 import connection.ChessBoardConnect;
 import connection.ChessBoardConnect.Colour;
 import piece.*;
@@ -60,14 +61,22 @@ public class Board {
     }
     
     /**
+     * Destroys current instance
+     */
+    public static void initialize() {
+        instance = null;
+    }
+    
+    /**
      * Creates a new instance of the class and returns it.
      * 
      * @return new instance of the class
      */
     public static Board getNewInstance() {
-        instance = new Board();
+        Board.initialize();
+        Brain.initialize();
         
-        return instance;
+        return getInstance();
     }
     
     /**
@@ -101,34 +110,45 @@ public class Board {
      * @return true if the move is executed, false otherwise
      */
     public boolean movePiece(Move move) {
-        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        
-        if (getPiece(move.getTo()) != null) {
-            if (chessBoardConnect.getChessEngineColour() == Colour.BLACK) {
-                if (getPiece(move.getFrom()) instanceof WhitePawn) {
-                    if (getPiece(move.getTo()) instanceof Piece) {
-                        return false;
-                    }
-                } else {
-                    if (getPiece(move.getTo()).getColor().compareTo("WHITE") == 0) {
-                        return false;
-                    }
-                }
-            } else {
-                if (getPiece(move.getFrom()) instanceof BlackPawn) {
-                    if (getPiece(move.getTo()) instanceof Piece) {
-                        return false;
-                    }
-                } else {
-                    if (getPiece(move.getTo()).getColor().compareTo("BLACK") == 0) {
-                        return false;
-                    }
-                }
-            }
-        }
+        // aici o sa verificam daca mutarea primita e valida
         
         applyPieceMove(move);
         return true;
+    }
+    
+    /**
+     * Moves one of our pieces
+     * 
+     * @param   the move we want to apply
+     * @return  true if the move is executed, false otherwise
+     */
+    public boolean moveMyPiece(Move move) {
+        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+        boolean test = true;
+        
+        if (chessBoardConnect.getChessEngineColour() == Colour.BLACK) {
+            // verifica daca piesa pe care o mut e pion si daca are coloarea corespunzatoare si daca unde vreau sa mut e vreo piesa
+            if (!(getPiece(move.getFrom()) instanceof BlackPawn) || getPiece(move.getTo()) != null) {
+                test = false;
+            }
+        } else {
+            
+            if (!(getPiece(move.getFrom()) instanceof WhitePawn) || getPiece(move.getTo()) != null) {
+                test = false;
+            }
+        }
+        
+        if (!test) {
+            if (Brain.changePawn()) {
+                moveMyPiece(new Move(Brain.think()));
+            } else {
+                test = false;
+            }
+        } else {
+            applyPieceMove(move);
+        }
+        
+        return test;
     }
     
     /**

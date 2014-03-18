@@ -3,7 +3,13 @@ package brain;
 import connection.ChessBoardConnect;
 import connection.ChessBoardConnect.Colour;
 import board.Board;
-  
+
+/**
+ * Class Brain computes the next simple move 
+ * 
+ * @author Florin
+ *
+ */
 public class Brain {
   
     // declarare variabile statice
@@ -14,9 +20,35 @@ public class Brain {
     static byte j = 0;
     
     /**
+     * Returns to initial values
+     */
+    public static void initialize() {
+        whiteRow = 6;
+        blackRow = 1;
+        j = 0;
+    }
+    
+    /**
+     * Sets the next pawn on turn
      * 
+     * @return  true if it's possible, false otherwise
+     */
+    public static boolean changePawn() {
+        byte aux = j;
+        initialize();
+        j = (byte)(aux + 1);
+       
+        // verific sa nu ies din tabla
+        if (j < 8) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Returns the next possible move for the current pawn
      * 
-     * @return
+     * @return string with the move
      */
     public static String think() {
         

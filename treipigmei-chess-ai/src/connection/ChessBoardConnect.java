@@ -167,7 +167,7 @@ public class ChessBoardConnect {
                 if (legalMove) {
                     String move = Brain.think();
 
-                    if (chessBoard.movePiece(new Move(move))) {
+                    if (chessBoard.moveMyPiece(new Move(move))) {
                         output("move " + move);
                     } else {
                         output("resign");

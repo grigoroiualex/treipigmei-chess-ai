@@ -124,32 +124,22 @@ public class Board {
      */
     public boolean moveMyPiece(Move move) {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        boolean test = true;
         
         if (chessBoardConnect.getChessEngineColour() == Colour.BLACK) {
             // verifica daca piesa pe care o mut e pion si daca are coloarea corespunzatoare si daca unde vreau sa mut e vreo piesa
             if (!(getPiece(move.getFrom()) instanceof BlackPawn) || getPiece(move.getTo()) != null) {
-                test = false;
+                return false;
             }
         } else {
             
             if (!(getPiece(move.getFrom()) instanceof WhitePawn) || getPiece(move.getTo()) != null) {
-                test = false;
-            }
-        }
-        
-        if (!test) {
-            while (Brain.changePawn() != -1) {
-                Move auxMove = new Move(Brain.think());
-                if (moveMyPiece(auxMove)) {
-                    applyPieceMove(auxMove);
-                    return true;
-                }
+                return false;
             }
         }
         
         
-        return test;
+        applyPieceMove(move);
+        return true;
     }
     
     

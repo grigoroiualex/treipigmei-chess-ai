@@ -1,6 +1,7 @@
 package board;
 
 import helpers.Flags;
+import helpers.Flags.Colour;
 
 import java.util.ArrayList;
 
@@ -25,14 +26,14 @@ public class Board {
         whites = new ArrayList<>();
         blacks = new ArrayList<>();
         
-        setPiece(new byte[]{0, 0}, new Rook("BLACK"));
-        setPiece(new byte[]{0, 1}, new Knight("BLACK"));
-        setPiece(new byte[]{0, 2}, new Bishop("BLACK"));
-        setPiece(new byte[]{0, 3}, new Queen("BLACK"));
-        setPiece(new byte[]{0, 4}, new King("BLACK"));
-        setPiece(new byte[]{0, 5}, new Bishop("BLACK"));
-        setPiece(new byte[]{0, 6}, new Knight("BLACK"));
-        setPiece(new byte[]{0, 7}, new Rook("BLACK"));
+        setPiece(new byte[]{0, 0}, new Rook(Colour.BLACK));
+        setPiece(new byte[]{0, 1}, new Knight(Colour.BLACK));
+        setPiece(new byte[]{0, 2}, new Bishop(Colour.BLACK));
+        setPiece(new byte[]{0, 3}, new Queen(Colour.BLACK));
+        setPiece(new byte[]{0, 4}, new King(Colour.BLACK));
+        setPiece(new byte[]{0, 5}, new Bishop(Colour.BLACK));
+        setPiece(new byte[]{0, 6}, new Knight(Colour.BLACK));
+        setPiece(new byte[]{0, 7}, new Rook(Colour.BLACK));
         
         for (byte i = 0; i < 8; i++) {
             setPiece(new byte[]{1, i}, new BlackPawn());
@@ -42,20 +43,23 @@ public class Board {
             setPiece(new byte[]{6, i}, new WhitePawn());
         }
         
-        setPiece(new byte[]{7, 0}, new Rook("WHITE"));
-        setPiece(new byte[]{7, 1}, new Knight("WHITE"));
-        setPiece(new byte[]{7, 2}, new Bishop("WHITE"));
-        setPiece(new byte[]{7, 3}, new Queen("WHITE"));
-        setPiece(new byte[]{7, 4}, new King("WHITE"));
-        setPiece(new byte[]{7, 5}, new Bishop("WHITE"));
-        setPiece(new byte[]{7, 6}, new Knight("WHITE"));
-        setPiece(new byte[]{7, 7}, new Rook("WHITE"));
+        setPiece(new byte[]{7, 0}, new Rook(Colour.WHITE));
+        setPiece(new byte[]{7, 1}, new Knight(Colour.WHITE));
+        setPiece(new byte[]{7, 2}, new Bishop(Colour.WHITE));
+        setPiece(new byte[]{7, 3}, new Queen(Colour.WHITE));
+        setPiece(new byte[]{7, 4}, new King(Colour.WHITE));
+        setPiece(new byte[]{7, 5}, new Bishop(Colour.WHITE));
+        setPiece(new byte[]{7, 6}, new Knight(Colour.WHITE));
+        setPiece(new byte[]{7, 7}, new Rook(Colour.WHITE));
         
         for(int i = 0; i < 8; i++) {
         	whites.add(field[7][i]);
-        	whites.add(field[6][i]);
         	blacks.add(field[0][i]);
-        	blacks.add(field[1][i]);
+        }
+        
+        for(int i = 0; i < 8; i++) {
+		    blacks.add(field[1][i]);
+		    whites.add(field[6][i]);
         }
     }
     

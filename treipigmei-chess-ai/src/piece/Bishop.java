@@ -1,8 +1,10 @@
 package piece;
 
+import helpers.Flags.Colour;
+
 public class Bishop extends Piece {
     
-    public Bishop(String color) {
+    public Bishop(Colour color) {
         super(color);
     }
 

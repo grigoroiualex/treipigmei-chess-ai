@@ -1,19 +1,23 @@
 package piece;
 
+import helpers.Flags;
+import helpers.Flags.Colour;
+
 public class Piece {
+	
+	byte[] position = new byte[2];
+    private Flags.Colour colour;
     
-    private String color;
-    
-    public String getColor() {
-        return color;
+    public Colour getColor() {
+        return colour;
     }
 
     public Piece() {
         
     }
     
-    public Piece(String color) {
-        this.color = new String(color);
+    public Piece(Colour colour) {
+        this.colour = colour;
     }
 
 	public static boolean isValid(byte x, byte y) {

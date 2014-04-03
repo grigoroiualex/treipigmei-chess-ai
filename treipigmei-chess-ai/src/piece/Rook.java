@@ -1,8 +1,10 @@
 package piece;
 
+import helpers.Flags.Colour;
+
 public class Rook extends Piece {
     
-    public Rook(String color) {
+    public Rook(Colour color) {
         super(color);
     }
 	

@@ -1,7 +1,8 @@
 package brain;
   
+import helpers.Flags;
+import piece.Piece;
 import connection.ChessBoardConnect;
-import connection.ChessBoardConnect.Colour;
 import board.Board;
 
 /**
@@ -14,37 +15,10 @@ public class Brain {
   
     // declarare variabile statice
     static char[] moveToDo = new char[4];
-  
-    static byte whiteRow = 6;
-    static byte blackRow = 1;
-    static byte j = 0;
+    static byte[] from = new byte[2];
+    static byte[] to = new byte[2];
     
-    /**
-     * Returns to initial values
-     */
-    public static void initialize() {
-        whiteRow = 6;
-        blackRow = 1;
-        j = 0;
-    }
-    
-    /**
-     * Sets the next pawn on turn
-     * 
-     * @return  true if it's possible, false otherwise
-     */
-    public static boolean changePawn() {
-        byte aux = j;
-        initialize();
-        j = (byte)(aux + 1);
-       
-        // verific sa nu ies din tabla
-        if (j < 8) {
-            return true;
-        }
-        return false;
-    }
-    
+   
     /**
      * Returns the next possible move for the current pawn
      * 
@@ -54,30 +28,52 @@ public class Brain {
         
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Board board = Board.getInstance();
+        Piece pieceToMove = null;
         
-        if (chessBoardConnect.getChessEngineColour() == Colour.WHITE) {
-            
-            if (board.getPiece(new byte[] { whiteRow, j }) != null) {
-                whiteRow--;
+        if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
+            pieceToMove = Piece.getWhitePiece();
+            while(!pieceToMove.getValidMove()) {
+            	pieceToMove = Piece.getWhitePiece();
             }
-            moveToDo[0] = (char) ('a' + j);
-            moveToDo[1] = (char) ('8' - whiteRow - 1);
-            moveToDo[2] = (char) ('a' + j);
-            moveToDo[3] = (char) ('8' - whiteRow);
+
+            from = pieceToMove.getPosition();
+            to = pieceToMove.getOneValidMove();
+          
         } else {
-            if (board.getPiece(new byte[] { blackRow, j }) != null) {
-                blackRow++;
+            pieceToMove = Piece.getBlackPiece();
+            while(!pieceToMove.getValidMove()) {
+            	pieceToMove = Piece.getBlackPiece();
             }
-            moveToDo[0] = (char) ('a' + j);
-            moveToDo[1] = (char) ('8' - blackRow + 1);
-            moveToDo[2] = (char) ('a' + j);
-            moveToDo[3] = (char) ('8' - blackRow);
+
+            from = pieceToMove.getPosition();
+            to = pieceToMove.getOneValidMove();
+          
  
         }
      
          
        // schimbat din moveToDo.toString();
-       return String.valueOf(moveToDo);
+       return getMove(from[0], from[1], to[0], to[1]);
     }
+    
+    /**
+	 * 
+	 * @param lineFrom
+	 * @param columnFrom
+	 * @param lineTo
+	 * @param columnTo
+	 * @return the move needed to do
+	 */
+	public static String getMove(byte lineFrom, byte columnFrom, byte lineTo,
+			byte columnTo) {
+		
+		moveToDo[0] = (char) ('a' + columnFrom);
+		moveToDo[1] = (char) ('8' - lineFrom);
+		moveToDo[2] = (char) ('a' + columnTo);
+		moveToDo[3] = (char) ('8' - lineTo);
+		
+		return String.valueOf(moveToDo);
+
+	}
          
 }

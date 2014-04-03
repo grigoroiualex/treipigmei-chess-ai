@@ -87,7 +87,6 @@ public class Board {
      */
     public static Board getNewInstance() {
         Board.initialize();
-        Brain.initialize();
         
         return getInstance();
     }

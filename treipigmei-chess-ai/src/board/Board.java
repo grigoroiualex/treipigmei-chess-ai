@@ -89,7 +89,6 @@ public class Board {
      */
     public static Board getNewInstance() {
         Board.initialize();
-        
         return getInstance();
     }
     
@@ -111,7 +110,7 @@ public class Board {
      * @param position on the board
      * @return the piece that is at position pos
      */
-    public Piece getPiece(byte [] pos) {
+    public Piece getPiece(byte[] pos) {
         byte i = pos[0];
         byte j = pos[1];
         return field[i][j];
@@ -171,18 +170,20 @@ public class Board {
 	 * @param pieceToMove
 	 * @return position where piece can be moved
 	 */
-	public static byte[] getOneValidMove(Piece pieceToMove) {
+	public byte[] getOneValidMove(Piece pieceToMove) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public static Piece getWhitePiece() {
-		// TODO Auto-generated method stub
-		return null;
+	public Piece getWhitePiece() {
+		
+		byte x = (byte) (Math.random() % whites.size());
+		return whites.get(x);
 	}
 
-	public static Piece getBlackPiece() {
-		// TODO Auto-generated method stub
-		return null;
+	public Piece getBlackPiece() {
+		
+		byte x = (byte) (Math.random() % blacks.size());
+		return blacks.get(x);
 	}
 }

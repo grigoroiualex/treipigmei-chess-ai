@@ -13,7 +13,6 @@ public class Piece {
     }
 
     public Piece() {
-        
     }
     
     public Piece(Colour colour, byte[] position) {

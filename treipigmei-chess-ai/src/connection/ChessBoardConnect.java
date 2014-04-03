@@ -1,5 +1,7 @@
 package connection;
 
+import helpers.Flags;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ public class ChessBoardConnect {
     private boolean legalMove = true;
     private boolean forceMode = false;
     private boolean blackOnTurn, whiteOnTurn;
-    private Colour chessEngineColour;
+    private Flags.Colour chessEngineColour;
 
     /**
      * The method below sets all recognizable protocol commands
@@ -57,17 +59,13 @@ public class ChessBoardConnect {
         protocolCommands.add("resign");
         protocolCommands.add("protover 2");
     }
-    
-    public enum Colour {
-        WHITE, BLACK;
-    }
 
     /**
      * Tells if the white is on turn
      * 
      * @return true if the white is on turn, false otherwise
      */
-    public Colour getChessEngineColour() {
+    public Flags.Colour getChessEngineColour() {
         return this.chessEngineColour;
     }
 
@@ -112,7 +110,7 @@ public class ChessBoardConnect {
 
             case "new":
                 chessBoard = Board.getNewInstance();
-                chessEngineColour = Colour.BLACK;
+                chessEngineColour = Flags.Colour.BLACK;
                 whiteOnTurn = true;
                 blackOnTurn = false;
                 forceMode = false;
@@ -127,13 +125,13 @@ public class ChessBoardConnect {
                 break;
 
             case "white":
-                chessEngineColour = Colour.WHITE;
+                chessEngineColour = Flags.Colour.WHITE;
                 whiteOnTurn = true;
                 blackOnTurn = false;
                 break;
 
             case "black":
-                chessEngineColour = Colour.BLACK;
+                chessEngineColour = Flags.Colour.BLACK;
                 blackOnTurn = true;
                 whiteOnTurn = false;
                 break;

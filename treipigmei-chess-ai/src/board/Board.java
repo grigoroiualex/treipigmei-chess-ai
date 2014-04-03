@@ -1,13 +1,16 @@
 package board;
 
+import helpers.Flags;
+
+import java.util.ArrayList;
+
 import brain.Brain;
 import connection.ChessBoardConnect;
-import connection.ChessBoardConnect.Colour;
 import piece.*;
 
 /**
  * Class that has the chess board representation.
- * It is initialised with all pieces on it.
+ * It is initialized with all pieces on it.
  * 
  * @author grigoroiualex
  *
@@ -15,9 +18,12 @@ import piece.*;
 public class Board {
     private static Board instance = null;
     private Piece[][] field;
+    private ArrayList<Piece> whites, blacks;
     
     private Board() {
         field = new Piece[8][8];
+        whites = new ArrayList<>();
+        blacks = new ArrayList<>();
         
         setPiece(new byte[]{0, 0}, new Rook("BLACK"));
         setPiece(new byte[]{0, 1}, new Knight("BLACK"));
@@ -44,6 +50,13 @@ public class Board {
         setPiece(new byte[]{7, 5}, new Bishop("WHITE"));
         setPiece(new byte[]{7, 6}, new Knight("WHITE"));
         setPiece(new byte[]{7, 7}, new Rook("WHITE"));
+        
+        for(int i = 0; i < 8; i++) {
+        	whites.add(field[7][i]);
+        	whites.add(field[6][i]);
+        	blacks.add(field[0][i]);
+        	blacks.add(field[1][i]);
+        }
     }
     
     /**
@@ -125,7 +138,7 @@ public class Board {
     public boolean moveMyPiece(Move move) {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         
-        if (chessBoardConnect.getChessEngineColour() == Colour.BLACK) {
+        if (chessBoardConnect.getChessEngineColour() == Flags.Colour.BLACK) {
             // verifica daca piesa pe care o mut e pion si daca are coloarea corespunzatoare si daca unde vreau sa mut e vreo piesa
             if (!(getPiece(move.getFrom()) instanceof BlackPawn) || getPiece(move.getTo()) != null) {
                 return false;

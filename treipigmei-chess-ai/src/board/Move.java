@@ -6,7 +6,6 @@ public class Move {
     
     /**
      * 
-     * 
      * @param s
      */
     public Move(String s) {
@@ -16,7 +15,6 @@ public class Move {
     }
     
     /**
-     * 
      * 
      * @return Source position
      */
@@ -29,7 +27,6 @@ public class Move {
     }
     
     /**
-     * 
      * 
      * @return Destination position
      */

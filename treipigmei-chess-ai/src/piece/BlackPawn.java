@@ -4,8 +4,8 @@ import helpers.Flags.Colour;
 
 public class BlackPawn extends Piece {
     
-    public BlackPawn() {
-        super(Colour.BLACK);
+    public BlackPawn(Colour color, byte[] position) {
+        super(color, position);
     }
 	
 	byte[] x = {0};

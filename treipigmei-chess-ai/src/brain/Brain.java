@@ -31,22 +31,22 @@ public class Brain {
         Piece pieceToMove = null;
         
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
-            pieceToMove = Piece.getWhitePiece();
-            while(!pieceToMove.getValidMove()) {
-            	pieceToMove = Piece.getWhitePiece();
+            pieceToMove = Board.getWhitePiece();
+            while(Board.getOneValidMove(pieceToMove) == null) {
+            	pieceToMove = Board.getWhitePiece();
             }
 
             from = pieceToMove.getPosition();
-            to = pieceToMove.getOneValidMove();
+            to = Board.getOneValidMove(pieceToMove);
           
         } else {
-            pieceToMove = Piece.getBlackPiece();
-            while(!pieceToMove.getValidMove()) {
-            	pieceToMove = Piece.getBlackPiece();
+        	pieceToMove = Board.getBlackPiece();
+            while(Board.getOneValidMove(pieceToMove) == null) {
+            	pieceToMove = Board.getBlackPiece();
             }
 
             from = pieceToMove.getPosition();
-            to = pieceToMove.getOneValidMove();
+            to = Board.getOneValidMove(pieceToMove);
           
  
         }

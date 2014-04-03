@@ -4,8 +4,8 @@ import helpers.Flags.Colour;
 
 public class Rook extends Piece {
     
-    public Rook(Colour color) {
-        super(color);
+    public Rook(Colour color, byte[] position) {
+        super(color, position);
     }
 	
 	byte[] x = {-1, 1, 0, 0};

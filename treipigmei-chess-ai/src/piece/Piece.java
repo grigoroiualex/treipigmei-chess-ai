@@ -5,7 +5,7 @@ import helpers.Flags.Colour;
 
 public class Piece {
 	
-	byte[] position = new byte[2];
+	private byte[] position = new byte[2];
     private Flags.Colour colour;
     
     public Colour getColor() {
@@ -16,8 +16,9 @@ public class Piece {
         
     }
     
-    public Piece(Colour colour) {
+    public Piece(Colour colour, byte[] position) {
         this.colour = colour;
+        this.position = position;
     }
 
 	public static boolean isValid(byte x, byte y) {
@@ -26,6 +27,15 @@ public class Piece {
 			return true;
 		
 		return false;
+	}
+
+
+	public byte[] getPosition() {
+		return this.position;
+	}
+
+	public void setPosition(byte[] position) {
+		this.position = position;
 	}
 	
 }

@@ -7,6 +7,8 @@ public class Piece {
 	
 	private byte[] position = new byte[2];
     private Flags.Colour colour;
+    protected byte[] x;
+    protected byte[] y;
     
     public Colour getColor() {
         return colour;
@@ -28,7 +30,6 @@ public class Piece {
 		return false;
 	}
 
-
 	public byte[] getPosition() {
 		return this.position;
 	}
@@ -36,5 +37,13 @@ public class Piece {
 	public void setPosition(byte[] position) {
 		this.position = position;
 	}
-	
+
+	public byte[] getY() {
+		return y;
+	}
+
+	public byte[] getX() {
+		return x;
+	}
+
 }

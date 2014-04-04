@@ -47,6 +47,7 @@ public class Move {
      * and stores it in <i>pos</i> array.
      */
      private void decodeMove() {
+    	 
          pos[0] = (byte)(8 - (move.charAt(1) - '0'));
          pos[1] = (byte)(move.charAt(0) - 'a');
          pos[2] = (byte)(8 - (move.charAt(3) - '0'));

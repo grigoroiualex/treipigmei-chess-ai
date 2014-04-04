@@ -155,6 +155,7 @@ public class ChessBoardConnect {
         } else {
             if (input.matches("[a-h][1-8][a-h][1-8]")) {
 
+            	//TODO verifica daca este rocada sau promovarea pionului
                 if (chessBoard.movePiece(new Move(input))) {
                     legalMove = true;
                 } else {

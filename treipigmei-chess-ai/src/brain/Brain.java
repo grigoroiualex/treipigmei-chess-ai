@@ -46,22 +46,27 @@ public class Brain {
         //TODO chose one move and apply it
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
             pieceToMove = board.getWhitePiece();
-            while(board.getOneValidMove(pieceToMove) == null) {
+            while(board.getValidMoves(pieceToMove) == null) {
             	pieceToMove = board.getWhitePiece();
             }
 
             from = pieceToMove.getPosition();
-            moves = board.getOneValidMove(pieceToMove);
-          
+            moves = board.getValidMoves(pieceToMove);
+            
+            int move = moves.get((int) (Math.random() % moves.size()));
+            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
+            
         } else {
         	pieceToMove = board.getBlackPiece();
-            while(board.getOneValidMove(pieceToMove) == null) {
+            while(board.getValidMoves(pieceToMove) == null) {
             	pieceToMove = board.getBlackPiece();
             }
 
             from = pieceToMove.getPosition();
-            moves = board.getOneValidMove(pieceToMove);
-          
+            moves = board.getValidMoves(pieceToMove);
+            
+            int move = moves.get((int) (Math.random() % moves.size()));
+            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
  
         }
      
@@ -87,6 +92,17 @@ public class Brain {
 		moveToDo[2] = (char) ('a' + columnTo);
 		moveToDo[3] = (char) ('8' - lineTo);
 		
+		Board board = Board.getInstance();
+		Piece currentPiece = board.getPiece(new byte[] {lineFrom, columnFrom});
+		
+		if((currentPiece instanceof BlackPawn && lineTo == 0) ||
+				(currentPiece instanceof WhitePawn && lineTo == 7)) {
+		        	
+			Flags.PROMOTION = true;
+			return String.valueOf(moveToDo) + "q";
+		}
+		
+		Flags.PROMOTION = false;
 		return String.valueOf(moveToDo);
 
 	}

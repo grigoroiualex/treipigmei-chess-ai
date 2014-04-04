@@ -2,10 +2,7 @@ package board;
 
 import helpers.Flags;
 import helpers.Flags.Colour;
-
 import java.util.ArrayList;
-
-import connection.ChessBoardConnect;
 import piece.*;
 
 /**
@@ -19,11 +16,10 @@ public class Board {
 	private static Board instance = null;
 	private Piece[][] field;
 	private ArrayList<Piece> whites, blacks;
-	
+
 	/*
-	 * Remus
-	 * Cred ca ar trebui sa pastram instante separate pentur rege pentru a testa
-	 * usor daca este in sah sau nu.
+	 * Remus Cred ca ar trebui sa pastram instante separate pentur rege pentru a
+	 * testa usor daca este in sah sau nu.
 	 */
 
 	private Board() {
@@ -31,32 +27,50 @@ public class Board {
 		whites = new ArrayList<>();
 		blacks = new ArrayList<>();
 
-		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK, new byte[] { 0, 0 }));
-		setPiece(new byte[] { 0, 1 }, new Knight(Colour.BLACK, new byte[] { 0, 1 }));
-		setPiece(new byte[] { 0, 2 }, new Bishop(Colour.BLACK, new byte[] { 0, 2 }));
-		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK, new byte[] { 0, 3 }));
-		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK, new byte[] { 0, 4 }));
-		setPiece(new byte[] { 0, 5 }, new Bishop(Colour.BLACK, new byte[] { 0, 5 }));
-		setPiece(new byte[] { 0, 6 }, new Knight(Colour.BLACK, new byte[] { 0, 6 }));
-		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK, new byte[] { 0, 7 }));
+		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK,
+				new byte[] { 0, 0 }));
+		setPiece(new byte[] { 0, 1 }, new Knight(Colour.BLACK, new byte[] { 0,
+				1 }));
+		setPiece(new byte[] { 0, 2 }, new Bishop(Colour.BLACK, new byte[] { 0,
+				2 }));
+		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK,
+				new byte[] { 0, 3 }));
+		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK,
+				new byte[] { 0, 4 }));
+		setPiece(new byte[] { 0, 5 }, new Bishop(Colour.BLACK, new byte[] { 0,
+				5 }));
+		setPiece(new byte[] { 0, 6 }, new Knight(Colour.BLACK, new byte[] { 0,
+				6 }));
+		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK,
+				new byte[] { 0, 7 }));
 
 		for (byte i = 0; i < 8; i++) {
-			setPiece(new byte[] { 1, i }, new BlackPawn(Colour.BLACK, new byte[] { 1, i }));
-			setPiece(new byte[] { 6, i }, new WhitePawn(Colour.WHITE, new byte[] { 6, i }));
+			setPiece(new byte[] { 1, i }, new BlackPawn(Colour.BLACK,
+					new byte[] { 1, i }));
+			setPiece(new byte[] { 6, i }, new WhitePawn(Colour.WHITE,
+					new byte[] { 6, i }));
 
 			for (byte j = 2; j <= 5; j++) {
 				setPiece(new byte[] { j, i }, null);
 			}
 		}
 
-		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE, new byte[] { 0, 0 }));
-		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 0, 1 }));
-		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 0, 2 }));
-		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE, new byte[] { 0, 3 }));
-		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE, new byte[] { 0, 4 }));
-		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 0, 5 }));
-		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 0, 6 }));
-		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE, new byte[] { 0, 7 }));
+		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE,
+				new byte[] { 0, 0 }));
+		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 0,
+				1 }));
+		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 0,
+				2 }));
+		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE,
+				new byte[] { 0, 3 }));
+		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE,
+				new byte[] { 0, 4 }));
+		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 0,
+				5 }));
+		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 0,
+				6 }));
+		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE,
+				new byte[] { 0, 7 }));
 
 		for (int i = 0; i < 8; i++) {
 			whites.add(field[7][i]);
@@ -149,24 +163,20 @@ public class Board {
 	 * @return true if the move is executed, false otherwise
 	 */
 	public boolean moveMyPiece(Move move) {
+		/*
 		ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-
-		if (chessBoardConnect.getChessEngineColour() == Flags.Colour.BLACK) {
-			/*
-			 *  verifica daca piesa pe care o mut e pion si daca are coloarea
-			 *  corespunzatoare si daca unde vreau sa mut e vreo piesa
-			 */
-			if (!(getPiece(move.getFrom()) instanceof BlackPawn)
-					|| getPiece(move.getTo()) != null) {
-				return false;
-			}
-		} else {
-
-			if (!(getPiece(move.getFrom()) instanceof WhitePawn)
-					|| getPiece(move.getTo()) != null) {
-				return false;
-			}
-		}
+		
+		 * if (chessBoardConnect.getChessEngineColour() == Flags.Colour.BLACK) {
+		 * 
+		 * verifica daca piesa pe care o mut e pion si daca are coloarea
+		 * corespunzatoare si daca unde vreau sa mut e vreo piesa
+		 * 
+		 * if (!(getPiece(move.getFrom()) instanceof BlackPawn) ||
+		 * getPiece(move.getTo()) != null) { return false; } } else {
+		 * 
+		 * if (!(getPiece(move.getFrom()) instanceof WhitePawn) ||
+		 * getPiece(move.getTo()) != null) { return false; } }
+		 */
 
 		applyPieceMove(move);
 		return true;
@@ -179,31 +189,56 @@ public class Board {
 	 *            move to be executes
 	 */
 	public void applyPieceMove(Move move) {
+
+		/*
+		 * TODO  
+		 * Cazul in care se face rocada trebuie interpretata mutarea, noi inca
+		 * nu facem rocada.
+		 */
+		Board board = Board.getInstance();
+		Piece posWhere = getPiece(move.getTo());
+		
 		
 		/*
-		 * TODO verifica daca pionul ajunge la ultima linie trebuie schimbat, 
-		 * iar apoi sa afisam mutarea corespunzatoare.
-		 * 
-		 * Cazul in care se face rocada trebuie interpretata mutarea, noi inca 
-		 * nu facem rocada.
-		 * 
+		 * daca se face promovarea pionului il elimin din lista de piese si pun 
+		 * o regina in locul lui, ca mai apoi sa se execute mutarea
 		 */
+		if(Flags.PROMOTION) {
+			Piece currentPiece = board.getPiece(move.getFrom());
+			if (currentPiece.getColor() == Flags.Colour.WHITE) {
+				for (int i = 0; i < whites.size(); i++) {
+					if (currentPiece.equals(whites.get(i))) {
+						whites.remove(i);
+						whites.add(new Queen(Colour.WHITE, move.getFrom()));
+						break;
+					}
+				}
+			} else {
+				for (int i = 0; i < blacks.size(); i++) {
+					if (currentPiece.equals(blacks.get(i))) {
+						blacks.remove(i);
+						blacks.add(new Queen(Colour.BLACK, move.getFrom()));
+						break;
+					}
+				}
+			}
 		
-		//daca este luata vreo piesa
-		Piece posWhere = getPiece(move.getTo());
-		if(posWhere != null) {
-			
-			//daca piesa este alba o caut in tabloul pieselor albe s-o elimin
-			if(posWhere.getColor() == Flags.Colour.WHITE) {
-				for(int i = 0; i < whites.size(); i++) {
-					if(posWhere.equals(whites.get(i))) {
+		}
+
+		// daca este luata vreo piesa
+		if (posWhere != null) {
+
+			// daca piesa este alba o caut in tabloul pieselor albe s-o elimin
+			if (posWhere.getColor() == Flags.Colour.WHITE) {
+				for (int i = 0; i < whites.size(); i++) {
+					if (posWhere.equals(whites.get(i))) {
 						whites.remove(i);
 						break;
 					}
 				}
 			} else {
-				for(int i = 0; i < blacks.size(); i++) {
-					if(posWhere.equals(blacks.get(i))) {
+				for (int i = 0; i < blacks.size(); i++) {
+					if (posWhere.equals(blacks.get(i))) {
 						blacks.remove(i);
 						break;
 					}
@@ -216,104 +251,109 @@ public class Board {
 
 	/**
 	 * @param pieceToMove
-	 * @return a list of Integers with all pseudo-valid positions where this 
-	 * piece can be moved. The position in the matrix can be obtained like this:
-	 * row = number / 8
-	 * column = number % 8
+	 * @return a list of Integers with all pseudo-valid positions where this
+	 *         piece can be moved. The position in the matrix can be obtained
+	 *         like this: row = number / 8 column = number % 8
 	 */
-	public ArrayList<Integer> getOneValidMove(Piece pieceToMove) {
+	public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
 
 		byte row, column, nextRow, nextColumn;
 
 		row = pieceToMove.getPosition()[0];
 		column = pieceToMove.getPosition()[1];
-		
+
 		ArrayList<Integer> array = new ArrayList<Integer>();
 		Board board = Board.getInstance();
-		
-		
-		//daca piesa este pion
-		if(pieceToMove instanceof BlackPawn || pieceToMove instanceof WhitePawn) {
-			//daca poate ataca
-			for(int i = 1; i < 3; i++) {
+
+		// daca piesa este pion
+		if (pieceToMove instanceof BlackPawn
+				|| pieceToMove instanceof WhitePawn) {
+			// daca poate ataca
+			for (int i = 1; i < 3; i++) {
 				nextRow = (byte) (row + pieceToMove.getX()[i]);
 				nextColumn = (byte) (column + pieceToMove.getY()[i]);
-				
-				//daca nu ies din matrice
-				if(Piece.isValid(nextRow, nextColumn)){
-					
-					Piece posWhere = board.getPiece(new byte[] {nextRow, nextColumn});
-					//daca am piese pe pozitia unde vreau sa mut
-					if(posWhere != null) {
-						/* 
+
+				// daca nu ies din matrice
+				if (Piece.isValid(nextRow, nextColumn)) {
+
+					Piece posWhere = board.getPiece(new byte[] { nextRow,
+							nextColumn });
+					// daca am piese pe pozitia unde vreau sa mut
+					if (posWhere != null) {
+						/*
 						 * daca am piesa de aceeasi culoare ma opresc altfel
-						 * adaug pozitia ca  mutare valida si apoi ma opresc
+						 * adaug pozitia ca mutare valida si apoi ma opresc
 						 */
-						if(posWhere.getColor() != pieceToMove.getColor()) {
+						if (posWhere.getColor() != pieceToMove.getColor()) {
 							array.add(nextRow * 8 + nextColumn);
 						}
 					}
 				}
 			}
-			
-			//daca nu poate ataca pionul testez daca poate inainta
+
+			// daca nu poate ataca pionul testez daca poate inainta
 			nextRow = (byte) (row + pieceToMove.getX()[0]);
 			nextColumn = (byte) (column + pieceToMove.getY()[0]);
-			Piece posWhere = board.getPiece(new byte[] {nextRow, nextColumn});
-			
-			if(Piece.isValid(nextRow, nextColumn) && posWhere == null) {
+			Piece posWhere = board.getPiece(new byte[] { nextRow, nextColumn });
+
+			if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
 				array.add(nextRow * 8 + nextColumn);
 			}
-			
+
 		} else {
 
 			for (int i = 0; i < pieceToMove.getX().length; i++) {
-	
+
 				/*
-				 * daca piesa este tura, nebun sau regina iau un for de la 1 la 7 si
-				 * generez toate mutarile posibile
+				 * daca piesa este tura, nebun sau regina iau un for de la 1 la
+				 * 7 si generez toate mutarile posibile
 				 */
-				if (pieceToMove instanceof Rook || pieceToMove instanceof Bishop
+				if (pieceToMove instanceof Rook
+						|| pieceToMove instanceof Bishop
 						|| pieceToMove instanceof Queen) {
 					for (int j = 1; j < 8; j++) {
 						nextRow = (byte) (row + pieceToMove.getX()[i] * j);
 						nextColumn = (byte) (column + pieceToMove.getY()[i] * j);
-	
-						//daca nu ies din matrice
-						if(Piece.isValid(nextRow, nextColumn)){
-							
-							Piece posWhere = board.getPiece(new byte[] {nextRow, nextColumn});
-							//daca am piese pe pozitia unde vreau sa mut
-							if(posWhere != null) {
-								/* 
-								 * daca am piesa de aceeasi culoare ma opresc altfel
-								 * adaug pozitia ca  mutare valida si apoi ma opresc
+
+						// daca nu ies din matrice
+						if (Piece.isValid(nextRow, nextColumn)) {
+
+							Piece posWhere = board.getPiece(new byte[] {
+									nextRow, nextColumn });
+							// daca am piese pe pozitia unde vreau sa mut
+							if (posWhere != null) {
+								/*
+								 * daca am piesa de aceeasi culoare ma opresc
+								 * altfel adaug pozitia ca mutare valida si apoi
+								 * ma opresc
 								 */
-								if(posWhere.getColor() == pieceToMove.getColor()) {
+								if (posWhere.getColor() == pieceToMove
+										.getColor()) {
 									break;
 								} else {
 									array.add(nextRow * 8 + nextColumn);
 									break;
 								}
-								
-							//daca nu e piesa machez pozitia ca mutare valida
+
+								// daca nu e piesa machez pozitia ca mutare
+								// valida
 							} else {
 								array.add(nextRow * 8 + nextColumn);
 							}
 						}
 					}
 				}
-	
+
 				nextRow = (byte) (row + pieceToMove.getX()[i]);
 				nextColumn = (byte) (column + pieceToMove.getY()[i]);
-				
+
 				if (Piece.isValid(nextRow, nextColumn)) {
 					array.add(nextRow * 8 + nextColumn);
 				}
 			}
 		}
-		
-		if(array.size() > 0) {
+
+		if (array.size() > 0) {
 			return array;
 		}
 

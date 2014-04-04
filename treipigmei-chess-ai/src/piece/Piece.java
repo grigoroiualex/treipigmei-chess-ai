@@ -29,6 +29,18 @@ public class Piece {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+
+		for (int i = 0; i < 4; i++) {
+			if (this.position[i] != ((Piece) o).getPosition()[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	public byte[] getPosition() {
 		return this.position;

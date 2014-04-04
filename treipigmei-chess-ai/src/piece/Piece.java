@@ -33,7 +33,7 @@ public class Piece {
 	@Override
 	public boolean equals(Object o) {
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (this.position[i] != ((Piece) o).getPosition()[i]) {
 				return false;
 			}

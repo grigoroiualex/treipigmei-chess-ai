@@ -255,6 +255,9 @@ public class Board {
 	 *         piece can be moved. The position in the matrix can be obtained
 	 *         like this: row = number / 8 column = number % 8
 	 */
+	
+	//Linia din matrice este modificata de vectorul y din piese
+	
 	public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
 
 		byte row, column, nextRow, nextColumn;
@@ -270,8 +273,8 @@ public class Board {
 				|| pieceToMove instanceof WhitePawn) {
 			// daca poate ataca
 			for (int i = 1; i < 3; i++) {
-				nextRow = (byte) (row + pieceToMove.getX()[i]);
-				nextColumn = (byte) (column + pieceToMove.getY()[i]);
+				nextRow = (byte) (row + pieceToMove.getY()[i]);
+				nextColumn = (byte) (column + pieceToMove.getX()[i]);
 
 				// daca nu ies din matrice
 				if (Piece.isValid(nextRow, nextColumn)) {
@@ -292,8 +295,8 @@ public class Board {
 			}
 
 			// daca nu poate ataca pionul testez daca poate inainta
-			nextRow = (byte) (row + pieceToMove.getX()[0]);
-			nextColumn = (byte) (column + pieceToMove.getY()[0]);
+			nextRow = (byte) (row + pieceToMove.getY()[0]);
+			nextColumn = (byte) (column + pieceToMove.getX()[0]);
 			Piece posWhere = board.getPiece(new byte[] { nextRow, nextColumn });
 
 			if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
@@ -312,8 +315,8 @@ public class Board {
 						|| pieceToMove instanceof Bishop
 						|| pieceToMove instanceof Queen) {
 					for (int j = 1; j < 8; j++) {
-						nextRow = (byte) (row + pieceToMove.getX()[i] * j);
-						nextColumn = (byte) (column + pieceToMove.getY()[i] * j);
+						nextRow = (byte) (row + pieceToMove.getY()[i] * j);
+						nextColumn = (byte) (column + pieceToMove.getX()[i] * j);
 
 						// daca nu ies din matrice
 						if (Piece.isValid(nextRow, nextColumn)) {
@@ -340,15 +343,41 @@ public class Board {
 							} else {
 								array.add(nextRow * 8 + nextColumn);
 							}
+						} else {
+							break;
 						}
 					}
-				}
+				} else {
 
-				nextRow = (byte) (row + pieceToMove.getX()[i]);
-				nextColumn = (byte) (column + pieceToMove.getY()[i]);
+					nextRow = (byte) (row + pieceToMove.getY()[i]);
+					nextColumn = (byte) (column + pieceToMove.getX()[i]);
+	
+					if (Piece.isValid(nextRow, nextColumn)) {
+						Piece posWhere = board.getPiece(new byte[] {
+								nextRow, nextColumn });
+						// daca am piese pe pozitia unde vreau sa mut
+						if (posWhere != null) {
+							/*
+							 * daca am piesa de aceeasi culoare ma opresc
+							 * altfel adaug pozitia ca mutare valida si apoi
+							 * ma opresc
+							 */
+							if (posWhere.getColor() == pieceToMove
+									.getColor()) {
+								break;
+							} else {
+								array.add(nextRow * 8 + nextColumn);
+								break;
+							}
 
-				if (Piece.isValid(nextRow, nextColumn)) {
-					array.add(nextRow * 8 + nextColumn);
+							// daca nu e piesa machez pozitia ca mutare
+							// valida
+						} else {
+							array.add(nextRow * 8 + nextColumn);
+						}
+					} else {
+						break;
+					}
 				}
 			}
 		}
@@ -367,7 +396,7 @@ public class Board {
 	 */
 	public Piece getWhitePiece() {
 
-		byte x = (byte) (Math.random() % whites.size());
+		int x = (int) ((Math.random() * 100) % whites.size());
 		return whites.get(x);
 	}
 
@@ -377,7 +406,7 @@ public class Board {
 	 */
 	public Piece getBlackPiece() {
 
-		byte x = (byte) (Math.random() % blacks.size());
+		int x = (int) ((Math.random() * 100) % blacks.size());
 		return blacks.get(x);
 	}
 }

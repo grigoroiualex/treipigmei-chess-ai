@@ -173,6 +173,8 @@ public class Board {
 	 *            move to be executes
 	 */
 	public void applyPieceMove(Move move) {
+		
+		//TODO verifica daca pionul ajunge la ultima linie
 		setPiece(move.getTo(), getPiece(move.getFrom()));
 		setPiece(move.getFrom(), null);
 	}
@@ -190,7 +192,37 @@ public class Board {
 		ArrayList<Integer> array = new ArrayList<Integer>();
 		Board board = Board.getInstance();
 		
-		//TODO ia in considerare cazul pentru pion
+		if(pieceToMove instanceof BlackPawn || pieceToMove instanceof WhitePawn) {
+			//daca poate ataca
+			for(int i = 1; i < 3; i++) {
+				nextRow = (byte) (row + pieceToMove.getX()[i]);
+				nextColumn = (byte) (column + pieceToMove.getY()[i]);
+				
+				//daca nu ies din matrice
+				if(Piece.isValid(nextRow, nextColumn)){
+					
+					Piece posWhere = board.getPiece(new byte[] {nextRow, nextColumn});
+					//daca am piese pe pozitia unde vreau sa mut
+					if(posWhere != null) {
+						/* 
+						 * daca am piesa de aceeasi culoare ma opresc altfel
+						 * adaug pozitia ca  mutare valida si apoi ma opresc
+						 */
+						if(posWhere.getColor() != pieceToMove.getColor()) {
+							array.add(nextRow * 8 + nextColumn);
+						}
+					}
+				}
+			}
+			nextRow = (byte) (row + pieceToMove.getX()[0]);
+			nextColumn = (byte) (column + pieceToMove.getY()[0]);
+			Piece posWhere = board.getPiece(new byte[] {nextRow, nextColumn});
+			
+			if(Piece.isValid(nextRow, nextColumn) && posWhere == null) {
+				array.add(nextRow * 8 + nextColumn);
+			}
+			
+		}
 
 		for (int i = 0; i < pieceToMove.getX().length; i++) {
 

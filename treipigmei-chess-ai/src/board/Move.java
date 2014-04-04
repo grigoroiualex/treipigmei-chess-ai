@@ -3,7 +3,11 @@ package board;
 public class Move {
     private String move;
     private byte [] pos;
-    
+
+    /*
+     * TODO De testat daca mutarea are mai mult de 4 caractere lungime
+     * (promovarea pionului sau rocada)
+     */
     /**
      * 
      * @param s

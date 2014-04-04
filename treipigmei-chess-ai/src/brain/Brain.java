@@ -1,5 +1,6 @@
 package brain;
 
+import java.util.ArrayList;
 import helpers.Flags;
 import piece.*;
 import connection.ChessBoardConnect;
@@ -18,6 +19,15 @@ public class Brain {
     static byte[] from = new byte[2];
     static byte[] to = new byte[2];
     
+    /*
+     * TODO marirea lungimii tabloului moveToDo de tinut minte la rocada sunt
+     * 2 mutari
+     */
+    
+    
+    //pentru mutari speciale cum ar fi rocada si promovarea pionului
+    static byte[] special = new byte[2]; 
+    
    
     /**
      * Returns the next possible move for the current pawn
@@ -25,11 +35,15 @@ public class Brain {
      * @return string with the move
      */
     public static String think() {
+    	
+    	ArrayList<Integer> moves;
         
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Board board = Board.getInstance();
         Piece pieceToMove = null;
         
+        
+        //TODO chose one move and apply it
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
             pieceToMove = board.getWhitePiece();
             while(board.getOneValidMove(pieceToMove) == null) {
@@ -37,7 +51,7 @@ public class Brain {
             }
 
             from = pieceToMove.getPosition();
-            to = board.getOneValidMove(pieceToMove);
+            moves = board.getOneValidMove(pieceToMove);
           
         } else {
         	pieceToMove = board.getBlackPiece();
@@ -46,11 +60,13 @@ public class Brain {
             }
 
             from = pieceToMove.getPosition();
-            to = board.getOneValidMove(pieceToMove);
+            moves = board.getOneValidMove(pieceToMove);
           
  
         }
      
+        
+       //TODO apply the move before returning it.
        // schimbat din moveToDo.toString();
        return getMove(from[0], from[1], to[0], to[1]);
     }

@@ -53,7 +53,7 @@ public class Brain {
             from = pieceToMove.getPosition();
             moves = board.getValidMoves(pieceToMove);
             
-            int move = moves.get((int) (Math.random() % moves.size()));
+            int move = moves.get((int) ((Math.random() * 100) % moves.size()));
             to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
             
         } else {
@@ -65,7 +65,7 @@ public class Brain {
             from = pieceToMove.getPosition();
             moves = board.getValidMoves(pieceToMove);
             
-            int move = moves.get((int) (Math.random() % moves.size()));
+            int move = moves.get((int) ((Math.random() * 100) % moves.size()));
             to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
  
         }

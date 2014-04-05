@@ -43,7 +43,6 @@ public class Brain {
         Piece pieceToMove = null;
         
         
-        //TODO chose one move and apply it
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
             pieceToMove = board.getWhitePiece();
             while(board.getValidMoves(pieceToMove) == null) {
@@ -70,9 +69,6 @@ public class Brain {
  
         }
      
-        
-       //TODO apply the move before returning it.
-       // schimbat din moveToDo.toString();
        return getMove(from[0], from[1], to[0], to[1]);
     }
     

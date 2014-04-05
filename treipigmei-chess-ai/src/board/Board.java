@@ -197,6 +197,7 @@ public class Board {
 		 */
 		Board board = Board.getInstance();
 		Piece posWhere = getPiece(move.getTo());
+		Piece currentPiece = board.getPiece(move.getFrom());
 		
 		
 		/*
@@ -204,7 +205,6 @@ public class Board {
 		 * o regina in locul lui, ca mai apoi sa se execute mutarea
 		 */
 		if(Flags.PROMOTION) {
-			Piece currentPiece = board.getPiece(move.getFrom());
 			if (currentPiece.getColor() == Flags.Colour.WHITE) {
 				for (int i = 0; i < whites.size(); i++) {
 					if (currentPiece.equals(whites.get(i))) {
@@ -245,6 +245,8 @@ public class Board {
 				}
 			}
 		}
+		
+		currentPiece.setPosition(move.getTo());
 		setPiece(move.getTo(), getPiece(move.getFrom()));
 		setPiece(move.getFrom(), null);
 	}

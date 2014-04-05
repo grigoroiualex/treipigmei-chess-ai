@@ -153,7 +153,7 @@ public class ChessBoardConnect {
      * legal one, the Chess engine will apply it.
      */
         } else {
-            if (input.matches("[a-h][1-8][a-h][1-8]")) {
+            if (input.matches("[a-h][1-8][a-h][1-8][q]*")) {
 
             	//TODO verifica daca este rocada sau promovarea pionului
                 if (chessBoard.movePiece(new Move(input))) {

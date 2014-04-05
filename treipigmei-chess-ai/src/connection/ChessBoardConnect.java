@@ -1,6 +1,6 @@
 package connection;
 
-import helpers.Flags;
+import helpers.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -105,7 +105,7 @@ public class ChessBoardConnect {
                 break;
 
             case "protover 2":
-                output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0 san=0 done=1 colors=1");
+                Functions.output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0 san=0 done=1 colors=1");
                 break;
 
             case "new":
@@ -141,9 +141,9 @@ public class ChessBoardConnect {
 
             case "resign":
                 if(whiteOnTurn) {
-                    output("0 - 1 {White resigns");
+                    Functions.output("0 - 1 {White resigns");
                 } else {
-                    output("1 - 0 {Black resigns");
+                    Functions.output("1 - 0 {Black resigns");
                 }
                 break;
             }
@@ -159,7 +159,7 @@ public class ChessBoardConnect {
                 if (chessBoard.movePiece(new Move(input))) {
                     legalMove = true;
                 } else {
-                    output("Illegal move: " + input);
+                    Functions.output("Illegal move: " + input);
                     legalMove = false;
                 }
 
@@ -167,22 +167,12 @@ public class ChessBoardConnect {
                     String move = Brain.think();
 
                     if (chessBoard.moveMyPiece(new Move(move))) {
-                        output("move " + move);
+                        Functions.output("move " + move);
                     } else {
-                        output("resign");
+                        Functions.output("resign");
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Prints the desired string and makes a flush afterwards
-     *  
-     * @param the desired string to be printed
-     */
-    private void output(String output) {
-        System.out.println(output);
-        System.out.flush();
     }
 }

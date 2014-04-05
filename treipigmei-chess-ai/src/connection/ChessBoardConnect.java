@@ -146,11 +146,11 @@ public class ChessBoardConnect {
                 System.exit(0);
 
             case "resign":
-//                if(whiteOnTurn) {
-//                    Functions.output("0 - 1 {White resigns");
-//                } else {
-//                    Functions.output("1 - 0 {Black resigns");
-//                }
+                if(chessEngineColour == Flags.Colour.BLACK) {
+                    Functions.output("0 - 1 {White resigns");
+                } else {
+                    Functions.output("1 - 0 {Black resigns");
+                }
                 break;
             }
 

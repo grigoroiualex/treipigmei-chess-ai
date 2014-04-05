@@ -9,9 +9,6 @@ import connection.*;
  */
 public class Main {
     public static void main(String[] args) {
-        /*ChessBoardConnect chessProtocol = ChessBoardConnect.getInstance();
-        chessProtocol.readInput();*/
-        
         ChessBoardConnect.getInstance().readInput();
     }
 

@@ -214,7 +214,7 @@ public class Brain {
             i++;
         }
 	    
-	    i = x; j = y;
+	    i = (byte) (x + 1); j = (byte) (y + 1);
 	    // pentru fiecare patratica de pe diagonala NE
 	    while(Piece.isValid(i, j) && (piece = board.getPiece(new byte[]{x, y})) != null) {
 	        // daca e propria culoare e in regula
@@ -230,7 +230,7 @@ public class Brain {
             i++; j++;
 	    }
 	    
-	    i = x; j = y;
+	    i = (byte) (x + 1); j = (byte) (y - 1);
         // pentru fiecare patratica de pe diagonala SE
         while(Piece.isValid(i, j) && (piece = board.getPiece(new byte[]{x, y})) != null) {
             // daca e propria culoare e in regula
@@ -246,7 +246,7 @@ public class Brain {
             i++; j--;
         }
         
-        i = x; j = y;
+        i = (byte) (x - 1); j = (byte) (y - 1);
         // pentru fiecare patratica de pe diagonala SV
         while(Piece.isValid(i, j) && (piece = board.getPiece(new byte[]{x, y})) != null) {
             // daca e propria culoare e in regula
@@ -262,7 +262,7 @@ public class Brain {
             i--; j--;
         }
         
-        i = x; j = y;
+        i = (byte) (x - 1); j = (byte) (y + 1);
         // pentru fiecare patratica de pe diagonala NV
         while(Piece.isValid(i, j) && (piece = board.getPiece(new byte[]{x, y})) != null) {
             // daca e propria culoare e in regula

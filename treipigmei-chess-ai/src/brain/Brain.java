@@ -32,6 +32,7 @@ public class Brain {
         ArrayList<Integer> moves;
         Piece pieceToMove = null;
         
+        //daca suntem cu albele
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
         	
         	boolean whiteKingAttacked = isPositionAttacked(Flags.WHITE_KING.getPosition());
@@ -60,7 +61,7 @@ public class Brain {
             }
             
         } else {
-        	boolean blackKingAttacked = isPositionAttacked(Flags.WHITE_KING.getPosition());
+        	boolean blackKingAttacked = isPositionAttacked(Flags.BLACK_KING.getPosition());
         	
         	//daca pozitia regelui este atacata selectez regele si incerc sa-l mut
         	if (blackKingAttacked) {

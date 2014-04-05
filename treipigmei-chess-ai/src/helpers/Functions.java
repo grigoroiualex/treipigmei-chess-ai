@@ -8,7 +8,7 @@ public class Functions {
     /**
      * Prints the desired string and makes a flush afterwards
      *  
-     * @param the desired string to be printed
+     * @param output the desired string to be printed
      */
     public static void output(String output) {
         System.out.println(output);

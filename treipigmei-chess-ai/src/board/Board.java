@@ -63,8 +63,8 @@ public class Board {
 			whites.add(field[6][i]);
 			blacks.add(field[1][i]);
 		}
-		Flags.BLACK_KING = getPiece(new byte[] { 0, 4 });
-		Flags.WHITE_KING = getPiece(new byte[] { 7, 4 });
+		Flags.BLACK_KING = getPiece(new byte[] { 7, 4 });
+		Flags.WHITE_KING = getPiece(new byte[] { 0, 4 });
 	}
 
 	/**

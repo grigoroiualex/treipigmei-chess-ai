@@ -53,9 +53,12 @@ public class Brain {
              * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
              * mutarea a fost decodata si testez inainte sa o aplic.
              */
-            eliminateInvalidMoves(moves);
-            if(whiteKingAttacked && moves.size() > 0) {
-            	to = new byte[] {(byte) 8, (byte) (move % 8)};
+            if(whiteKingAttacked) {
+            	eliminateInvalidMoves(moves);
+            	
+            	if(moves.isEmpty()) {
+            		to = new byte[] {(byte) 8, (byte) (move % 8)};
+            	}
             } else {
 	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
             }
@@ -80,9 +83,12 @@ public class Brain {
              * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
              * mutarea a fost decodata si testez inainte sa o aplic.
              */
-            eliminateInvalidMoves(moves);
-            if(blackKingAttacked && moves.size() > 0) {
-            	to = new byte[] {(byte) 8, (byte) (move % 8)};
+            if(blackKingAttacked) {
+            	eliminateInvalidMoves(moves);
+            	
+            	if(moves.isEmpty()) {
+            		to = new byte[] {(byte) 8, (byte) (move % 8)};
+            	}
             } else {
 	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
             }
@@ -101,8 +107,7 @@ public class Brain {
     	for(int i = 0; i < moves.size(); i++) {
     		int m = moves.get(i);
     		
-    		if(!isPositionAttacked(new byte[] {(byte) (m / 8), (byte) (m % 8)})) {
-    		} else {
+    		if(isPositionAttacked(new byte[] {(byte) (m / 8), (byte) (m % 8)})) {
     			moves.remove(i);
     			i--;
     		}

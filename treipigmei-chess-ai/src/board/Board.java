@@ -27,14 +27,14 @@ public class Board {
 		whites = new ArrayList<>();
 		blacks = new ArrayList<>();
 
-		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK, new byte[] { 0, 0 }));
+		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK,   new byte[] { 0, 0 }));
 		setPiece(new byte[] { 0, 1 }, new Knight(Colour.BLACK, new byte[] { 0, 1 }));
 		setPiece(new byte[] { 0, 2 }, new Bishop(Colour.BLACK, new byte[] { 0, 2 }));
-		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK, new byte[] { 0, 3 }));
-		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK, new byte[] { 0, 4 }));
+		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK,  new byte[] { 0, 3 }));
+		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK,   new byte[] { 0, 4 }));
 		setPiece(new byte[] { 0, 5 }, new Bishop(Colour.BLACK, new byte[] { 0, 5 }));
 		setPiece(new byte[] { 0, 6 }, new Knight(Colour.BLACK, new byte[] { 0, 6 }));
-		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK, new byte[] { 0, 7 }));
+		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK,   new byte[] { 0, 7 }));
 
 		for (byte i = 0; i < 8; i++) {
 			setPiece(new byte[] { 1, i }, new BlackPawn(Colour.BLACK, new byte[] { 1, i }));
@@ -45,14 +45,14 @@ public class Board {
 			}
 		}
 
-		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE, new byte[] { 0, 0 }));
-		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 0, 1 }));
-		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 0, 2 }));
-		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE, new byte[] { 0, 3 }));
-		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE, new byte[] { 0, 4 }));
-		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 0, 5 }));
-		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 0, 6 }));
-		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE, new byte[] { 0, 7 }));
+		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE,   new byte[] { 7, 0 }));
+		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 7, 1 }));
+		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 7, 2 }));
+		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE,  new byte[] { 7, 3 }));
+		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE,   new byte[] { 7, 4 }));
+		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 7, 5 }));
+		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 7, 6 }));
+		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE,   new byte[] { 7, 7 }));
 
 		for (int i = 0; i < 8; i++) {
 			whites.add(field[7][i]);
@@ -63,8 +63,8 @@ public class Board {
 			whites.add(field[6][i]);
 			blacks.add(field[1][i]);
 		}
-		Flags.BLACK_KING = getPiece(new byte[] { 7, 4 });
-		Flags.WHITE_KING = getPiece(new byte[] { 0, 4 });
+		Flags.BLACK_KING = getPiece(new byte[] { 0, 4 });
+		Flags.WHITE_KING = getPiece(new byte[] { 7, 4 });
 	}
 
 	/**

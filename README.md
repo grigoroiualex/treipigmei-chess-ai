@@ -11,4 +11,4 @@ treipigmei-chess-ai
 
 3. Rulează XBoard
 
-      xboard -cp -fcp "java -jar ./jar/TreiPigMei.jar"
+      xboard -cp -fcp "java -jar ./jar/TreiPigMei.jar" -debug

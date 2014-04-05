@@ -24,7 +24,6 @@ public class ChessBoardConnect {
     private Board chessBoard;
     private boolean legalMove;
     private boolean forceMode;
-//    private boolean blackOnTurn, whiteOnTurn;
     private Flags.Colour chessEngineColour;
 
     private ChessBoardConnect() {
@@ -100,8 +99,10 @@ public class ChessBoardConnect {
         input = input.trim();
 
         // check if the input is a command or a move and if in force mode
-        if ((protocolCommands.contains(input) && !forceMode)
-                || input.equals("go") || input.equals("new") || input.equals("quit")) {
+        if ((protocolCommands.contains(input) && !forceMode) ||
+                !input.equals("xboard") || !input.equals("new") || 
+                !input.equals("protover 2")) {
+            
             switch (input) {
             case "xboard":
                 break;
@@ -113,8 +114,6 @@ public class ChessBoardConnect {
             case "new":
                 chessBoard = Board.getNewInstance();
                 chessEngineColour = Flags.Colour.WHITE;
-//                whiteOnTurn = true;
-//                blackOnTurn = false;
                 forceMode = false;
                 break;
 
@@ -137,14 +136,10 @@ public class ChessBoardConnect {
 
             case "white":
                 chessEngineColour = Flags.Colour.WHITE;
-//                whiteOnTurn = true;
-//                blackOnTurn = false;
                 break;
 
             case "black":
                 chessEngineColour = Flags.Colour.BLACK;
-//                blackOnTurn = true;
-//                whiteOnTurn = false;
                 break;
 
             case "quit":

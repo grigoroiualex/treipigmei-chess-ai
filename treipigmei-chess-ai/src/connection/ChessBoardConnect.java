@@ -18,13 +18,38 @@ import brain.Brain;
  * 
  */
 public class ChessBoardConnect {
-
     private static ChessBoardConnect instance = null;
+    private ArrayList<String> protocolCommands;
+    
+    private Board chessBoard;
+    private boolean legalMove;
+    private boolean forceMode;
+//    private boolean blackOnTurn, whiteOnTurn;
+    private Flags.Colour chessEngineColour;
 
     private ChessBoardConnect() {
-
+        legalMove = true;
+        forceMode = false;
+        protocolCommands = new ArrayList<String>();
+        setProtocolCommands();
     }
-
+    
+    /**
+     * The method below sets all recognizable protocol commands
+     */
+    public void setProtocolCommands() {
+        protocolCommands.add("xboard");
+        protocolCommands.add("new");
+        protocolCommands.add("force");
+        protocolCommands.add("white");
+        protocolCommands.add("black");
+        protocolCommands.add("move");
+        protocolCommands.add("go");
+        protocolCommands.add("quit");
+        protocolCommands.add("resign");
+        protocolCommands.add("protover 2");
+    }
+    
     /**
      * Gets the current instance of the singleton class
      * 
@@ -37,33 +62,10 @@ public class ChessBoardConnect {
         return instance;
     }
 
-    private Board chessBoard;
-    private static final ArrayList<String> protocolCommands = new ArrayList<String>();
-    private boolean legalMove = true;
-    private boolean forceMode = false;
-    private boolean blackOnTurn, whiteOnTurn;
-    private Flags.Colour chessEngineColour;
-
     /**
-     * The method below sets all recognizable protocol commands
-     */
-    public static void setProtocolCommands() {
-        protocolCommands.add("xboard");
-        protocolCommands.add("new");
-        protocolCommands.add("force");
-        protocolCommands.add("white");
-        protocolCommands.add("black");
-        protocolCommands.add("move");
-        protocolCommands.add("go");
-        protocolCommands.add("quit");
-        protocolCommands.add("resign");
-        protocolCommands.add("protover 2");
-    }
-
-    /**
-     * Tells if the white is on turn
+     * Tells the engine's colour
      * 
-     * @return true if the white is on turn, false otherwise
+     * @return chessEngineColour
      */
     public Flags.Colour getChessEngineColour() {
         return this.chessEngineColour;
@@ -110,9 +112,9 @@ public class ChessBoardConnect {
 
             case "new":
                 chessBoard = Board.getNewInstance();
-                chessEngineColour = Flags.Colour.BLACK;
-                whiteOnTurn = true;
-                blackOnTurn = false;
+                chessEngineColour = Flags.Colour.WHITE;
+//                whiteOnTurn = true;
+//                blackOnTurn = false;
                 forceMode = false;
                 break;
 
@@ -122,29 +124,38 @@ public class ChessBoardConnect {
 
             case "go":
                 forceMode = false;
+                
+                String move = Brain.think();
+
+                if (chessBoard.moveMyPiece(new Move(move))) {
+                    Functions.output("move " + move);
+                } else {
+                    Functions.output("resign");
+                }
+                
                 break;
 
             case "white":
                 chessEngineColour = Flags.Colour.WHITE;
-                whiteOnTurn = true;
-                blackOnTurn = false;
+//                whiteOnTurn = true;
+//                blackOnTurn = false;
                 break;
 
             case "black":
                 chessEngineColour = Flags.Colour.BLACK;
-                blackOnTurn = true;
-                whiteOnTurn = false;
+//                blackOnTurn = true;
+//                whiteOnTurn = false;
                 break;
 
             case "quit":
                 System.exit(0);
 
             case "resign":
-                if(whiteOnTurn) {
-                    Functions.output("0 - 1 {White resigns");
-                } else {
-                    Functions.output("1 - 0 {Black resigns");
-                }
+//                if(whiteOnTurn) {
+//                    Functions.output("0 - 1 {White resigns");
+//                } else {
+//                    Functions.output("1 - 0 {Black resigns");
+//                }
                 break;
             }
 

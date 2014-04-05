@@ -27,50 +27,32 @@ public class Board {
 		whites = new ArrayList<>();
 		blacks = new ArrayList<>();
 
-		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK,
-				new byte[] { 0, 0 }));
-		setPiece(new byte[] { 0, 1 }, new Knight(Colour.BLACK, new byte[] { 0,
-				1 }));
-		setPiece(new byte[] { 0, 2 }, new Bishop(Colour.BLACK, new byte[] { 0,
-				2 }));
-		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK,
-				new byte[] { 0, 3 }));
-		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK,
-				new byte[] { 0, 4 }));
-		setPiece(new byte[] { 0, 5 }, new Bishop(Colour.BLACK, new byte[] { 0,
-				5 }));
-		setPiece(new byte[] { 0, 6 }, new Knight(Colour.BLACK, new byte[] { 0,
-				6 }));
-		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK,
-				new byte[] { 0, 7 }));
+		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK, new byte[] { 0, 0 }));
+		setPiece(new byte[] { 0, 1 }, new Knight(Colour.BLACK, new byte[] { 0, 1 }));
+		setPiece(new byte[] { 0, 2 }, new Bishop(Colour.BLACK, new byte[] { 0, 2 }));
+		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK, new byte[] { 0, 3 }));
+		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK, new byte[] { 0, 4 }));
+		setPiece(new byte[] { 0, 5 }, new Bishop(Colour.BLACK, new byte[] { 0, 5 }));
+		setPiece(new byte[] { 0, 6 }, new Knight(Colour.BLACK, new byte[] { 0, 6 }));
+		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK, new byte[] { 0, 7 }));
 
 		for (byte i = 0; i < 8; i++) {
-			setPiece(new byte[] { 1, i }, new BlackPawn(Colour.BLACK,
-					new byte[] { 1, i }));
-			setPiece(new byte[] { 6, i }, new WhitePawn(Colour.WHITE,
-					new byte[] { 6, i }));
+			setPiece(new byte[] { 1, i }, new BlackPawn(Colour.BLACK, new byte[] { 1, i }));
+			setPiece(new byte[] { 6, i }, new WhitePawn(Colour.WHITE, new byte[] { 6, i }));
 
 			for (byte j = 2; j <= 5; j++) {
 				setPiece(new byte[] { j, i }, null);
 			}
 		}
 
-		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE,
-				new byte[] { 0, 0 }));
-		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 0,
-				1 }));
-		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 0,
-				2 }));
-		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE,
-				new byte[] { 0, 3 }));
-		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE,
-				new byte[] { 0, 4 }));
-		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 0,
-				5 }));
-		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 0,
-				6 }));
-		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE,
-				new byte[] { 0, 7 }));
+		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE, new byte[] { 0, 0 }));
+		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 0, 1 }));
+		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 0, 2 }));
+		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE, new byte[] { 0, 3 }));
+		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE, new byte[] { 0, 4 }));
+		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 0, 5 }));
+		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 0, 6 }));
+		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE, new byte[] { 0, 7 }));
 
 		for (int i = 0; i < 8; i++) {
 			whites.add(field[7][i]);
@@ -81,6 +63,8 @@ public class Board {
 			whites.add(field[6][i]);
 			blacks.add(field[1][i]);
 		}
+		Flags.BLACK_KING = getPiece(new byte[] { 0, 4 });
+		Flags.WHITE_KING = getPiece(new byte[] { 7, 4 });
 	}
 
 	/**
@@ -151,6 +135,9 @@ public class Board {
 	public boolean movePiece(Move move) {
 		// aici o sa verificam daca mutarea primita e valida
 
+		
+		//TODO de verificat daca este rocada, regele este mutat 2 pozitii
+		
 		applyPieceMove(move);
 		return true;
 	}
@@ -178,6 +165,13 @@ public class Board {
 		 * getPiece(move.getTo()) != null) { return false; } }
 		 */
 
+		byte x = move.getTo()[0];
+		byte y = move.getTo()[1];
+		
+		//daca mutare iese din tabla, am generat cazul asta cand regele nu are mutari valide.
+		if(!Piece.isValid(x, y)) {
+			return false;
+		}
 		applyPieceMove(move);
 		return true;
 	}
@@ -372,8 +366,7 @@ public class Board {
 								break;
 							}
 
-							// daca nu e piesa machez pozitia ca mutare
-							// valida
+							// daca nu e piesa machez pozitia ca mutare valida
 						} else {
 							array.add(nextRow * 8 + nextColumn);
 						}

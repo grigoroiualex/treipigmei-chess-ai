@@ -18,16 +18,6 @@ public class Brain {
     static char[] moveToDo = new char[4];
     static byte[] from = new byte[2];
     static byte[] to = new byte[2];
-    
-    /*
-     * TODO marirea lungimii tabloului moveToDo de tinut minte la rocada sunt
-     * 2 mutari
-     */
-    
-    
-    //pentru mutari speciale cum ar fi rocada si promovarea pionului
-    static byte[] special = new byte[2]; 
-    
    
     /**
      * Returns the next possible move for the current pawn
@@ -36,40 +26,86 @@ public class Brain {
      */
     public static String think() {
     	
-    	ArrayList<Integer> moves;
-        
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Board board = Board.getInstance();
+        
+        ArrayList<Integer> moves;
         Piece pieceToMove = null;
         
-        
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
-            pieceToMove = board.getWhitePiece();
-            while(board.getValidMoves(pieceToMove) == null) {
-            	pieceToMove = board.getWhitePiece();
-            }
+        	
+        	boolean whiteKingAttacked = isPositionAttacked(Flags.WHITE_KING.getPosition());
+        	//daca pozitia regelui este atacata selectez regele si incerc sa-l mut
+			if (whiteKingAttacked) {
+				pieceToMove = Flags.WHITE_KING;
+			} else {
+				pieceToMove = board.getWhitePiece();
+				while (board.getValidMoves(pieceToMove) == null) {
+					pieceToMove = board.getWhitePiece();
+				}
+			}
 
-            from = pieceToMove.getPosition();
             moves = board.getValidMoves(pieceToMove);
-            
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
-            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
+            
+            /*
+             * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
+             * mutarea a fost decodata si testez inainte sa o aplic.
+             */
+            eliminateInvalidMoves(moves);
+            if(whiteKingAttacked && moves.size() > 0) {
+            	to = new byte[] {(byte) 8, (byte) (move % 8)};
+            } else {
+	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
+            }
             
         } else {
-        	pieceToMove = board.getBlackPiece();
-            while(board.getValidMoves(pieceToMove) == null) {
-            	pieceToMove = board.getBlackPiece();
-            }
+        	boolean blackKingAttacked = isPositionAttacked(Flags.WHITE_KING.getPosition());
+        	
+        	//daca pozitia regelui este atacata selectez regele si incerc sa-l mut
+        	if (blackKingAttacked) {
+				pieceToMove = Flags.BLACK_KING;
+			} else {
+	        	pieceToMove = board.getBlackPiece();
+	            while(board.getValidMoves(pieceToMove) == null) {
+	            	pieceToMove = board.getBlackPiece();
+	            }
+			}
 
-            from = pieceToMove.getPosition();
             moves = board.getValidMoves(pieceToMove);
-            
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
-            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
- 
+
+            /*
+             * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
+             * mutarea a fost decodata si testez inainte sa o aplic.
+             */
+            eliminateInvalidMoves(moves);
+            if(blackKingAttacked && moves.size() > 0) {
+            	to = new byte[] {(byte) 8, (byte) (move % 8)};
+            } else {
+	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
+            }
         }
-     
+       from = pieceToMove.getPosition();
+       
        return getMove(from[0], from[1], to[0], to[1]);
+    }
+    
+    /**
+     * 
+     * @param moves
+     *  Eliminates the moves that are attacked when is the king is on turn;
+     */
+    public static void eliminateInvalidMoves(ArrayList<Integer> moves) {
+    	for(int i = 0; i < moves.size(); i++) {
+    		int m = moves.get(i);
+    		
+    		if(!isPositionAttacked(new byte[] {(byte) (m / 8), (byte) (m % 8)})) {
+    		} else {
+    			moves.remove(i);
+    			i--;
+    		}
+    	}
     }
     
     /**
@@ -103,10 +139,12 @@ public class Brain {
 
 	}
 	
-	public boolean isPositionAttacked(byte x, byte y) {
+	public static boolean isPositionAttacked(byte[] pos) {
 	    Board board = Board.getInstance();
 	    ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
 	    Piece piece;
+	    byte x = pos[0];
+	    byte y = pos[1];
 	    byte i, j;
 	    byte[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
 	    byte[] ky = {-1, 1, -2, 2, -2, 2, -1, 2};

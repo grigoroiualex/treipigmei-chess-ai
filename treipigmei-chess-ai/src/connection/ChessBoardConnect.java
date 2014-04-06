@@ -100,7 +100,6 @@ public class ChessBoardConnect {
      */
     private void processInput(String input) {
         input = input.trim();
-        Board board = Board.getInstance();
 
         // check if the input is a recognized command
         if(protocolCommands.contains(input)) {

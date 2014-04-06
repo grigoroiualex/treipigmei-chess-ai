@@ -322,7 +322,7 @@ public class Brain {
             // daca e o piesa pe acea pozitie
             if(Piece.isValid(x + kx[k], y + ky[k])) {
                 // vede daca gaseste piesa                
-                if((piece = board.getPiece(new int[]{x, y})) != null) {
+                if((piece = board.getPiece(new int[]{x + kx[k], y + ky[k]})) != null) {
                     // daca e propria culoare e in regula
                     if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                         break;
@@ -349,10 +349,34 @@ public class Brain {
             }
         }
         
+     // verifica pentru pozitiile in care ar putea fi pioni negri
+        if(Piece.isValid(x - 1, y + 1)) {
+            // vede daca gaseste piesa            
+            if((piece = board.getPiece(new int[]{x - 1, y + 1})) != null) {
+                // daca a gasit piesa verifica daca e pion si daca e advers
+                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
+                        piece instanceof BlackPawn) {
+                    return true;
+                }
+            }
+        }
+        
         // verifica pentru pozitiile in care ar putea fi pioni albi
         if(Piece.isValid(x + 1, y + 1)) {
             // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{x + 1, y + 1})) != null) {
+                // daca a gasit piesa verifica daca e pion si daca e advers
+                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
+                        piece instanceof WhitePawn) {
+                    return true;
+                }
+            }
+        }
+        
+     // verifica pentru pozitiile in care ar putea fi pioni albi
+        if(Piece.isValid(x + 1, y - 1)) {
+            // vede daca gaseste piesa
+            if((piece = board.getPiece(new int[]{x + 1, y - 1})) != null) {
                 // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof WhitePawn) {

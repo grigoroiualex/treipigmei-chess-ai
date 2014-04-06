@@ -126,6 +126,7 @@ public class ChessBoardConnect {
 
             case "go":
                 forceMode = false;
+                debugger.output("My colour is: " + chessEngineColour);
                 
                 String move = Brain.think();
 

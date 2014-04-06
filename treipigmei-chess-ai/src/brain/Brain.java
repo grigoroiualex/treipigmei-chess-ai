@@ -138,8 +138,8 @@ public class Brain {
 		Board board = Board.getInstance();
 		Piece currentPiece = board.getPiece(new int[] {lineFrom, columnFrom});
 		
-		if((currentPiece instanceof BlackPawn && lineTo == 0) ||
-				(currentPiece instanceof WhitePawn && lineTo == 7)) {
+		if((currentPiece instanceof BlackPawn && lineTo == 7) ||
+				(currentPiece instanceof WhitePawn && lineTo == 0)) {
 		        	
 			Flags.PROMOTION = true;
 			return String.valueOf(moveToDo) + "q";

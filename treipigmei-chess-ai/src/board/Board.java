@@ -210,7 +210,8 @@ public class Board {
 				for (int i = 0; i < whites.size(); i++) {
 					if (currentPiece.equals(whites.get(i))) {
 						whites.remove(i);
-						whites.add(new Queen(Colour.WHITE, move.getFrom()));
+						currentPiece = new Queen(Colour.WHITE, move.getFrom());
+						whites.add(currentPiece);
 						break;
 					}
 				}
@@ -218,7 +219,8 @@ public class Board {
 				for (int i = 0; i < blacks.size(); i++) {
 					if (currentPiece.equals(blacks.get(i))) {
 						blacks.remove(i);
-						blacks.add(new Queen(Colour.BLACK, move.getFrom()));
+						currentPiece = new Queen(Colour.BLACK, move.getFrom());
+						blacks.add(currentPiece);
 						break;
 					}
 				}
@@ -301,8 +303,8 @@ public class Board {
 			}
 
 			// daca nu poate ataca pionul testez daca poate inainta
-			nextRow =   (row + pieceToMove.getY()[0]);
-			nextColumn =   (column + pieceToMove.getX()[0]);
+			nextRow = (row + pieceToMove.getY()[0]);
+			nextColumn = (column + pieceToMove.getX()[0]);
 			Piece posWhere = board.getPiece(new int[] { nextRow, nextColumn });
 
 			if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {

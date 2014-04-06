@@ -18,8 +18,8 @@ public class Brain {
   
     // declarare variabile statice
     static char[] moveToDo = new char[4];
-    static byte[] from = new byte[2];
-    static byte[] to = new byte[2];
+    static int[] from = new int[2];
+    static int[] to = new int[2];
     private static DebugToFile debugger = DebugToFile.getInstance();
    
     /**
@@ -62,10 +62,10 @@ public class Brain {
             	debugger.output("Size of moves white from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
-            		to = new byte[] {(byte) 8, (byte) 7};
+            		to = new int[] {8, 7};
             	}
             } else {
-	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
+	            to = new int[] {move / 8, move % 8};
             }
             
         } else {
@@ -94,10 +94,10 @@ public class Brain {
             	debugger.output("Size of moves white from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
-            		to = new byte[] {(byte) 8, (byte) 7};
+            		to = new int[] {8, 7};
             	}
             } else {
-	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
+	            to = new int[] {move / 8, move % 8};
             }
         }
        from = pieceToMove.getPosition();
@@ -113,7 +113,7 @@ public class Brain {
     public static void eliminateInvalidMoves(ArrayList<Integer> moves) {
     	for(Integer i : moves) {
     		    		
-    		if(isPositionAttacked(new byte[] {(byte) (i / 8), (byte) (i % 8)})) {
+    		if(isPositionAttacked(new int[] {i / 8, i % 8})) {
     			moves.remove(i);
     		}
     	}
@@ -127,8 +127,8 @@ public class Brain {
 	 * @param columnTo
 	 * @return the move needed to do
 	 */
-	public static String getMove(byte lineFrom, byte columnFrom, byte lineTo,
-			byte columnTo) {
+	public static String getMove(int lineFrom, int columnFrom, int lineTo,
+			int columnTo) {
 		
 		moveToDo[0] = (char) ('a' + columnFrom);
 		moveToDo[1] = (char) ('8' - lineFrom);
@@ -136,7 +136,7 @@ public class Brain {
 		moveToDo[3] = (char) ('8' - lineTo);
 		
 		Board board = Board.getInstance();
-		Piece currentPiece = board.getPiece(new byte[] {lineFrom, columnFrom});
+		Piece currentPiece = board.getPiece(new int[] {lineFrom, columnFrom});
 		
 		if((currentPiece instanceof BlackPawn && lineTo == 0) ||
 				(currentPiece instanceof WhitePawn && lineTo == 7)) {
@@ -150,21 +150,21 @@ public class Brain {
 
 	}
 	
-	public static boolean isPositionAttacked(byte[] pos) {
+	public static boolean isPositionAttacked(int[] pos) {
 	    Board board = Board.getInstance();
 	    ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
 	    Piece piece;
-	    byte x = pos[0];
-	    byte y = pos[1];
-	    byte i, j;
-	    byte[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
-	    byte[] ky = {-1, 1, -2, 2, -2, 2, -1, 2};
+	    int x = pos[0];
+	    int y = pos[1];
+	    int i, j;
+	    int[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
+	    int[] ky = {-1, 1, -2, 2, -2, 2, -1, 2};
 	    
-	    i = (byte) (y - 1);
+	    i = y - 1;
 	    // pentru fiecare patratica in jos
 	    while(Piece.isValid(x, i)) {
 	        // vede daca gaseste piesa
-	        if((piece = board.getPiece(new byte[]{x, i})) != null) {
+	        if((piece = board.getPiece(new int[]{x, i})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -179,11 +179,11 @@ public class Brain {
 	        i--;
 	    }
 	    
-	    i = (byte) (y + 1);
+	    i = y + 1;
 	    // pentru fiecare patratica in sus
 	    while(Piece.isValid(x, i)) {
 	        // vede daca gaseste piesa
-            if((piece = board.getPiece(new byte[]{x, i})) != null) {
+            if((piece = board.getPiece(new int[]{x, i})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -198,11 +198,11 @@ public class Brain {
             i++;
         }
 	    
-	    i = (byte) (x - 1);
+	    i = x - 1;
 	    // pentru fiecare patratica in stanga 	    
 	    while(Piece.isValid(i, y)) {
 	        // vede daca gaseste piesa    
-	        if((piece = board.getPiece(new byte[]{i, y})) != null) {
+	        if((piece = board.getPiece(new int[]{i, y})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -217,11 +217,11 @@ public class Brain {
             i--;
         }
         
-	    i = (byte) (x + 1);
+	    i = x + 1;
         // pentru fiecare patratica in dreapta
 	    while(Piece.isValid(i, y)) {
 	        // vede daca gaseste piesa
-	        if((piece = board.getPiece(new byte[]{i, y})) != null) {
+	        if((piece = board.getPiece(new int[]{i, y})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -236,11 +236,11 @@ public class Brain {
             i++;
         }
 	    
-	    i = (byte) (x + 1); j = (byte) (y + 1);
+	    i = x + 1; j = y + 1;
 	    // pentru fiecare patratica de pe diagonala NE
 	    while(Piece.isValid(i, j)) {
 	        // vede daca gaseste piesa
-	        if((piece = board.getPiece(new byte[]{i, j})) != null) {
+	        if((piece = board.getPiece(new int[]{i, j})) != null) {
     	        // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -255,11 +255,11 @@ public class Brain {
             i++; j++;
 	    }
 	    
-	    i = (byte) (x + 1); j = (byte) (y - 1);
+	    i = x + 1; j = y - 1;
         // pentru fiecare patratica de pe diagonala SE
         while(Piece.isValid(i, j)) {
             // vede daca gaseste piesa
-            if((piece = board.getPiece(new byte[]{i, j})) != null) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -274,11 +274,11 @@ public class Brain {
             i++; j--;
         }
         
-        i = (byte) (x - 1); j = (byte) (y - 1);
+        i = x - 1; j = y - 1;
         // pentru fiecare patratica de pe diagonala SV
         while(Piece.isValid(i, j)) {
             // vede daca gaseste piesa
-            if((piece = board.getPiece(new byte[]{i, j})) != null) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -293,11 +293,11 @@ public class Brain {
             i--; j--;
         }
         
-        i = (byte) (x - 1); j = (byte) (y + 1);
+        i = x - 1; j = y + 1;
         // pentru fiecare patratica de pe diagonala NV
         while(Piece.isValid(i, j)) {
             // vede daca gaseste piesa
-            if((piece = board.getPiece(new byte[]{i, j})) != null) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
                 // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
@@ -315,9 +315,9 @@ public class Brain {
         // verific pentru fiecare pozitie in care ar putea fi calul
         for(int k = 0; k < 8; k++) {
             // daca e o piesa pe acea pozitie
-            if(Piece.isValid((byte)(x + kx[k]), (byte)(y + ky[k]))) {
+            if(Piece.isValid(x + kx[k], y + ky[k])) {
                 // vede daca gaseste piesa                
-                if((piece = board.getPiece(new byte[]{x, y})) != null) {
+                if((piece = board.getPiece(new int[]{x, y})) != null) {
                     // daca e propria culoare e in regula
                     if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                         break;
@@ -333,9 +333,9 @@ public class Brain {
         }
         
         // verifica pentru pozitiile in care ar putea fi pioni negri
-        if(Piece.isValid((byte)(x - 1), (byte)(y - 1))) {
+        if(Piece.isValid(x - 1, y - 1)) {
             // vede daca gaseste piesa            
-            if((piece = board.getPiece(new byte[]{(byte)(x - 1), (byte)(y - 1)})) != null) {
+            if((piece = board.getPiece(new int[]{x - 1, y - 1})) != null) {
                 // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof BlackPawn) {
@@ -345,9 +345,9 @@ public class Brain {
         }
         
         // verifica pentru pozitiile in care ar putea fi pioni albi
-        if(Piece.isValid((byte)(x + 1), (byte)(y + 1))) {
+        if(Piece.isValid(x + 1, y + 1)) {
             // vede daca gaseste piesa
-            if((piece = board.getPiece(new byte[]{(byte)(x + 1), (byte)(y + 1)})) != null) {
+            if((piece = board.getPiece(new int[]{x + 1, y + 1})) != null) {
                 // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof WhitePawn) {

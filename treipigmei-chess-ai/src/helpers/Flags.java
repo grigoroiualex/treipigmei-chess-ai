@@ -1,6 +1,6 @@
 package helpers;
 
-import piece.Piece;
+import piece.*;
 
 public class Flags {
     public static enum Colour {
@@ -8,5 +8,5 @@ public class Flags {
     }
     public static boolean PROMOTION;
     public static boolean CASTLING;
-    public static Piece BLACK_KING, WHITE_KING;
+    public static King BLACK_KING, WHITE_KING;
 }

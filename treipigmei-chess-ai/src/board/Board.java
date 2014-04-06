@@ -2,7 +2,9 @@ package board;
 
 import helpers.Flags;
 import helpers.Flags.Colour;
+
 import java.util.ArrayList;
+
 import piece.*;
 
 /**
@@ -63,8 +65,8 @@ public class Board {
 			whites.add(field[6][i]);
 			blacks.add(field[1][i]);
 		}
-		Flags.BLACK_KING = getPiece(new byte[] { 0, 4 });
-		Flags.WHITE_KING = getPiece(new byte[] { 7, 4 });
+		Flags.BLACK_KING = (King) getPiece(new byte[] { 0, 4 });
+		Flags.WHITE_KING = (King) getPiece(new byte[] { 7, 4 });
 	}
 
 	/**

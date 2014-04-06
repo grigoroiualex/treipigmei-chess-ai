@@ -4,13 +4,10 @@ public class Move {
     private String move;
     private int [] pos;
 
-    /*
-     * TODO De testat daca mutarea are mai mult de 4 caractere lungime
-     * (promovarea pionului sau rocada)
-     */
     /**
+     * Receives the input string and transforms it in table coordinates
      * 
-     * @param s
+     * @param move The received move
      */
     public Move(String s) {
         this.move = new String(s);
@@ -19,8 +16,9 @@ public class Move {
     }
     
     /**
+     * Returns the position from which the piece is moved
      * 
-     * @return Source position
+     * @return source position
      */
     public int [] getFrom() {
         int [] aux = new int[2];
@@ -31,8 +29,9 @@ public class Move {
     }
     
     /**
+     * Returns the position to which the piece is moved
      * 
-     * @return Destination position
+     * @return destination position
      */
     public int [] getTo() {
         int [] aux = new int[2];

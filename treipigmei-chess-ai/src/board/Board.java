@@ -180,20 +180,6 @@ public class Board {
 	 * @return true if the move is executed, false otherwise
 	 */
 	public boolean moveMyPiece(Move move) {
-		/*
-		ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-		
-		 * if (chessBoardConnect.getChessEngineColour() == Flags.Colour.BLACK) {
-		 * 
-		 * verifica daca piesa pe care o mut e pion si daca are coloarea
-		 * corespunzatoare si daca unde vreau sa mut e vreo piesa
-		 * 
-		 * if (!(getPiece(move.getFrom()) instanceof BlackPawn) ||
-		 * getPiece(move.getTo()) != null) { return false; } } else {
-		 * 
-		 * if (!(getPiece(move.getFrom()) instanceof WhitePawn) ||
-		 * getPiece(move.getTo()) != null) { return false; } }
-		 */
 
 		int x = move.getTo()[0];
 		int y = move.getTo()[1];
@@ -214,38 +200,12 @@ public class Board {
 	 */
 	public void applyPieceMove(Move move) {
 
-		/*
-		 * TODO  
-		 * Cazul in care se face rocada trebuie interpretata mutarea, noi inca
-		 * nu facem rocada.
-		 */
 		Board board = Board.getInstance();
 		Piece posWhere = getPiece(move.getTo());
 		Piece currentPiece = board.getPiece(move.getFrom());
-		Move auxMove = move;
 		
-		setPiece(move.getFrom(), null);
-		if(currentPiece.getColor() == Flags.Colour.WHITE) {
-			if(Brain.isPositionAttacked(Flags.WHITE_KING.getPosition()) ) {
-				auxMove = new Move(Brain.think());
-			}
-		} else {
-			if(Brain.isPositionAttacked(Flags.BLACK_KING.getPosition()) ) {
-				auxMove = new Move(Brain.think());
-			}
-		}
-		setPiece(move.getFrom(), currentPiece);
-		
-		if(move != auxMove) {
-			move = auxMove;
-			currentPiece = board.getPiece(move.getFrom());
-		}
-		
-		
-		/*
-		 * daca se face promovarea pionului il elimin din lista de piese si pun 
-		 * o regina in locul lui, ca mai apoi sa se execute mutarea
-		 */
+		// daca se face promovarea pionului il elimin din lista de piese si pun 
+		// o regina in locul lui, ca mai apoi sa se execute mutarea
 		if(Flags.PROMOTION) {
 			if (currentPiece.getColor() == Flags.Colour.WHITE) {
 				for (int i = 0; i < whites.size(); i++) {
@@ -269,10 +229,6 @@ public class Board {
 		
 		}
 
-		
-		
-		
-		
 		// daca este luata vreo piesa
 		if (posWhere != null) {
 

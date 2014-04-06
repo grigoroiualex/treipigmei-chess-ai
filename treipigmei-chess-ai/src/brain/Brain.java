@@ -14,8 +14,6 @@ import board.Board;
  *
  */
 public class Brain {
-  
-    // declarare variabile statice
     static char[] moveToDo = new char[4];
     static int[] from = new int[2];
     static int[] to = new int[2];
@@ -23,7 +21,7 @@ public class Brain {
     /**
      * Returns the next possible move for the current pawn
      * 
-     * @return string with the move
+     * @return move The move as a string ready for output
      */
     public static String think() {
     	
@@ -33,11 +31,11 @@ public class Brain {
         ArrayList<Integer> moves;
         Piece pieceToMove = null;
         
-        //daca suntem cu albele
+        // If engine's colour is white
         if (chessBoardConnect.getChessEngineColour() == Flags.Colour.WHITE) {
         	
         	boolean whiteKingAttacked = isPositionAttacked(Flags.WHITE_KING.getPosition());
-        	//daca pozitia regelui este atacata selectez regele si incerc sa-l mut
+        	// and if the king's position is attacked, it tries to move the king
 			if(whiteKingAttacked) {
 				pieceToMove = Flags.WHITE_KING;
 			} else {
@@ -55,10 +53,7 @@ public class Brain {
             }
             int move = moves.get((int)((Math.random() * 100) % moves.size()));
             
-            /*
-             * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
-             * mutarea a fost decodata si testez inainte sa o aplic.
-             */
+            // If there aren't any valid moves for the king, resign
             if(whiteKingAttacked || pieceToMove instanceof King) {
             	eliminateInvalidMoves(moves);
             	
@@ -71,8 +66,7 @@ public class Brain {
             
         } else {
         	boolean blackKingAttacked = isPositionAttacked(Flags.BLACK_KING.getPosition());
-        	
-        	//daca pozitia regelui este atacata selectez regele si incerc sa-l mut
+        	// and if the king's position is attacked, it tries to move the king
         	if (blackKingAttacked) {
 				pieceToMove = Flags.BLACK_KING;
 			} else {
@@ -90,10 +84,7 @@ public class Brain {
             }
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
 
-            /*
-             * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
-             * mutarea a fost decodata si testez inainte sa o aplic.
-             */
+            // If there aren't any valid moves for the king, resign
             if(blackKingAttacked || pieceToMove instanceof King) {
             	eliminateInvalidMoves(moves);
             	
@@ -110,9 +101,9 @@ public class Brain {
     }
     
     /**
+     * Strips the moves that are attacked when is the king is on turn
      * 
-     * @param moves
-     *  Eliminates the moves that are attacked when is the king is on turn;
+     * @param moves Array containing all the possible moves for one piece
      */
     public static void eliminateInvalidMoves(ArrayList<Integer> moves) {
     	ArrayList<Integer> newMoves = new ArrayList<Integer>();
@@ -127,12 +118,13 @@ public class Brain {
     }
     
     /**
+	 * Decodes the move given as table coordinates to XBoard command
 	 * 
-	 * @param lineFrom
-	 * @param columnFrom
-	 * @param lineTo
-	 * @param columnTo
-	 * @return the move needed to do
+	 * @param lineFrom The line from which to move
+	 * @param columnFrom The column from which to move
+	 * @param lineTo The line to move to 
+	 * @param columnTo The column to move to
+	 * @return move The move to be done as a String
 	 */
 	public static String getMove(int lineFrom, int columnFrom, int lineTo,
 			int columnTo) {
@@ -154,9 +146,15 @@ public class Brain {
 		
 		Flags.PROMOTION = false;
 		return String.valueOf(moveToDo);
-
 	}
 	
+	/**
+	 * Checks if the position given as parameter is attacked by any of the
+	 * opponent's pieces
+	 * 
+	 * @param pos The position to check
+	 * @return boolean True if the position is attacked and false otherwise
+	 */
 	public static boolean isPositionAttacked(int[] pos) {
 	    Board board = Board.getInstance();
 	    ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
@@ -168,16 +166,16 @@ public class Brain {
 	    int[] ky = {-1, 1, -2, 2, -2, 2, -1, 2};
 	    
 	    i = y - 1;
-	    // pentru fiecare patratica in jos
+	    // for every position upwards
 	    while(Piece.isValid(x, i)) {
-	        // vede daca gaseste piesa
+	        // checks for any piece
 	        if((piece = board.getPiece(new int[]{x, i})) != null) {
-                // daca e propria culoare e in regula
+                // If it's own engine's colour it's ok
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
+                // otherwise
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
+                    // the piece is a sliding one
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
                     }
@@ -187,16 +185,12 @@ public class Brain {
 	    }
 	    
 	    i = y + 1;
-	    // pentru fiecare patratica in sus
+	    // for every position upwards
 	    while(Piece.isValid(x, i)) {
-	        // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{x, i})) != null) {
-                // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
                     }
@@ -206,16 +200,12 @@ public class Brain {
         }
 	    
 	    i = x - 1;
-	    // pentru fiecare patratica in stanga 	    
+	    // for every position to the left 	    
 	    while(Piece.isValid(i, y)) {
-	        // vede daca gaseste piesa    
 	        if((piece = board.getPiece(new int[]{i, y})) != null) {
-                // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
                     }
@@ -225,16 +215,12 @@ public class Brain {
         }
         
 	    i = x + 1;
-        // pentru fiecare patratica in dreapta
+        // for every position to the right
 	    while(Piece.isValid(i, y)) {
-	        // vede daca gaseste piesa
 	        if((piece = board.getPiece(new int[]{i, y})) != null) {
-                // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
                     }
@@ -244,16 +230,12 @@ public class Brain {
         }
 	    
 	    i = x + 1; j = y + 1;
-	    // pentru fiecare patratica de pe diagonala NE
+	    // for every diagonal position NE
 	    while(Piece.isValid(i, j)) {
-	        // vede daca gaseste piesa
 	        if((piece = board.getPiece(new int[]{i, j})) != null) {
-    	        // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
                     }
@@ -263,16 +245,12 @@ public class Brain {
 	    }
 	    
 	    i = x + 1; j = y - 1;
-        // pentru fiecare patratica de pe diagonala SE
+        // for every diagonal position SE
         while(Piece.isValid(i, j)) {
-            // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{i, j})) != null) {
-                // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
                     }
@@ -282,16 +260,12 @@ public class Brain {
         }
         
         i = x - 1; j = y - 1;
-        // pentru fiecare patratica de pe diagonala SV
+        // for every diagonal position SV
         while(Piece.isValid(i, j)) {
-            // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{i, j})) != null) {
-                // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
                     }
@@ -301,16 +275,12 @@ public class Brain {
         }
         
         i = x - 1; j = y + 1;
-        // pentru fiecare patratica de pe diagonala NV
+        // for every diagonal position NV
         while(Piece.isValid(i, j)) {
-            // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{i, j})) != null) {
-                // daca e propria culoare e in regula
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                     break;
-                // altfel verifica daca
                 } else {
-                    // piesa este unu dintre tipurile care poate ataca in linie
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
                     }
@@ -319,18 +289,13 @@ public class Brain {
             i--; j++;
         }
         
-        // verific pentru fiecare pozitie in care ar putea fi calul
+        // for every possible knight position
         for(int k = 0; k < 8; k++) {
-            // daca e o piesa pe acea pozitie
             if(Piece.isValid(x + kx[k], y + ky[k])) {
-                // vede daca gaseste piesa                
                 if((piece = board.getPiece(new int[]{x + kx[k], y + ky[k]})) != null) {
-                    // daca e propria culoare e in regula
                     if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
                         break;
-                    // altfel verifica daca
                     } else {
-                        // piesa este unu dintre tipurile care poate ataca in linie
                         if(piece instanceof Knight) {
                             return true;
                         }
@@ -339,11 +304,9 @@ public class Brain {
             }
         }
         
-        // verifica pentru pozitiile in care ar putea fi pioni negri
+        // for black pawns
         if(Piece.isValid(x - 1, y - 1)) {
-            // vede daca gaseste piesa            
             if((piece = board.getPiece(new int[]{x - 1, y - 1})) != null) {
-                // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof BlackPawn) {
                     return true;
@@ -351,11 +314,9 @@ public class Brain {
             }
         }
         
-     // verifica pentru pozitiile in care ar putea fi pioni negri
+        // for black pawns
         if(Piece.isValid(x - 1, y + 1)) {
-            // vede daca gaseste piesa            
             if((piece = board.getPiece(new int[]{x - 1, y + 1})) != null) {
-                // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof BlackPawn) {
                     return true;
@@ -363,11 +324,9 @@ public class Brain {
             }
         }
         
-        // verifica pentru pozitiile in care ar putea fi pioni albi
+        // for white pawns
         if(Piece.isValid(x + 1, y + 1)) {
-            // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{x + 1, y + 1})) != null) {
-                // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof WhitePawn) {
                     return true;
@@ -375,11 +334,9 @@ public class Brain {
             }
         }
         
-     // verifica pentru pozitiile in care ar putea fi pioni albi
+        // for white pawns
         if(Piece.isValid(x + 1, y - 1)) {
-            // vede daca gaseste piesa
             if((piece = board.getPiece(new int[]{x + 1, y - 1})) != null) {
-                // daca a gasit piesa verifica daca e pion si daca e advers
                 if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
                         piece instanceof WhitePawn) {
                     return true;

@@ -137,9 +137,34 @@ public class Board {
 	 */
 	public boolean movePiece(Move move) {
 		// aici o sa verificam daca mutarea primita e valida
-
 		
-		//TODO de verificat daca este rocada, regele este mutat 2 pozitii
+		//daca piesa este rege si este mutata 2 pozitii inseamna ca este rocada
+		Piece currentPiece = getPiece(move.getFrom());
+		if (currentPiece instanceof King
+				&& Math.abs(move.getFrom()[1] - move.getTo()[1]) > 1) {
+			Move rookMove;
+			//daca este regele alb
+			if (currentPiece.getColor() == Flags.Colour.WHITE) {
+				
+				//daca se face rocada in stanga sau in dreapta
+				if(move.getFrom()[1] > move.getTo()[1]) {
+					rookMove = new Move("a1d1");
+				} else {
+					rookMove = new Move("h1f1");
+				}
+				
+			} else {
+				
+				//daca se face rocada in stanga sau in dreapta
+				if(move.getFrom()[1] > move.getTo()[1]) {
+					rookMove = new Move("a8d8 	");
+				} else {
+					rookMove = new Move("h8f8");
+				}
+			}
+			
+			applyPieceMove(rookMove);
+		}
 		
 		applyPieceMove(move);
 		return true;
@@ -187,11 +212,6 @@ public class Board {
 	 */
 	public void applyPieceMove(Move move) {
 
-		/*
-		 * TODO  
-		 * Cazul in care se face rocada trebuie interpretata mutarea, noi inca
-		 * nu facem rocada.
-		 */
 		Board board = Board.getInstance();
 		Piece posWhere = getPiece(move.getTo());
 		Piece currentPiece = board.getPiece(move.getFrom());

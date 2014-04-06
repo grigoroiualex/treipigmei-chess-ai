@@ -57,7 +57,7 @@ public class ChessBoardConnect {
     /**
      * Gets the current instance of the singleton class
      * 
-     * @return class instance
+     * @return instance The current instance
      */
     public static ChessBoardConnect getInstance() {
         if (instance == null) {
@@ -75,9 +75,7 @@ public class ChessBoardConnect {
         return this.chessEngineColour;
     }
 
-    /**
-     * Takes an input from the input stream
-     */
+    // Takes an input from the input stream
     public void readInput() {
 
         try {
@@ -98,13 +96,13 @@ public class ChessBoardConnect {
     /**
      * Receive a string and interpret it
      * 
-     * @param the string that must be processed by the chess engine
+     * @param input The string that must be processed by the chess engine
      */
     private void processInput(String input) {
         input = input.trim();
         Board board = Board.getInstance();
 
-        // check if the input is a command or a move and if in force mode
+        // check if the input is a recognized command
         if(protocolCommands.contains(input)) {
             switch (input) {
             case "xboard":
@@ -127,16 +125,10 @@ public class ChessBoardConnect {
             case "go":
                 forceMode = false;
                 if(onTurn) {
-                    debugger.output("My colour is: " + chessEngineColour);
-                    debugger.output("At start table looks like: \n" + board.printBoard());
-                    
                     String move = Brain.think();
     
                     if (chessBoard.moveMyPiece(new Move(move))) {
-                        debugger.output("Mutarea a fost realizata pe tabla. ");
-                        debugger.output("Table looks like: \n" + board.printBoard());
                         Functions.output("move " + move);
-                        
                         onTurn = false;
                     } else {
                         Functions.output("resign");
@@ -144,24 +136,16 @@ public class ChessBoardConnect {
                 } else {
                     if(cachedMove != null) {
                         if (chessBoard.movePiece(new Move(cachedMove))) {
-                            debugger.output("Am executat mutarea primita. ");
-                            debugger.output("Table looks like: \n" + board.printBoard());
                             legalMove = true;
                         } else {
                             Functions.output("Illegal move: " + cachedMove);
                             legalMove = false;
                         }
                         
-                        debugger.output("My colour is: " + chessEngineColour);
-                        debugger.output("At start table looks like: \n" + board.printBoard());
-                        
                         String move = Brain.think();
         
                         if (chessBoard.moveMyPiece(new Move(move))) {
-                            debugger.output("Mutarea a fost realizata pe tabla. ");
-                            debugger.output("Table looks like: \n" + board.printBoard());
                             Functions.output("move " + move);
-                            
                             onTurn = false;
                         } else {
                             Functions.output("resign");
@@ -195,21 +179,15 @@ public class ChessBoardConnect {
             }
         }
         
-        /*
-         * If the input is not a command then it must be a move. If it is a
-         * legal one, the Chess engine will apply it.
-         */
+        
+        // If the engine is in not force mode and the input is not a recognized
+        // command, than it must be a move
         if(!forceMode) {
             if(input.matches("[a-h][1-8][a-h][1-8][q]*")) {
                 onTurn = true;
                 
-                debugger.output("Am interpretat mutarea: " + input + ". ");
-                debugger.output("Table looks like: \n" + board.printBoard());
-                
-            	//TODO verifica daca este rocada sau promovarea pionului
+                // Apply the received move on the board,
                 if (chessBoard.movePiece(new Move(input))) {
-                    debugger.output("Am executat mutarea primita. ");
-                    debugger.output("Table looks like: \n" + board.printBoard());
                     legalMove = true;
                 } else {
                     Functions.output("Illegal move: " + input);
@@ -217,13 +195,11 @@ public class ChessBoardConnect {
                 }
 
                 if (legalMove) {
+                    // generate response move
                     String move = Brain.think();
-                    debugger.output("Brain generated move: " + move + ". ");
+                    // and then apply it
                     if (chessBoard.moveMyPiece(new Move(move))) {
-                        debugger.output("Mutarea a fost realizata pe tabla. ");
-                        debugger.output("Table looks like: \n" + board.printBoard());
                         Functions.output("move " + move);
-                        
                         onTurn = false;
                     } else {
                         Functions.output("resign");
@@ -231,6 +207,8 @@ public class ChessBoardConnect {
                 }
             }
         } else {
+            // If the engine is in force mode XBoard sends the move before
+            // the go command which means that the move needs to be saved
             if(input.matches("[a-h][1-8][a-h][1-8][q]*")) {
                 cachedMove = new String(input);
             }

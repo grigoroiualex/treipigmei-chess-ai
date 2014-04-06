@@ -111,12 +111,15 @@ public class Brain {
      *  Eliminates the moves that are attacked when is the king is on turn;
      */
     public static void eliminateInvalidMoves(ArrayList<Integer> moves) {
+    	ArrayList<Integer> newMoves = new ArrayList<Integer>();
+    	
     	for(Integer i : moves) {
     		    		
-    		if(isPositionAttacked(new int[] {i / 8, i % 8})) {
-    			moves.remove(i);
+    		if(!isPositionAttacked(new int[] {i / 8, i % 8})) {
+    			newMoves.add(i);
     		}
     	}
+    	moves = newMoves;
     }
     
     /**

@@ -38,7 +38,7 @@ public class Brain {
         	
         	boolean whiteKingAttacked = isPositionAttacked(Flags.WHITE_KING.getPosition());
         	//daca pozitia regelui este atacata selectez regele si incerc sa-l mut
-			if (whiteKingAttacked) {
+			if(whiteKingAttacked) {
 				pieceToMove = Flags.WHITE_KING;
 			} else {
 				pieceToMove = board.getWhitePiece();
@@ -48,7 +48,11 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
-            int move = moves.get((int) ((Math.random() * 100) % moves.size()));
+            if(moves == null) {
+                to = new int[] {8, 7};
+                return getMove(from[0], from[1], to[0], to[1]);
+            }
+            int move = moves.get((int)((Math.random() * 100) % moves.size()));
             
             /*
              * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
@@ -78,6 +82,10 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
+            if(moves == null) {
+                to = new int[] {8, 7};
+                return getMove(from[0], from[1], to[0], to[1]);
+            }
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
 
             /*

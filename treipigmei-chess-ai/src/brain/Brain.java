@@ -82,7 +82,7 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
-            debugger.output("Size of moves white from think after: " + moves.size());
+            debugger.output("Size of moves black from think after: " + moves.size());
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
 
             /*
@@ -91,7 +91,7 @@ public class Brain {
              */
             if(blackKingAttacked) {
             	eliminateInvalidMoves(moves);
-            	debugger.output("Size of moves white from think after: " + moves.size());
+            	debugger.output("Size of moves black from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
             		to = new int[] {8, 7};

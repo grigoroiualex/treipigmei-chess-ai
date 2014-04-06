@@ -251,7 +251,10 @@ public class Board {
 		
 		debugger.output("move.getTo() from Board: " + move.getTo()[0] + " " + move.getTo()[1]);
 		debugger.output("move.getFrom() from Board: " + move.getFrom()[0] + " " + move.getFrom()[1]);
-		debugger.output("Felul piesei " + currentPiece.getClass());
+//		debugger.output("Felul piesei " + currentPiece.getClass());
+		if(getPiece(move.getFrom()) == null) {
+		    debugger.output("Am gasit piesa nula pe pozitia :" + move.getFrom()[0] + " " + move.getFrom()[1]);
+		}
 		currentPiece.setPosition(move.getTo());
 		setPiece(move.getTo(), getPiece(move.getFrom()));
 		setPiece(move.getFrom(), null);

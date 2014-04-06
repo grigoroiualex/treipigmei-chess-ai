@@ -17,7 +17,7 @@ public class DebugToFile {
     
     private DebugToFile() {
         try {
-            writer = new PrintWriter("TreiPigMei-debug.txt", "UTF-8");
+            writer = new PrintWriter("TreiPigMei-debug-" + (int)(Math.random() * 100) + ".txt", "UTF-8");
         } catch(IOException exception) {
             exception.printStackTrace();
         }
@@ -45,6 +45,8 @@ public class DebugToFile {
      */
     public void output(String message) {
         writer.println(message);
+        // nu prea bine. scoate-l cand ii gata
+        writer.flush();
     }
     
     /**

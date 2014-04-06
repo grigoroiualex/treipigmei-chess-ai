@@ -1,5 +1,6 @@
 package piece;
 
+import helpers.Flags;
 import helpers.Flags.Colour;
 
 public class Bishop extends Piece {
@@ -10,6 +11,14 @@ public class Bishop extends Piece {
     	y = new int[] {1, -1, -1, 1};
     }
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		if(this.getColor() == Flags.Colour.WHITE) {
+			return "b";
+		}
 	
+		return "B";
+	}
 	
 }

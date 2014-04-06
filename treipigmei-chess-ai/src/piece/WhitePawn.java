@@ -10,4 +10,9 @@ public class WhitePawn extends Piece {
     	y = new int[]{-1, -1, -1};
     }
 
+    @Override
+	public String toString() {
+		// TODO Auto-generated method stub
+			return "b";
+	}
 }

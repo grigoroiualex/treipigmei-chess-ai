@@ -100,6 +100,7 @@ public class ChessBoardConnect {
      */
     private void processInput(String input) {
         input = input.trim();
+        Board board = Board.getInstance();
 
         // check if the input is a command or a move and if in force mode
         if ((protocolCommands.contains(input) && !forceMode) || (forceMode &&
@@ -165,6 +166,8 @@ public class ChessBoardConnect {
         } else {
             if (input.matches("[a-h][1-8][a-h][1-8][q]*")) {
                 debugger.output("Received move: " + input);
+                
+                debugger.output("Table looks like: \n" + board.printBoard());
             	//TODO verifica daca este rocada sau promovarea pionului
                 if (chessBoard.movePiece(new Move(input))) {
                     legalMove = true;

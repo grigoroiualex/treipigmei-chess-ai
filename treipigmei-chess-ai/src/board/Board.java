@@ -73,7 +73,7 @@ public class Board {
 		
 		debugger = DebugToFile.getInstance();
 	}
-
+	
 	/**
 	 * Creates an instance of the class (if there wasn't one created else it
 	 * uses the same) and returns it.
@@ -416,4 +416,18 @@ public class Board {
 		int x = (int) ((Math.random() * 100) % blacks.size());
 		return blacks.get(x);
 	}
+	
+	public String printBoard() {
+		String q = new String();
+		
+		for(int i = 0; i < 7; i++) {
+			for(int j = 0; j < 7; j++) {
+				q = q.concat(getPiece(new int[] {i, j}) + " ");
+			}
+			q = q.concat("\n");
+			
+		}
+		return q;
+	}
+	
 }

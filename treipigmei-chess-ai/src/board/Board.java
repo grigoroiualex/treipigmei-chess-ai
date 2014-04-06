@@ -5,6 +5,7 @@ import helpers.Flags.Colour;
 
 import java.util.ArrayList;
 
+import brain.Brain;
 import piece.*;
 
 /**
@@ -164,6 +165,7 @@ public class Board {
 			}
 			
 			applyPieceMove(rookMove);
+			System.out.println("Am facut rocada");
 		}
 		
 		applyPieceMove(move);
@@ -220,6 +222,24 @@ public class Board {
 		Board board = Board.getInstance();
 		Piece posWhere = getPiece(move.getTo());
 		Piece currentPiece = board.getPiece(move.getFrom());
+		Move auxMove = move;
+		
+		setPiece(move.getFrom(), null);
+		if(currentPiece.getColor() == Flags.Colour.WHITE) {
+			if(Brain.isPositionAttacked(Flags.WHITE_KING.getPosition()) ) {
+				auxMove = new Move(Brain.think());
+			}
+		} else {
+			if(Brain.isPositionAttacked(Flags.BLACK_KING.getPosition()) ) {
+				auxMove = new Move(Brain.think());
+			}
+		}
+		setPiece(move.getFrom(), currentPiece);
+		
+		if(move != auxMove) {
+			move = auxMove;
+			currentPiece = board.getPiece(move.getFrom());
+		}
 		
 		
 		/*
@@ -249,6 +269,10 @@ public class Board {
 		
 		}
 
+		
+		
+		
+		
 		// daca este luata vreo piesa
 		if (posWhere != null) {
 
@@ -271,8 +295,10 @@ public class Board {
 		}
 		
 		currentPiece.setPosition(move.getTo());
+		
 		setPiece(move.getTo(), getPiece(move.getFrom()));
 		setPiece(move.getFrom(), null);
+		
 	}
 
 	/**
@@ -375,8 +401,8 @@ public class Board {
 					}
 				} else {
 
-					nextRow =   (row + pieceToMove.getY()[i]);
-					nextColumn =   (column + pieceToMove.getX()[i]);
+					nextRow = (row + pieceToMove.getY()[i]);
+					nextColumn = (column + pieceToMove.getX()[i]);
 	
 					if (Piece.isValid(nextRow, nextColumn)) {
 						Piece posWhere = board.getPiece(new int[] {

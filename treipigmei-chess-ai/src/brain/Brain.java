@@ -42,7 +42,8 @@ public class Brain {
 				pieceToMove = Flags.WHITE_KING;
 			} else {
 				pieceToMove = board.getWhitePiece();
-				while (board.getValidMoves(pieceToMove) == null) {
+				while (board.getValidMoves(pieceToMove) == null ||
+						pieceToMove instanceof King) {
 					pieceToMove = board.getWhitePiece();
 				}
 			}
@@ -76,7 +77,8 @@ public class Brain {
 				pieceToMove = Flags.BLACK_KING;
 			} else {
 	        	pieceToMove = board.getBlackPiece();
-	            while(board.getValidMoves(pieceToMove) == null) {
+	            while(board.getValidMoves(pieceToMove) == null || 
+	            		pieceToMove instanceof King) {
 	            	pieceToMove = board.getBlackPiece();
 	            }
 			}

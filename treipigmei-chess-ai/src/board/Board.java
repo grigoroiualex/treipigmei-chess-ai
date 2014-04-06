@@ -5,6 +5,7 @@ import helpers.Flags.Colour;
 
 import java.util.ArrayList;
 
+import debugging.DebugToFile;
 import piece.*;
 
 /**
@@ -18,6 +19,7 @@ public class Board {
 	private static Board instance = null;
 	private Piece[][] field;
 	private ArrayList<Piece> whites, blacks;
+	private DebugToFile debugger;
 
 	/*
 	 * Remus Cred ca ar trebui sa pastram instante separate pentur rege pentru a
@@ -65,8 +67,11 @@ public class Board {
 			whites.add(field[6][i]);
 			blacks.add(field[1][i]);
 		}
+		
 		Flags.BLACK_KING = (King) getPiece(new byte[] { 0, 4 });
 		Flags.WHITE_KING = (King) getPiece(new byte[] { 7, 4 });
+		
+		debugger = DebugToFile.getInstance();
 	}
 
 	/**
@@ -242,6 +247,9 @@ public class Board {
 			}
 		}
 		
+		debugger.output("move.getTo() from Board: " + move.getTo()[0] + " " + move.getTo()[1]);
+		debugger.output("move.getFrom() from Board: " + move.getFrom()[0] + " " + move.getFrom()[1]);
+		debugger.output("Felul piesei " + currentPiece.getClass());
 		currentPiece.setPosition(move.getTo());
 		setPiece(move.getTo(), getPiece(move.getFrom()));
 		setPiece(move.getFrom(), null);

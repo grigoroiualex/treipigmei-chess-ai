@@ -1,9 +1,11 @@
 package brain;
 
 import java.util.ArrayList;
+
 import helpers.Flags;
 import piece.*;
 import connection.ChessBoardConnect;
+import debugging.DebugToFile;
 import board.Board;
 
 /**
@@ -18,6 +20,7 @@ public class Brain {
     static char[] moveToDo = new char[4];
     static byte[] from = new byte[2];
     static byte[] to = new byte[2];
+    private static DebugToFile debugger = DebugToFile.getInstance();
    
     /**
      * Returns the next possible move for the current pawn
@@ -47,6 +50,7 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
+            debugger.output("Size of white moves from think before: " + moves.size());
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
             
             /*
@@ -55,9 +59,10 @@ public class Brain {
              */
             if(whiteKingAttacked) {
             	eliminateInvalidMoves(moves);
+            	debugger.output("Size of moves white from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
-            		to = new byte[] {(byte) 8, (byte) (move % 8)};
+            		to = new byte[] {(byte) 8, (byte) 7};
             	}
             } else {
 	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};
@@ -77,6 +82,7 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
+            debugger.output("Size of moves white from think after: " + moves.size());
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
 
             /*
@@ -85,9 +91,10 @@ public class Brain {
              */
             if(blackKingAttacked) {
             	eliminateInvalidMoves(moves);
+            	debugger.output("Size of moves white from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
-            		to = new byte[] {(byte) 8, (byte) (move % 8)};
+            		to = new byte[] {(byte) 8, (byte) 7};
             	}
             } else {
 	            to = new byte[] {(byte) (move / 8), (byte) (move % 8)};

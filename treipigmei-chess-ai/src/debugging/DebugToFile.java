@@ -51,6 +51,7 @@ public class DebugToFile {
      * Closes the opened file and destroys the current instance
      */
     public void close() {
+        writer.println();
         writer.close();
         instance = null;
     }

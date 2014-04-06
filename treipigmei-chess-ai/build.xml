@@ -26,7 +26,7 @@
 
 	<!-- Compiles the java code -->
 	<target name="compile" depends="clean-all, makedir">
-		<javac srcdir="${src.dir}" destdir="${build.dir}">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="true">
 		</javac>
 	</target>
 	

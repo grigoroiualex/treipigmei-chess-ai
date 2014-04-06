@@ -111,7 +111,7 @@ public class ChessBoardConnect {
                 break;
 
             case "protover 2":
-                Functions.output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0 san=0 done=1 colors=1");
+                Functions.output("feature myname=\"TreiPigMei\" sigterm=0 sigint=0 san=0 colors=1 done=1");
                 break;
 
             case "new":

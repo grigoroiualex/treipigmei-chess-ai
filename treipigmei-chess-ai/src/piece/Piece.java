@@ -1,5 +1,6 @@
 package piece;
 
+import debugging.DebugToFile;
 import helpers.Flags;
 import helpers.Flags.Colour;
 
@@ -9,6 +10,7 @@ public class Piece {
     private Flags.Colour colour;
     protected byte[] x;
     protected byte[] y;
+    private DebugToFile debugger;
     
     public Colour getColor() {
         return colour;
@@ -20,6 +22,7 @@ public class Piece {
     public Piece(Colour colour, byte[] position) {
         this.colour = colour;
         this.position = position;
+        debugger = DebugToFile.getInstance();
     }
 
 	public static boolean isValid(byte x, byte y) {
@@ -47,7 +50,9 @@ public class Piece {
 	}
 
 	public void setPosition(byte[] position) {
-		this.position = position;
+	    debugger.output("move.getTo() from Piece: " + position[0] + " " + position[1]);
+		this.position[0] = position[0];
+		this.position[1] = position[1];
 	}
 
 	public byte[] getY() {

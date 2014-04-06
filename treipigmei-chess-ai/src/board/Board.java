@@ -5,7 +5,6 @@ import helpers.Flags.Colour;
 
 import java.util.ArrayList;
 
-import debugging.DebugToFile;
 import piece.*;
 
 /**
@@ -19,7 +18,6 @@ public class Board {
 	private static Board instance = null;
 	private Piece[][] field;
 	private ArrayList<Piece> whites, blacks;
-	private DebugToFile debugger;
 
 	/*
 	 * Remus Cred ca ar trebui sa pastram instante separate pentur rege pentru a
@@ -70,8 +68,6 @@ public class Board {
 		
 		Flags.BLACK_KING = (King) getPiece(new int[] { 0, 4 });
 		Flags.WHITE_KING = (King) getPiece(new int[] { 7, 4 });
-		
-		debugger = DebugToFile.getInstance();
 	}
 	
 	/**
@@ -249,12 +245,6 @@ public class Board {
 			}
 		}
 		
-		debugger.output("move.getTo() from Board: " + move.getTo()[0] + " " + move.getTo()[1]);
-		debugger.output("move.getFrom() from Board: " + move.getFrom()[0] + " " + move.getFrom()[1]);
-//		debugger.output("Felul piesei " + currentPiece.getClass());
-		if(getPiece(move.getFrom()) == null) {
-		    debugger.output("Am gasit piesa nula pe pozitia :" + move.getFrom()[0] + " " + move.getFrom()[1]);
-		}
 		currentPiece.setPosition(move.getTo());
 		setPiece(move.getTo(), getPiece(move.getFrom()));
 		setPiece(move.getFrom(), null);
@@ -422,10 +412,16 @@ public class Board {
 	
 	public String printBoard() {
 		String q = new String();
+		Piece p;
 		
-		for(int i = 0; i < 7; i++) {
-			for(int j = 0; j < 7; j++) {
-				q = q.concat(getPiece(new int[] {i, j}) + " ");
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+			    p = getPiece(new int[] {i, j});
+			    if(p != null) {
+			        q = q.concat(p + " ");
+			    } else {
+			        q = q.concat(". ");
+			    }
 			}
 			q = q.concat("\n");
 			

@@ -23,10 +23,11 @@ public class ChessBoardConnect {
     private ArrayList<String> protocolCommands;
     
     private Board chessBoard;
-    private boolean legalMove;
-    private boolean forceMode;
+    private boolean legalMove, forceMode;
+    private boolean onTurn;
     private Flags.Colour chessEngineColour;
     DebugToFile debugger;
+    String cachedMove;
 
     private ChessBoardConnect() {
         legalMove = true;
@@ -34,6 +35,7 @@ public class ChessBoardConnect {
         debugger = DebugToFile.getInstance();
         protocolCommands = new ArrayList<String>();
         setProtocolCommands();
+        cachedMove = null;
     }
     
     /**
@@ -103,10 +105,7 @@ public class ChessBoardConnect {
         Board board = Board.getInstance();
 
         // check if the input is a command or a move and if in force mode
-        if ((protocolCommands.contains(input) && !forceMode) || (forceMode &&
-                (!input.equals("xboard") || !input.equals("new") || 
-                !input.equals("protover 2")))) {
-            
+        if(protocolCommands.contains(input)) {
             switch (input) {
             case "xboard":
                 break;
@@ -127,24 +126,59 @@ public class ChessBoardConnect {
 
             case "go":
                 forceMode = false;
-                debugger.output("My colour is: " + chessEngineColour);
-                
-                String move = Brain.think();
-
-                if (chessBoard.moveMyPiece(new Move(move))) {
-                    Functions.output("move " + move);
+                if(onTurn) {
+                    debugger.output("My colour is: " + chessEngineColour);
+                    debugger.output("At start table looks like: \n" + board.printBoard());
+                    
+                    String move = Brain.think();
+    
+                    if (chessBoard.moveMyPiece(new Move(move))) {
+                        debugger.output("Mutarea a fost realizata pe tabla. ");
+                        debugger.output("Table looks like: \n" + board.printBoard());
+                        Functions.output("move " + move);
+                        
+                        onTurn = false;
+                    } else {
+                        Functions.output("resign");
+                    }
                 } else {
-                    Functions.output("resign");
+                    if(cachedMove != null) {
+                        if (chessBoard.movePiece(new Move(cachedMove))) {
+                            debugger.output("Am executat mutarea primita. ");
+                            debugger.output("Table looks like: \n" + board.printBoard());
+                            legalMove = true;
+                        } else {
+                            Functions.output("Illegal move: " + cachedMove);
+                            legalMove = false;
+                        }
+                        
+                        debugger.output("My colour is: " + chessEngineColour);
+                        debugger.output("At start table looks like: \n" + board.printBoard());
+                        
+                        String move = Brain.think();
+        
+                        if (chessBoard.moveMyPiece(new Move(move))) {
+                            debugger.output("Mutarea a fost realizata pe tabla. ");
+                            debugger.output("Table looks like: \n" + board.printBoard());
+                            Functions.output("move " + move);
+                            
+                            onTurn = false;
+                        } else {
+                            Functions.output("resign");
+                        }
+                    }
                 }
                 
                 break;
 
             case "white":
                 chessEngineColour = Flags.Colour.WHITE;
+                onTurn = true;
                 break;
 
             case "black":
                 chessEngineColour = Flags.Colour.BLACK;
+                onTurn = false;
                 break;
 
             case "quit":
@@ -159,18 +193,23 @@ public class ChessBoardConnect {
                 }
                 break;
             }
-
-    /*
-     * If the input is not a command then it must be a move. If it is a
-     * legal one, the Chess engine will apply it.
-     */
-        } else {
-            if (input.matches("[a-h][1-8][a-h][1-8][q]*")) {
-                debugger.output("Received move: " + input);
+        }
+        
+        /*
+         * If the input is not a command then it must be a move. If it is a
+         * legal one, the Chess engine will apply it.
+         */
+        if(!forceMode) {
+            if(input.matches("[a-h][1-8][a-h][1-8][q]*")) {
+                onTurn = true;
                 
+                debugger.output("Am interpretat mutarea: " + input + ". ");
                 debugger.output("Table looks like: \n" + board.printBoard());
+                
             	//TODO verifica daca este rocada sau promovarea pionului
                 if (chessBoard.movePiece(new Move(input))) {
+                    debugger.output("Am executat mutarea primita. ");
+                    debugger.output("Table looks like: \n" + board.printBoard());
                     legalMove = true;
                 } else {
                     Functions.output("Illegal move: " + input);
@@ -179,13 +218,21 @@ public class ChessBoardConnect {
 
                 if (legalMove) {
                     String move = Brain.think();
-                    debugger.output("Brain generated move: " + move);
+                    debugger.output("Brain generated move: " + move + ". ");
                     if (chessBoard.moveMyPiece(new Move(move))) {
+                        debugger.output("Mutarea a fost realizata pe tabla. ");
+                        debugger.output("Table looks like: \n" + board.printBoard());
                         Functions.output("move " + move);
+                        
+                        onTurn = false;
                     } else {
                         Functions.output("resign");
                     }
                 }
+            }
+        } else {
+            if(input.matches("[a-h][1-8][a-h][1-8][q]*")) {
+                cachedMove = new String(input);
             }
         }
     }

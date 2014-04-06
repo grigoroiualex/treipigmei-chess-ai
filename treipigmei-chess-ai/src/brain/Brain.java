@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import helpers.Flags;
 import piece.*;
 import connection.ChessBoardConnect;
-import debugging.DebugToFile;
 import board.Board;
 
 /**
@@ -20,7 +19,6 @@ public class Brain {
     static char[] moveToDo = new char[4];
     static int[] from = new int[2];
     static int[] to = new int[2];
-    private static DebugToFile debugger = DebugToFile.getInstance();
    
     /**
      * Returns the next possible move for the current pawn
@@ -50,7 +48,6 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
-            debugger.output("Size of white moves from think before: " + moves.size());
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
             
             /*
@@ -59,7 +56,6 @@ public class Brain {
              */
             if(whiteKingAttacked) {
             	eliminateInvalidMoves(moves);
-            	debugger.output("Size of moves white from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
             		to = new int[] {8, 7};
@@ -82,7 +78,6 @@ public class Brain {
 			}
 
             moves = board.getValidMoves(pieceToMove);
-            debugger.output("Size of moves black from think after: " + moves.size());
             int move = moves.get((int) ((Math.random() * 100) % moves.size()));
 
             /*
@@ -91,7 +86,6 @@ public class Brain {
              */
             if(blackKingAttacked) {
             	eliminateInvalidMoves(moves);
-            	debugger.output("Size of moves black from think after: " + moves.size());
             	
             	if(moves.isEmpty()) {
             		to = new int[] {8, 7};

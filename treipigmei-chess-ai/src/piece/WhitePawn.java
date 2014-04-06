@@ -13,6 +13,6 @@ public class WhitePawn extends Piece {
     @Override
 	public String toString() {
 		// TODO Auto-generated method stub
-			return "b";
+			return "p";
 	}
 }

@@ -435,6 +435,11 @@ public class Board {
 		return blacks.get(x);
 	}
 	
+	/**
+	 * Creates a string for outputing the board's content
+	 * 
+	 * @return board The contents of the board
+	 */
 	public String printBoard() {
 		String q = new String();
 		Piece p;

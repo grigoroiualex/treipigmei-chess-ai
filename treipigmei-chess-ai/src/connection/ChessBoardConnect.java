@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import debugging.DebugToFile;
 import board.Board;
 import board.Move;
 import brain.Brain;
@@ -26,13 +25,11 @@ public class ChessBoardConnect {
     private boolean legalMove, forceMode;
     private boolean onTurn;
     private Flags.Colour chessEngineColour;
-    DebugToFile debugger;
     String cachedMove;
 
     private ChessBoardConnect() {
         legalMove = true;
         forceMode = false;
-        debugger = DebugToFile.getInstance();
         protocolCommands = new ArrayList<String>();
         setProtocolCommands();
         cachedMove = null;
@@ -165,7 +162,6 @@ public class ChessBoardConnect {
                 break;
 
             case "quit":
-                debugger.close();
                 System.exit(0);
 
             case "resign":

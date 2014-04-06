@@ -58,7 +58,7 @@ public class Brain {
              * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
              * mutarea a fost decodata si testez inainte sa o aplic.
              */
-            if(whiteKingAttacked) {
+            if(whiteKingAttacked || pieceToMove instanceof King) {
             	eliminateInvalidMoves(moves);
             	
             	if(moves.isEmpty()) {
@@ -92,7 +92,7 @@ public class Brain {
              * daca regele nu are mutari valide returnez linia 8 ceea ce insemana 0 dupa ce 
              * mutarea a fost decodata si testez inainte sa o aplic.
              */
-            if(blackKingAttacked) {
+            if(blackKingAttacked || pieceToMove instanceof King) {
             	eliminateInvalidMoves(moves);
             	
             	if(moves.isEmpty()) {

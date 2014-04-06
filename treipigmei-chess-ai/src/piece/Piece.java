@@ -6,10 +6,10 @@ import helpers.Flags.Colour;
 
 public class Piece {
 	
-	private byte[] position = new byte[2];
+	private int[] position = new int[2];
     private Flags.Colour colour;
-    protected byte[] x;
-    protected byte[] y;
+    protected int[] x;
+    protected int[] y;
     private DebugToFile debugger;
     
     public Colour getColor() {
@@ -19,13 +19,13 @@ public class Piece {
     public Piece() {
     }
     
-    public Piece(Colour colour, byte[] position) {
+    public Piece(Colour colour, int[] position) {
         this.colour = colour;
         this.position = position;
         debugger = DebugToFile.getInstance();
     }
 
-	public static boolean isValid(byte x, byte y) {
+	public static boolean isValid(int x, int y) {
 		
 		if(x >= 0 && x <= 7 && y >= 0 && y <= 7)
 			return true;
@@ -45,21 +45,21 @@ public class Piece {
 		return true;
 	}
 
-	public byte[] getPosition() {
+	public int[] getPosition() {
 		return this.position;
 	}
 
-	public void setPosition(byte[] position) {
+	public void setPosition(int[] position) {
 	    debugger.output("move.getTo() from Piece: " + position[0] + " " + position[1]);
 		this.position[0] = position[0];
 		this.position[1] = position[1];
 	}
 
-	public byte[] getY() {
+	public int[] getY() {
 		return y;
 	}
 
-	public byte[] getX() {
+	public int[] getX() {
 		return x;
 	}
 

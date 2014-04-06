@@ -31,32 +31,32 @@ public class Board {
 		whites = new ArrayList<>();
 		blacks = new ArrayList<>();
 
-		setPiece(new byte[] { 0, 0 }, new Rook(Colour.BLACK,   new byte[] { 0, 0 }));
-		setPiece(new byte[] { 0, 1 }, new Knight(Colour.BLACK, new byte[] { 0, 1 }));
-		setPiece(new byte[] { 0, 2 }, new Bishop(Colour.BLACK, new byte[] { 0, 2 }));
-		setPiece(new byte[] { 0, 3 }, new Queen(Colour.BLACK,  new byte[] { 0, 3 }));
-		setPiece(new byte[] { 0, 4 }, new King(Colour.BLACK,   new byte[] { 0, 4 }));
-		setPiece(new byte[] { 0, 5 }, new Bishop(Colour.BLACK, new byte[] { 0, 5 }));
-		setPiece(new byte[] { 0, 6 }, new Knight(Colour.BLACK, new byte[] { 0, 6 }));
-		setPiece(new byte[] { 0, 7 }, new Rook(Colour.BLACK,   new byte[] { 0, 7 }));
+		setPiece(new int[] { 0, 0 }, new Rook(Colour.BLACK,   new int[] { 0, 0 }));
+		setPiece(new int[] { 0, 1 }, new Knight(Colour.BLACK, new int[] { 0, 1 }));
+		setPiece(new int[] { 0, 2 }, new Bishop(Colour.BLACK, new int[] { 0, 2 }));
+		setPiece(new int[] { 0, 3 }, new Queen(Colour.BLACK,  new int[] { 0, 3 }));
+		setPiece(new int[] { 0, 4 }, new King(Colour.BLACK,   new int[] { 0, 4 }));
+		setPiece(new int[] { 0, 5 }, new Bishop(Colour.BLACK, new int[] { 0, 5 }));
+		setPiece(new int[] { 0, 6 }, new Knight(Colour.BLACK, new int[] { 0, 6 }));
+		setPiece(new int[] { 0, 7 }, new Rook(Colour.BLACK,   new int[] { 0, 7 }));
 
-		for (byte i = 0; i < 8; i++) {
-			setPiece(new byte[] { 1, i }, new BlackPawn(Colour.BLACK, new byte[] { 1, i }));
-			setPiece(new byte[] { 6, i }, new WhitePawn(Colour.WHITE, new byte[] { 6, i }));
+		for (int i = 0; i < 8; i++) {
+			setPiece(new int[] { 1, i }, new BlackPawn(Colour.BLACK, new int[] { 1, i }));
+			setPiece(new int[] { 6, i }, new WhitePawn(Colour.WHITE, new int[] { 6, i }));
 
-			for (byte j = 2; j <= 5; j++) {
-				setPiece(new byte[] { j, i }, null);
+			for (int j = 2; j <= 5; j++) {
+				setPiece(new int[] { j, i }, null);
 			}
 		}
 
-		setPiece(new byte[] { 7, 0 }, new Rook(Colour.WHITE,   new byte[] { 7, 0 }));
-		setPiece(new byte[] { 7, 1 }, new Knight(Colour.WHITE, new byte[] { 7, 1 }));
-		setPiece(new byte[] { 7, 2 }, new Bishop(Colour.WHITE, new byte[] { 7, 2 }));
-		setPiece(new byte[] { 7, 3 }, new Queen(Colour.WHITE,  new byte[] { 7, 3 }));
-		setPiece(new byte[] { 7, 4 }, new King(Colour.WHITE,   new byte[] { 7, 4 }));
-		setPiece(new byte[] { 7, 5 }, new Bishop(Colour.WHITE, new byte[] { 7, 5 }));
-		setPiece(new byte[] { 7, 6 }, new Knight(Colour.WHITE, new byte[] { 7, 6 }));
-		setPiece(new byte[] { 7, 7 }, new Rook(Colour.WHITE,   new byte[] { 7, 7 }));
+		setPiece(new int[] { 7, 0 }, new Rook(Colour.WHITE,   new int[] { 7, 0 }));
+		setPiece(new int[] { 7, 1 }, new Knight(Colour.WHITE, new int[] { 7, 1 }));
+		setPiece(new int[] { 7, 2 }, new Bishop(Colour.WHITE, new int[] { 7, 2 }));
+		setPiece(new int[] { 7, 3 }, new Queen(Colour.WHITE,  new int[] { 7, 3 }));
+		setPiece(new int[] { 7, 4 }, new King(Colour.WHITE,   new int[] { 7, 4 }));
+		setPiece(new int[] { 7, 5 }, new Bishop(Colour.WHITE, new int[] { 7, 5 }));
+		setPiece(new int[] { 7, 6 }, new Knight(Colour.WHITE, new int[] { 7, 6 }));
+		setPiece(new int[] { 7, 7 }, new Rook(Colour.WHITE,   new int[] { 7, 7 }));
 
 		for (int i = 0; i < 8; i++) {
 			whites.add(field[7][i]);
@@ -68,8 +68,8 @@ public class Board {
 			blacks.add(field[1][i]);
 		}
 		
-		Flags.BLACK_KING = (King) getPiece(new byte[] { 0, 4 });
-		Flags.WHITE_KING = (King) getPiece(new byte[] { 7, 4 });
+		Flags.BLACK_KING = (King) getPiece(new int[] { 0, 4 });
+		Flags.WHITE_KING = (King) getPiece(new int[] { 7, 4 });
 		
 		debugger = DebugToFile.getInstance();
 	}
@@ -113,9 +113,9 @@ public class Board {
 	 * @param piece
 	 *            that is at position <i>pos</i>
 	 */
-	public void setPiece(byte[] pos, Piece piece) {
-		byte i = pos[0];
-		byte j = pos[1];
+	public void setPiece(int[] pos, Piece piece) {
+		int i = pos[0];
+		int j = pos[1];
 		field[i][j] = piece;
 	}
 
@@ -126,9 +126,9 @@ public class Board {
 	 *            on the board
 	 * @return the piece that is at position pos
 	 */
-	public Piece getPiece(byte[] pos) {
-		byte i = pos[0];
-		byte j = pos[1];
+	public Piece getPiece(int[] pos) {
+		int i = pos[0];
+		int j = pos[1];
 		return field[i][j];
 	}
 
@@ -172,8 +172,8 @@ public class Board {
 		 * getPiece(move.getTo()) != null) { return false; } }
 		 */
 
-		byte x = move.getTo()[0];
-		byte y = move.getTo()[1];
+		int x = move.getTo()[0];
+		int y = move.getTo()[1];
 		
 		//daca mutare iese din tabla, am generat cazul asta cand regele nu are mutari valide.
 		if(!Piece.isValid(x, y)) {
@@ -266,7 +266,7 @@ public class Board {
 	
 	public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
 
-		byte row, column, nextRow, nextColumn;
+		int row, column, nextRow, nextColumn;
 
 		row = pieceToMove.getPosition()[0];
 		column = pieceToMove.getPosition()[1];
@@ -279,13 +279,13 @@ public class Board {
 				|| pieceToMove instanceof WhitePawn) {
 			// daca poate ataca
 			for (int i = 1; i < 3; i++) {
-				nextRow = (byte) (row + pieceToMove.getY()[i]);
-				nextColumn = (byte) (column + pieceToMove.getX()[i]);
+				nextRow =   (row + pieceToMove.getY()[i]);
+				nextColumn =   (column + pieceToMove.getX()[i]);
 
 				// daca nu ies din matrice
 				if (Piece.isValid(nextRow, nextColumn)) {
 
-					Piece posWhere = board.getPiece(new byte[] { nextRow,
+					Piece posWhere = board.getPiece(new int[] { nextRow,
 							nextColumn });
 					// daca am piese pe pozitia unde vreau sa mut
 					if (posWhere != null) {
@@ -301,9 +301,9 @@ public class Board {
 			}
 
 			// daca nu poate ataca pionul testez daca poate inainta
-			nextRow = (byte) (row + pieceToMove.getY()[0]);
-			nextColumn = (byte) (column + pieceToMove.getX()[0]);
-			Piece posWhere = board.getPiece(new byte[] { nextRow, nextColumn });
+			nextRow =   (row + pieceToMove.getY()[0]);
+			nextColumn =   (column + pieceToMove.getX()[0]);
+			Piece posWhere = board.getPiece(new int[] { nextRow, nextColumn });
 
 			if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
 				array.add(nextRow * 8 + nextColumn);
@@ -321,13 +321,13 @@ public class Board {
 						|| pieceToMove instanceof Bishop
 						|| pieceToMove instanceof Queen) {
 					for (int j = 1; j < 8; j++) {
-						nextRow = (byte) (row + pieceToMove.getY()[i] * j);
-						nextColumn = (byte) (column + pieceToMove.getX()[i] * j);
+						nextRow = (row + pieceToMove.getY()[i] * j);
+						nextColumn = (column + pieceToMove.getX()[i] * j);
 
 						// daca nu ies din matrice
 						if (Piece.isValid(nextRow, nextColumn)) {
 
-							Piece posWhere = board.getPiece(new byte[] {
+							Piece posWhere = board.getPiece(new int[] {
 									nextRow, nextColumn });
 							// daca am piese pe pozitia unde vreau sa mut
 							if (posWhere != null) {
@@ -355,11 +355,11 @@ public class Board {
 					}
 				} else {
 
-					nextRow = (byte) (row + pieceToMove.getY()[i]);
-					nextColumn = (byte) (column + pieceToMove.getX()[i]);
+					nextRow =   (row + pieceToMove.getY()[i]);
+					nextColumn =   (column + pieceToMove.getX()[i]);
 	
 					if (Piece.isValid(nextRow, nextColumn)) {
-						Piece posWhere = board.getPiece(new byte[] {
+						Piece posWhere = board.getPiece(new int[] {
 								nextRow, nextColumn });
 						// daca am piese pe pozitia unde vreau sa mut
 						if (posWhere != null) {

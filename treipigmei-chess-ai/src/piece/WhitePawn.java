@@ -4,10 +4,10 @@ import helpers.Flags.Colour;
 
 public class WhitePawn extends Piece {
     
-    public WhitePawn(Colour color, byte[] position) {
+    public WhitePawn(Colour color, int[] position) {
         super(color, position);
-        x = new byte[]{0, -1, 1};
-    	y = new byte[]{-1, -1, -1};
+        x = new int[]{0, -1, 1};
+    	y = new int[]{-1, -1, -1};
     }
 
 }

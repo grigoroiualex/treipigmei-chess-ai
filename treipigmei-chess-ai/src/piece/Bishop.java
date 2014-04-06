@@ -4,10 +4,10 @@ import helpers.Flags.Colour;
 
 public class Bishop extends Piece {
     
-    public Bishop(Colour color, byte[] position) {
+    public Bishop(Colour color, int[] position) {
         super(color, position);
-        x = new byte[] {-1, -1, 1, 1};
-    	y = new byte[] {1, -1, -1, 1};
+        x = new int[] {-1, -1, 1, 1};
+    	y = new int[] {1, -1, -1, 1};
     }
 
 	

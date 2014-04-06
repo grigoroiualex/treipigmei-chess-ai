@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import debugging.DebugToFile;
 import board.Board;
 import board.Move;
 import brain.Brain;
@@ -25,10 +26,12 @@ public class ChessBoardConnect {
     private boolean legalMove;
     private boolean forceMode;
     private Flags.Colour chessEngineColour;
+    DebugToFile debugger;
 
     private ChessBoardConnect() {
         legalMove = true;
         forceMode = false;
+        debugger = DebugToFile.getInstance();
         protocolCommands = new ArrayList<String>();
         setProtocolCommands();
     }
@@ -143,6 +146,7 @@ public class ChessBoardConnect {
                 break;
 
             case "quit":
+                debugger.close();
                 System.exit(0);
 
             case "resign":
@@ -160,7 +164,7 @@ public class ChessBoardConnect {
      */
         } else {
             if (input.matches("[a-h][1-8][a-h][1-8][q]*")) {
-
+                debugger.output("Received move: " + input);
             	//TODO verifica daca este rocada sau promovarea pionului
                 if (chessBoard.movePiece(new Move(input))) {
                     legalMove = true;
@@ -171,7 +175,7 @@ public class ChessBoardConnect {
 
                 if (legalMove) {
                     String move = Brain.think();
-
+                    debugger.output("Brain generated move: " + move);
                     if (chessBoard.moveMyPiece(new Move(move))) {
                         Functions.output("move " + move);
                     } else {

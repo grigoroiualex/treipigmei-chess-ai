@@ -8,6 +8,7 @@ public class WhitePawn extends Piece {
         super(color, position);
         x = new int[]{0, -1, 1};
     	y = new int[]{-1, -1, -1};
+    	this.value = 10;
     }
 
     @Override

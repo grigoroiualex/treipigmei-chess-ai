@@ -9,6 +9,7 @@ public class Rook extends Piece {
         super(color, position);
         x = new int[]{-1, 1, 0, 0};
         y = new int[]{0, 0, -1, 1};
+        this.value = 50;
     }
 
     @Override

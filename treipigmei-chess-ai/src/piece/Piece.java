@@ -9,6 +9,7 @@ public class Piece {
     private Flags.Colour colour;
     protected int[] x;
     protected int[] y;
+    protected int value;
     
     public Colour getColor() {
         return colour;
@@ -58,5 +59,13 @@ public class Piece {
 	public int[] getX() {
 		return x;
 	}
+	
+	public int getValue(){
+        return this.value;
+    }
+    
+    public int getPosValue(int x, int xy) {
+        return 0;
+    }
 
 }

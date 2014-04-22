@@ -20,4 +20,20 @@ public class Rook extends Piece {
 	
 		return "R";
 	}
+    
+    @Override
+    public int getPosValue(int x, int y){
+        return positionValues[x][y];
+    }
+    
+    public static int[][] positionValues = {
+       { 0,  0,  0,  0,  0,  0,  0,  0},
+       { 5, 10, 10, 10, 10, 10, 10,  5},
+       {-5,  0,  0,  0,  0,  0,  0, -5},
+       {-5,  0,  0,  0,  0,  0,  0, -5},
+       {-5,  0,  0,  0,  0,  0,  0, -5},
+       {-5,  0,  0,  0,  0,  0,  0, -5},
+       {-5,  0,  0,  0,  0,  0,  0, -5},
+       { 0,  0,  0,  5,  5,  0,  0,  0}
+    };
 }

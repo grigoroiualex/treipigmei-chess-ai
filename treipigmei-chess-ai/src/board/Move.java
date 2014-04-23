@@ -42,6 +42,26 @@ public class Move {
     }
     
     /**
+     * Sets the position from which the piece is moved
+     * 
+     * @param from
+     */
+    public void setFrom(int [] from) {
+        this.pos[0] = from[0];
+        this.pos[1] = from[1];
+    }
+    
+    /**
+     * Sets the position to which the piece is moved
+     * 
+     * @param to
+     */
+    public void setTo( int [] to) {
+        this.pos[2] = to[0];
+        this.pos[3] = to[1];
+    }
+    
+    /**
      * Transforms move String at position i and j for <i>from</i>, <i>to</i>
      * and stores it in <i>pos</i> array.
      */

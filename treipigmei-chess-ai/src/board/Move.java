@@ -3,6 +3,10 @@ package board;
 public class Move {
     private String move;
     private int [] pos;
+    
+    public Move() {
+        this.pos = new int[4];
+    }
 
     /**
      * Receives the input string and transforms it in table coordinates

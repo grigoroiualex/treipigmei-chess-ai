@@ -358,13 +358,17 @@ public class Brain {
         Evaluation evaluatedBoard = new Evaluation(chessBoard);
         return evaluatedBoard.eval();
     }
+    ArrayList<Move> moves = clonedBoard.getAllMoves();
     
-    //verificare daca sunt in sah
+    if(moves.isEmpty){
+        se verifica daca e remiza sau a casigat cineva
+    }
      
-    clonedBoard = clone(chessBoard);
+    Clone clone = new Clone();
+    clonedBoard = clone.newClone(chessBoard);
     int bestScore = Integer.MIN_VALUE;
     
-    for(Move move : clonedBoard.getAllMoves()){
+    for(Move move : moves){
         chessBoard.applyPieceMove(move);
         int score = -negaMax(clonedBoard, depth - 1);
         
@@ -372,7 +376,6 @@ public class Brain {
             bestScore = score;
             bestMove = move;
         }
-        chessBoard.undo();
     }
     return bestScore;
 }*/

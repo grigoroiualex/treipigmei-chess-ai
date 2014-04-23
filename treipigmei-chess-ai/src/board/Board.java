@@ -5,6 +5,7 @@ import helpers.Flags.Colour;
 
 import java.util.ArrayList;
 
+import connection.ChessBoardConnect;
 import brain.Brain;
 import piece.*;
 
@@ -203,6 +204,15 @@ public class Board {
 		Board board = Board.getInstance();
 		Piece posWhere = getPiece(move.getTo());
 		Piece currentPiece = board.getPiece(move.getFrom());
+		
+		// daca mut un rege, salvez pozitia unde il mut
+		if (currentPiece instanceof King) {
+		    if (currentPiece.getColor() == Flags.Colour.WHITE) {
+		        Flags.WHITE_KING.setPosition(move.getTo());
+		    } else {
+		        Flags.BLACK_KING.setPosition(move.getTo());
+		    }
+		}
 		
 		// daca se face promovarea pionului il elimin din lista de piese si pun 
 		// o regina in locul lui, ca mai apoi sa se execute mutarea
@@ -441,5 +451,61 @@ public class Board {
 		return q;
 	}
 	
-	
+	/**
+	 * 
+	 * @return a list with all valid moves for all pieces
+	 */
+	public ArrayList<Move> getAllMoves() {
+	    ArrayList<Move> array = new ArrayList<Move>();
+	    King currentKing;
+	    
+	    ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+	    Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
+	    if (chessEngineColour == Flags.Colour.WHITE) {
+	        currentKing = Flags.WHITE_KING;
+	    } else {
+	        currentKing = Flags.BLACK_KING;
+	    }
+	    
+	    Piece piece, auxPiece;
+	    ArrayList<Integer> allValidMoves;
+	    
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+	            // verific daca se afla vreo piesa pe pozitia [i, j]
+	            piece = getPiece(new int [] {i, j});
+	            if (piece != null) {
+	                // daca da, verific ce culoare are
+	                if (piece.getColor() == chessEngineColour) {
+	                    // daca e piesa mea, ii calculez toate pseudo-mutarile
+	                    allValidMoves = getValidMoves(piece);
+	                    
+	                    /* din toate pseudo-mutarile, le pastrez doar pe cele
+	                     * care nu lasa regele in sah*/
+	                    for (int k = 0; k < allValidMoves.size(); k++) {
+	                        Move move = new Move();
+	                        move.setFrom(new int [] {i, j});
+	                        int row = allValidMoves.get(k) / 8;
+	                        int column = allValidMoves.get(k) % 8;
+	                        move.setTo(new int [] {row, column});
+	                        auxPiece = getPiece(move.getTo());
+	                        setPiece(move.getTo(), piece);
+	                        setPiece(move.getFrom(), auxPiece);
+	                        
+	                        if (!Brain.isPositionAttacked(currentKing.getPosition())) {
+	                            array.add(move);
+	                        }
+	                        
+	                        setPiece(move.getFrom(), piece);
+                            setPiece(move.getTo(), auxPiece);
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    
+	    return array;
+	    
+	}
+	            
 }

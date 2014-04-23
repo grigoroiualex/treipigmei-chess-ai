@@ -6,6 +6,7 @@ import helpers.Flags;
 import piece.*;
 import connection.ChessBoardConnect;
 import board.Board;
+import board.Move;
 
 /**
  * Class Brain computes the next simple move 
@@ -17,6 +18,7 @@ public class Brain {
     static char[] moveToDo = new char[4];
     static int[] from = new int[2];
     static int[] to = new int[2];
+    Move bestMove = null;                   //use it in negamex to get the best move
    
     /**
      * Returns the next possible move for the current pawn
@@ -346,4 +348,32 @@ public class Brain {
         
 	    return false;
 	}
+	
+	public Move getBestMove(){
+	    return this.bestMove;
+	}
+	
+	/*public int negaMax(Board chessBoard, int depth){
+    if(depth == 0){
+        Evaluation evaluatedBoard = new Evaluation(chessBoard);
+        return evaluatedBoard.eval();
+    }
+    
+    //verificare daca sunt in sah
+     
+    clonedBoard = clone(chessBoard);
+    int bestScore = Integer.MIN_VALUE;
+    
+    for(Move move : clonedBoard.getAllMoves()){
+        chessBoard.applyPieceMove(move);
+        int score = -negaMax(clonedBoard, depth - 1);
+        
+        if(score > bestScore){
+            bestScore = score;
+            bestMove = move;
+        }
+        chessBoard.undo();
+    }
+    return bestScore;
+}*/
 }

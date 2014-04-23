@@ -37,7 +37,7 @@ public class Clone {
      * @return
      *          Return an instance of Board class with "move" applied.
      */
-    public Board getClone(Move move) {
+    public Board getCloneWithMove(Move move) {
         boardClone.applyPieceMove(move);
         
         return boardClone;

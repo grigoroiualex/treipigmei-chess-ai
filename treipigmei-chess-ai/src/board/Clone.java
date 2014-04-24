@@ -215,10 +215,9 @@ public class Clone {
                 }
             }
         }
-        /*for(int i = 0; i < array.size();i++){
-            Move m = array.get(i);
+        for(int i = 0; i < array.size();i++){
             System.out.println("Muatarea este: " + array.get(i).toString());
-        }*/
+        }
         return array;
     }
 
@@ -239,7 +238,7 @@ public class Clone {
         column = pieceToMove.getPosition()[1];
 
         ArrayList<Integer> array = new ArrayList<Integer>();
-        Board board = Board.getInstance();
+        //Board board = Board.getInstance();
 
         // daca piesa este pion
         if (pieceToMove instanceof BlackPawn
@@ -252,7 +251,7 @@ public class Clone {
                 // daca nu ies din matrice
                 if (Piece.isValid(nextRow, nextColumn)) {
 
-                    Piece posWhere = board.getPiece(new int[] { nextRow,
+                    Piece posWhere = getPiece(new int[] { nextRow,
                             nextColumn });
                     // daca am piese pe pozitia unde vreau sa mut
                     if (posWhere != null) {
@@ -272,7 +271,7 @@ public class Clone {
             nextColumn = (column + pieceToMove.getX()[0]);
             Piece posWhere = null;
             if(nextRow < 8 && nextColumn < 8){
-                    posWhere = board.getPiece(new int[] { nextRow, nextColumn });
+                    posWhere = getPiece(new int[] { nextRow, nextColumn });
             }
            
             if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
@@ -297,7 +296,7 @@ public class Clone {
                         // daca nu ies din matrice
                         if (Piece.isValid(nextRow, nextColumn)) {
 
-                            Piece posWhere = board.getPiece(new int[] {
+                            Piece posWhere = getPiece(new int[] {
                                     nextRow, nextColumn });
                             // daca am piese pe pozitia unde vreau sa mut
                             if (posWhere != null) {
@@ -329,7 +328,7 @@ public class Clone {
                     nextColumn = (column + pieceToMove.getX()[i]);
 
                     if (Piece.isValid(nextRow, nextColumn)) {
-                        Piece posWhere = board.getPiece(new int[] {
+                        Piece posWhere = getPiece(new int[] {
                                 nextRow, nextColumn });
                         // daca am piese pe pozitia unde vreau sa mut
                         if (posWhere != null) {

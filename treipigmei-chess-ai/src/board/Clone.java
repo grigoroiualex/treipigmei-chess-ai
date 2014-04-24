@@ -47,6 +47,8 @@ public class Clone {
         for (int i = 0; i < b.size(); i++) {
             this.blacks.add(b.get(i));
         }
+        
+        System.out.println("Clona:\n" + printBoard());
     }
 
     /**

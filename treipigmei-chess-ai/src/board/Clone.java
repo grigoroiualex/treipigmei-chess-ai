@@ -95,9 +95,8 @@ public class Clone {
 
     public void applyPieceMove(Move move) {
 
-        Board board = Board.getInstance();
         Piece posWhere = getPiece(move.getTo());
-        Piece currentPiece = board.getPiece(move.getFrom());
+        Piece currentPiece = getPiece(move.getFrom());
 
         // daca mut un rege, salvez pozitia unde il mut
         if (currentPiece instanceof King) {

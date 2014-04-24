@@ -505,7 +505,10 @@ public class Board {
 	    }
 	    
 	    return array;
-	    
+	}
+	
+	public Clone newClone() {
+	    return new Clone(field, whites, blacks);
 	}
 	            
 }

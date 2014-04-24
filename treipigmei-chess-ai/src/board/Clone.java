@@ -215,6 +215,10 @@ public class Clone {
                 }
             }
         }
+        /*for(int i = 0; i < array.size();i++){
+            Move m = array.get(i);
+            System.out.println("Muatarea este: " + array.get(i).toString());
+        }*/
         return array;
     }
 
@@ -266,8 +270,11 @@ public class Clone {
             // daca nu poate ataca pionul testez daca poate inainta
             nextRow = (row + pieceToMove.getY()[0]);
             nextColumn = (column + pieceToMove.getX()[0]);
-            Piece posWhere = board.getPiece(new int[] { nextRow, nextColumn });
-
+            Piece posWhere = null;
+            if(nextRow < 8 && nextColumn < 8){
+                    posWhere = board.getPiece(new int[] { nextRow, nextColumn });
+            }
+           
             if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
                 array.add(nextRow * 8 + nextColumn);
             }

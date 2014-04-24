@@ -9,6 +9,7 @@ import helpers.Flags.Colour;
 import piece.Bishop;
 import piece.BlackPawn;
 import piece.King;
+import piece.Knight;
 import piece.Piece;
 import piece.Queen;
 import piece.Rook;
@@ -385,6 +386,198 @@ public class Clone {
             
         }
         return q;
+    }
+    
+    public boolean isPositionAttacked(int[] pos) {
+        Clone board = this;
+        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+        Piece piece;
+        int x = pos[0];
+        int y = pos[1];
+        int i, j;
+        int[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
+        int[] ky = {-1, 1, -2, 2, -2, 2, -1, 2};
+        
+        i = y - 1;
+        // for every position upwards
+        while(Piece.isValid(x, i)) {
+            // checks for any piece
+            if((piece = board.getPiece(new int[]{x, i})) != null) {
+                // If it's own engine's colour it's ok
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                // otherwise
+                } else {
+                    // the piece is a sliding one
+                    if(piece instanceof Rook || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i--;
+        }
+        
+        i = y + 1;
+        // for every position upwards
+        while(Piece.isValid(x, i)) {
+            if((piece = board.getPiece(new int[]{x, i})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Rook || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i++;
+        }
+        
+        i = x - 1;
+        // for every position to the left       
+        while(Piece.isValid(i, y)) {
+            if((piece = board.getPiece(new int[]{i, y})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Rook || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i--;
+        }
+        
+        i = x + 1;
+        // for every position to the right
+        while(Piece.isValid(i, y)) {
+            if((piece = board.getPiece(new int[]{i, y})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Rook || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i++;
+        }
+        
+        i = x + 1; j = y + 1;
+        // for every diagonal position NE
+        while(Piece.isValid(i, j)) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Bishop || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i++; j++;
+        }
+        
+        i = x + 1; j = y - 1;
+        // for every diagonal position SE
+        while(Piece.isValid(i, j)) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Bishop || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i++; j--;
+        }
+        
+        i = x - 1; j = y - 1;
+        // for every diagonal position SV
+        while(Piece.isValid(i, j)) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Bishop || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i--; j--;
+        }
+        
+        i = x - 1; j = y + 1;
+        // for every diagonal position NV
+        while(Piece.isValid(i, j)) {
+            if((piece = board.getPiece(new int[]{i, j})) != null) {
+                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                    break;
+                } else {
+                    if(piece instanceof Bishop || piece instanceof Queen) {
+                        return true;
+                    }
+                }
+            }
+            i--; j++;
+        }
+        
+        // for every possible knight position
+        for(int k = 0; k < 8; k++) {
+            if(Piece.isValid(x + kx[k], y + ky[k])) {
+                if((piece = board.getPiece(new int[]{x + kx[k], y + ky[k]})) != null) {
+                    if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
+                        break;
+                    } else {
+                        if(piece instanceof Knight) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // for black pawns
+        if(Piece.isValid(x - 1, y - 1)) {
+            if((piece = board.getPiece(new int[]{x - 1, y - 1})) != null) {
+                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
+                        piece instanceof BlackPawn) {
+                    return true;
+                }
+            }
+        }
+        
+        // for black pawns
+        if(Piece.isValid(x - 1, y + 1)) {
+            if((piece = board.getPiece(new int[]{x - 1, y + 1})) != null) {
+                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
+                        piece instanceof BlackPawn) {
+                    return true;
+                }
+            }
+        }
+        
+        // for white pawns
+        if(Piece.isValid(x + 1, y + 1)) {
+            if((piece = board.getPiece(new int[]{x + 1, y + 1})) != null) {
+                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
+                        piece instanceof WhitePawn) {
+                    return true;
+                }
+            }
+        }
+        
+        // for white pawns
+        if(Piece.isValid(x + 1, y - 1)) {
+            if((piece = board.getPiece(new int[]{x + 1, y - 1})) != null) {
+                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
+                        piece instanceof WhitePawn) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
 }

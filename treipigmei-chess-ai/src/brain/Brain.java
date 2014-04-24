@@ -353,6 +353,10 @@ public class Brain {
 	
 	public static int negaMax(Clone chessBoard, int depth){
         if(depth == 0){
+            System.out.println("plansa in dept = 0 ");
+            System.out.println(chessBoard.printBoard());
+            System.out.println("-----------------------------------------------------");
+     
             Evaluation evaluatedBoard = new Evaluation(chessBoard);
             return evaluatedBoard.eval();
         }
@@ -368,12 +372,12 @@ public class Brain {
         }
         
         int bestScore = Integer.MIN_VALUE;
-        
+
         for(Move move : moves){
             Clone clonedBoard = chessBoard.newClone();
             clonedBoard = clonedBoard.getCloneWithMove(move);
             int score = -negaMax(clonedBoard, depth - 1);
-            
+
             if(score > bestScore){
                 bestScore = score;
                 bestMove = move;

@@ -5,9 +5,9 @@ import helpers.Flags;
 
 
 public class Evaluation {
-    Board board;
+    Clone board;
 
-    public Evaluation(Board chessBoard){
+    public Evaluation(Clone chessBoard){
         board = chessBoard;
     }
 

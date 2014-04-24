@@ -23,44 +23,49 @@ import piece.WhitePawn;
 public class Clone {
     private ArrayList<Piece> whites, blacks;
     private Piece[][] field;
-    
+
     public Clone() {
-        
+
     }
-    
+
     public Clone(Piece [][] f, ArrayList<Piece> w, ArrayList<Piece> b) {
+
+        field = new Piece[8][8];
+        whites = new ArrayList<>();
+        blacks = new ArrayList<>();
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 setPiece(new int[] {i, j}, f[i][j]);
             }
         }
-        
+
         for (int i = 0; i < w.size(); i++) {
             this.whites.add(w.get(i));
         }
-        
+
         for (int i = 0; i < b.size(); i++) {
             this.blacks.add(b.get(i));
         }
     }
-    
+
     /**
      * @return a copy of current clone
      */
     public Clone newClone() {
         return new Clone(field, whites, blacks);
     }
-    
+
     /**
      * @param move
      * @return current instance with "move" applied
      */
     public Clone getCloneWithMove(Move move) {
         applyPieceMove(move);
-        
+
         return this;
     }
-    
+
     /**
      * Put <i>piece</i> at position <i>pos</i>.
      * 
@@ -87,13 +92,13 @@ public class Clone {
         int j = pos[1];
         return field[i][j];
     }
-    
+
     public void applyPieceMove(Move move) {
 
         Board board = Board.getInstance();
         Piece posWhere = getPiece(move.getTo());
         Piece currentPiece = board.getPiece(move.getFrom());
-        
+
         // daca mut un rege, salvez pozitia unde il mut
         if (currentPiece instanceof King) {
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
@@ -102,7 +107,7 @@ public class Clone {
                 Flags.BLACK_KING.setPosition(move.getTo());
             }
         }
-        
+
         // daca se face promovarea pionului il elimin din lista de piese si pun 
         // o regina in locul lui, ca mai apoi sa se execute mutarea
         if(Flags.PROMOTION) {
@@ -125,7 +130,7 @@ public class Clone {
                     }
                 }
             }
-        
+
         }
 
         // daca este luata vreo piesa
@@ -148,12 +153,12 @@ public class Clone {
                 }
             }
         }
-        
+
         currentPiece.setPosition(move.getTo());
-        
+
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);
-        
+
     }
 
     /**
@@ -163,7 +168,7 @@ public class Clone {
     public ArrayList<Move> getAllMoves() {
         ArrayList<Move> array = new ArrayList<Move>();
         King currentKing;
-        
+
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
         if (chessEngineColour == Flags.Colour.WHITE) {
@@ -171,10 +176,10 @@ public class Clone {
         } else {
             currentKing = Flags.BLACK_KING;
         }
-        
+
         Piece piece, auxPiece;
         ArrayList<Integer> allValidMoves;
-        
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // verific daca se afla vreo piesa pe pozitia [i, j]
@@ -184,43 +189,45 @@ public class Clone {
                     if (piece.getColor() == chessEngineColour) {
                         // daca e piesa mea, ii calculez toate pseudo-mutarile
                         allValidMoves = getValidMoves(piece);
-                        
-                        /* din toate pseudo-mutarile, le pastrez doar pe cele
-                         * care nu lasa regele in sah*/
-                        for (int k = 0; k < allValidMoves.size(); k++) {
-                            Move move = new Move();
-                            move.setFrom(new int [] {i, j});
-                            int row = allValidMoves.get(k) / 8;
-                            int column = allValidMoves.get(k) % 8;
-                            move.setTo(new int [] {row, column});
-                            auxPiece = getPiece(move.getTo());
-                            setPiece(move.getTo(), piece);
-                            setPiece(move.getFrom(), auxPiece);
-                            
-                            if (!Brain.isPositionAttacked(currentKing.getPosition())) {
-                                array.add(move);
+
+                        if(allValidMoves != null){
+                            /* din toate pseudo-mutarile, le pastrez doar pe cele
+                             * care nu lasa regele in sah*/
+                            for (int k = 0; k < allValidMoves.size(); k++) {
+                                Move move = new Move();
+                                move.setFrom(new int [] {i, j});
+                                int row = allValidMoves.get(k) / 8;
+                                int column = allValidMoves.get(k) % 8;
+                                move.setTo(new int [] {row, column});
+                                auxPiece = getPiece(move.getTo());
+                                setPiece(move.getTo(), piece);
+                                setPiece(move.getFrom(), auxPiece);
+
+                                if (!Brain.isPositionAttacked(currentKing.getPosition())) {
+                                    array.add(move);
+                                }
+
+                                setPiece(move.getFrom(), piece);
+                                setPiece(move.getTo(), auxPiece);
                             }
-                            
-                            setPiece(move.getFrom(), piece);
-                            setPiece(move.getTo(), auxPiece);
                         }
                     }
                 }
             }
         }
-        
+
         return array;
     }
-    
+
     /**
      * @param pieceToMove
      * @return a list of Integers with all pseudo-valid positions where this
      *         piece can be moved. The position in the matrix can be obtained
      *         like this: row = number / 8 column = number % 8
      */
-    
+
     //Linia din matrice este modificata de vectorul y din piese
-    
+
     public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
 
         int row, column, nextRow, nextColumn;
@@ -314,7 +321,7 @@ public class Clone {
 
                     nextRow = (row + pieceToMove.getY()[i]);
                     nextColumn = (column + pieceToMove.getX()[i]);
-    
+
                     if (Piece.isValid(nextRow, nextColumn)) {
                         Piece posWhere = board.getPiece(new int[] {
                                 nextRow, nextColumn });
@@ -333,7 +340,7 @@ public class Clone {
                                 break;
                             }
 
-                        // daca nu e piesa machez pozitia ca mutare valida
+                            // daca nu e piesa machez pozitia ca mutare valida
                         } else {
                             array.add(nextRow * 8 + nextColumn);
                         }
@@ -355,9 +362,9 @@ public class Clone {
     public ArrayList<Piece> getWhites() {
         return whites;
     }
-    
+
     public ArrayList<Piece> getBlacks() {
         return blacks;
     }
-    
+
 }

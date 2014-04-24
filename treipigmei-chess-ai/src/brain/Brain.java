@@ -20,7 +20,7 @@ public class Brain {
     static char[] moveToDo = new char[4];
     static int[] from = new int[2];
     static int[] to = new int[2];
-    Move bestMove = null;                   //use it in negamex to get the best move
+    public static Move bestMove;                   //use it in negamex to get the best move
    
     /**
      * Returns the next possible move for the current pawn
@@ -356,7 +356,7 @@ public class Brain {
 	}
 	
 	
-	public int negaMax(Clone chessBoard, int depth){
+	public static int negaMax(Clone chessBoard, int depth){
         if(depth == 0){
             Evaluation evaluatedBoard = new Evaluation(chessBoard);
             return evaluatedBoard.eval();

@@ -191,7 +191,10 @@ public class ChessBoardConnect {
 
                 if (legalMove) {
                     // generate response move
-                    String move = Brain.think();
+                    //String move = Brain.think();
+                    
+                    Brain.negaMax(chessBoard.newClone(), 2);
+                    String move = Brain.bestMove.toString();
                     // and then apply it
                     if (chessBoard.moveMyPiece(new Move(move))) {
                         Functions.output("move " + move);

@@ -77,4 +77,8 @@ public class Move {
          pos[3] = (move.charAt(2) - 'a');
     }
     
+    @Override
+    public String toString() {
+        return this.move;
+    }
 }

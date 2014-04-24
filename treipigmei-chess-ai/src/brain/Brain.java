@@ -351,11 +351,6 @@ public class Brain {
 	    return false;
 	}
 	
-	public Move getBestMove(){
-	    return this.bestMove;
-	}
-	
-	
 	public static int negaMax(Clone chessBoard, int depth){
         if(depth == 0){
             Evaluation evaluatedBoard = new Evaluation(chessBoard);
@@ -372,10 +367,10 @@ public class Brain {
             }
         }
         
-        Clone clonedBoard = chessBoard.newClone();
         int bestScore = Integer.MIN_VALUE;
         
         for(Move move : moves){
+            Clone clonedBoard = chessBoard.newClone();
             clonedBoard = clonedBoard.getCloneWithMove(move);
             int score = -negaMax(clonedBoard, depth - 1);
             

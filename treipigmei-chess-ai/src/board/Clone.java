@@ -2,7 +2,6 @@ package board;
 
 import java.util.ArrayList;
 
-import brain.Brain;
 import connection.ChessBoardConnect;
 import helpers.Flags;
 import helpers.Flags.Colour;
@@ -154,8 +153,7 @@ public class Clone {
                 }
             }
         }
-        
-        System.out.println(currentPiece == null);
+       
         currentPiece.setPosition(move.getTo());
 
         setPiece(move.getTo(), getPiece(move.getFrom()));
@@ -205,7 +203,7 @@ public class Clone {
                                 setPiece(move.getTo(), piece);
                                 setPiece(move.getFrom(), null);
 
-                                if (!Brain.isPositionAttacked(currentKing.getPosition())) {
+                                if (!isPositionAttacked(currentKing.getPosition())) {
                                     array.add(move);
                                 }
 
@@ -217,7 +215,6 @@ public class Clone {
                 }
             }
         }
-
         return array;
     }
 

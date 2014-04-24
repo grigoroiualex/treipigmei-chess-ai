@@ -193,8 +193,9 @@ public class ChessBoardConnect {
                     // generate response move
                     //String move = Brain.think();
                     
-                    Brain.negaMax(chessBoard.newClone(), 2);
+                    Brain.negaMax(chessBoard.newClone(), 1);
                     String move = Brain.bestMove.toString();
+                    //System.out.println("muatarea gandita este: " + move);
                     // and then apply it
                     if (chessBoard.moveMyPiece(new Move(move))) {
                         Functions.output("move " + move);

@@ -3,7 +3,7 @@ package board;
 public class Move {
     private String move;
     private int [] pos;
-    
+
     public Move() {
         this.pos = new int[4];
     }
@@ -18,7 +18,7 @@ public class Move {
         this.pos = new int[4];
         decodeMove();
     }
-    
+
     /**
      * Returns the position from which the piece is moved
      * 
@@ -28,10 +28,10 @@ public class Move {
         int [] aux = new int[2];
         aux[0] = this.pos[0];
         aux[1] = this.pos[1];
-        
+
         return aux;
     }
-    
+
     /**
      * Returns the position to which the piece is moved
      * 
@@ -41,10 +41,10 @@ public class Move {
         int [] aux = new int[2];
         aux[0] = this.pos[2];
         aux[1] = this.pos[3];
-        
+
         return aux;
     }
-    
+
     /**
      * Sets the position from which the piece is moved
      * 
@@ -54,7 +54,7 @@ public class Move {
         this.pos[0] = from[0];
         this.pos[1] = from[1];
     }
-    
+
     /**
      * Sets the position to which the piece is moved
      * 
@@ -64,21 +64,28 @@ public class Move {
         this.pos[2] = to[0];
         this.pos[3] = to[1];
     }
-    
+
     /**
      * Transforms move String at position i and j for <i>from</i>, <i>to</i>
      * and stores it in <i>pos</i> array.
      */
-     private void decodeMove() {
-    	 
-         pos[0] = (8 - (move.charAt(1) - '0'));
-         pos[1] = (move.charAt(0) - 'a');
-         pos[2] = (8 - (move.charAt(3) - '0'));
-         pos[3] = (move.charAt(2) - 'a');
+    private void decodeMove() {
+
+        pos[0] = (8 - (move.charAt(1) - '0'));
+        pos[1] = (move.charAt(0) - 'a');
+        pos[2] = (8 - (move.charAt(3) - '0'));
+        pos[3] = (move.charAt(2) - 'a');
     }
-    
+
     @Override
     public String toString() {
-        return this.move;
+        
+        char[] moveToDo = new char[4];
+        moveToDo[0] = (char) ('a' + pos[1]);
+        moveToDo[1] = (char) ('8' - pos[0]);
+        moveToDo[2] = (char) ('a' + pos[3]);
+        moveToDo[3] = (char) ('8' - pos[2]);
+
+       return String.valueOf(moveToDo);
     }
 }

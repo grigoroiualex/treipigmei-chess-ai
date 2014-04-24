@@ -64,7 +64,7 @@ public class Piece {
         return this.value;
     }
     
-    public int getPosValue(int x, int xy) {
+    public int getPosValue(int x, int y) {
         return 0;
     }
 

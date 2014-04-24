@@ -156,7 +156,7 @@ public class Clone {
             }
         }
        
-        currentPiece.setPosition(move.getTo());
+//        currentPiece.setPosition(move.getTo());
 
         setPiece(move.getTo(), getPiece(move.getFrom()));
         setPiece(move.getFrom(), null);
@@ -191,7 +191,7 @@ public class Clone {
                     // daca da, verific ce culoare are
                     if (piece.getColor() == chessEngineColour) {
                         // daca e piesa mea, ii calculez toate pseudo-mutarile
-                        allValidMoves = getValidMoves(piece);
+                        allValidMoves = getValidMoves(piece, i, j);
 
                         if(allValidMoves != null){
                             /* din toate pseudo-mutarile, le pastrez doar pe cele
@@ -236,12 +236,12 @@ public class Clone {
 
     //Linia din matrice este modificata de vectorul y din piese
 
-    public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
+    public ArrayList<Integer> getValidMoves(Piece pieceToMove, int row, int column) {
 
-        int row, column, nextRow, nextColumn;
+        int /*row, column,*/ nextRow, nextColumn;
 
-        row = pieceToMove.getPosition()[0];
-        column = pieceToMove.getPosition()[1];
+//        row = pieceToMove.getPosition()[0];
+//        column = pieceToMove.getPosition()[1];
 
         ArrayList<Integer> array = new ArrayList<Integer>();
         //Board board = Board.getInstance();

@@ -6,6 +6,8 @@ import helpers.Flags;
 import piece.*;
 import connection.ChessBoardConnect;
 import board.Board;
+import board.Clone;
+import board.Evaluation;
 import board.Move;
 
 /**
@@ -353,30 +355,36 @@ public class Brain {
 	    return this.bestMove;
 	}
 	
-	/*public int negaMax(Board chessBoard, int depth){
-    if(depth == 0){
-        Evaluation evaluatedBoard = new Evaluation(chessBoard);
-        return evaluatedBoard.eval();
-    }
-    ArrayList<Move> moves = clonedBoard.getAllMoves();
-    
-    if(moves.isEmpty){
-        se verifica daca e remiza sau a casigat cineva
-    }
-     
-    Clone clone = new Clone();
-    clonedBoard = clone.newClone(chessBoard);
-    int bestScore = Integer.MIN_VALUE;
-    
-    for(Move move : moves){
-        chessBoard.applyPieceMove(move);
-        int score = -negaMax(clonedBoard, depth - 1);
-        
-        if(score > bestScore){
-            bestScore = score;
-            bestMove = move;
+	
+	public int negaMax(Clone chessBoard, int depth){
+        if(depth == 0){
+            Evaluation evaluatedBoard = new Evaluation(chessBoard);
+            return evaluatedBoard.eval();
         }
-    }
-    return bestScore;
-}*/
+        ArrayList<Move> moves = chessBoard.getAllMoves();
+        
+        if (moves.isEmpty()) {
+            // se verifica daca e remiza sau a casigat cineva
+            if (chessBoard.getWhites().size() == 1 && chessBoard.getBlacks().size() == 1) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        
+        Clone clonedBoard = chessBoard.newClone();
+        int bestScore = Integer.MIN_VALUE;
+        
+        for(Move move : moves){
+            clonedBoard = clonedBoard.getCloneWithMove(move);
+            int score = -negaMax(clonedBoard, depth - 1);
+            
+            if(score > bestScore){
+                bestScore = score;
+                bestMove = move;
+            }
+        }
+        return bestScore;
+	}
+	
 }

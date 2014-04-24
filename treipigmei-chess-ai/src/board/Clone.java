@@ -141,6 +141,7 @@ public class Clone {
                     if (posWhere.equals(whites.get(i))) {
                         whites.remove(i);
                         break;
+                    
                     }
                 }
             } else {
@@ -152,7 +153,8 @@ public class Clone {
                 }
             }
         }
-
+        
+        System.out.println(currentPiece == null);
         currentPiece.setPosition(move.getTo());
 
         setPiece(move.getTo(), getPiece(move.getFrom()));
@@ -200,7 +202,7 @@ public class Clone {
                                 move.setTo(new int [] {row, column});
                                 auxPiece = getPiece(move.getTo());
                                 setPiece(move.getTo(), piece);
-                                setPiece(move.getFrom(), auxPiece);
+                                setPiece(move.getFrom(), null);
 
                                 if (!Brain.isPositionAttacked(currentKing.getPosition())) {
                                     array.add(move);
@@ -364,6 +366,25 @@ public class Clone {
 
     public ArrayList<Piece> getBlacks() {
         return blacks;
+    }
+    
+    public String printBoard() {
+        String q = new String();
+        Piece p;
+        
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                p = getPiece(new int[] {i, j});
+                if(p != null) {
+                    q = q.concat(p + " ");
+                } else {
+                    q = q.concat(". ");
+                }
+            }
+            q = q.concat("\n");
+            
+        }
+        return q;
     }
 
 }

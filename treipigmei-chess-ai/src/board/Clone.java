@@ -48,7 +48,7 @@ public class Clone {
             this.blacks.add(b.get(i));
         }
         
-        System.out.println("Clona:\n" + printBoard());
+        //System.out.println("Clona:\n" + printBoard());
     }
 
     /**
@@ -182,7 +182,7 @@ public class Clone {
         Piece piece, auxPiece;
         ArrayList<Integer> allValidMoves;
         
-        System.out.println(printBoard());
+        //System.out.println(printBoard());
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // verific daca se afla vreo piesa pe pozitia [i, j]
@@ -215,15 +215,11 @@ public class Clone {
                                 setPiece(move.getFrom(), piece);
                                 setPiece(move.getTo(), auxPiece);
                             }
-                            System.out.println();
                         }
                     }
                 }
             }
         }
-        /*for(int i = 0; i < array.size();i++){
-            System.out.println("Muatarea este: " + array.get(i).toString());
-        }*/
         return array;
     }
 
@@ -266,7 +262,7 @@ public class Clone {
                          * adaug pozitia ca mutare valida si apoi ma opresc
                          */
                         if (posWhere.getColor() != pieceToMove.getColor()) {
-                            System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                            //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                             
                             array.add(nextRow * 8 + nextColumn);
                         }
@@ -283,7 +279,7 @@ public class Clone {
             }
            
             if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
-                System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+               // System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                 array.add(nextRow * 8 + nextColumn);
             }
 
@@ -318,7 +314,7 @@ public class Clone {
                                         .getColor()) {
                                     break;
                                 } else {
-                                    System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                                    //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                                     array.add(nextRow * 8 + nextColumn);
                                     break;
                                 }
@@ -326,7 +322,7 @@ public class Clone {
                                 // daca nu e piesa machez pozitia ca mutare
                                 // valida
                             } else {
-                                System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                                //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                                 array.add(nextRow * 8 + nextColumn);
                             }
                         } else {
@@ -352,14 +348,14 @@ public class Clone {
                                     .getColor()) {
                                 break;
                             } else {
-                                System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row ) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                                //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row ) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                                 array.add(nextRow * 8 + nextColumn);
                                 break;
                             }
 
                             // daca nu e piesa machez pozitia ca mutare valida
                         } else {
-                            System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                            //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                             array.add(nextRow * 8 + nextColumn);
                         }
                     } else {

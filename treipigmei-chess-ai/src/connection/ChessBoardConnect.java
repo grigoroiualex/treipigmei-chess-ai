@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import board.Board;
+import board.Clone;
 import board.Move;
 import brain.Brain;
 
@@ -192,12 +193,16 @@ public class ChessBoardConnect {
                 if (legalMove) {
                     // generate response move
                     //String move = Brain.think();
-                    
-                    Brain.negaMax(chessBoard.newClone(), 2);
+                    Brain.bestMove = null;
+                    //System.out.println("Plansa inainte de mutare este:\n" + chessBoard.printBoard());
+                    Clone clone = chessBoard.newClone();
+                    Brain.negaMax(clone, 2);
+                    //System.out.println("Clona este:\n" + clone.printBoard());
                     String move = Brain.bestMove.toString();
                     //System.out.println("muatarea gandita este: " + move);
                     // and then apply it
                     if (chessBoard.moveMyPiece(new Move(move))) {
+                        //System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
                         Functions.output("move " + move);
                         onTurn = false;
                     } else {

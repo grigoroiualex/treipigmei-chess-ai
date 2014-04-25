@@ -358,8 +358,6 @@ public class Clone {
                             //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                             array.add(nextRow * 8 + nextColumn);
                         }
-                    } else {
-                        break;
                     }
                 }
             }

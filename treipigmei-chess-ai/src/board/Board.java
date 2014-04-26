@@ -21,10 +21,6 @@ public class Board {
 	private Piece[][] field;
 	private ArrayList<Piece> whites, blacks;
 
-	/*
-	 * Remus Cred ca ar trebui sa pastram instante separate pentur rege pentru a
-	 * testa usor daca este in sah sau nu.
-	 */
 
 	private Board() {
 		field = new Piece[8][8];
@@ -365,11 +361,13 @@ public class Board {
 							break;
 						}
 					}
+					
+				//daca este rege sau cal
 				} else {
 
 					nextRow = (row + pieceToMove.getY()[i]);
 					nextColumn = (column + pieceToMove.getX()[i]);
-	
+
 					if (Piece.isValid(nextRow, nextColumn)) {
 						Piece posWhere = board.getPiece(new int[] {
 								nextRow, nextColumn });
@@ -392,9 +390,7 @@ public class Board {
 						} else {
 							array.add(nextRow * 8 + nextColumn);
 						}
-					} else {
-						break;
-					}
+					} 
 				}
 			}
 		}

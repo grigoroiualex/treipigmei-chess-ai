@@ -353,10 +353,6 @@ public class Brain {
 	
 	public static int negaMax(Clone chessBoard, int depth){
         if(depth == 0){
-            //System.out.println("plansa in dept = 0 ");
-            //System.out.println(chessBoard.printBoard());
-           // System.out.println("-----------------------------------------------------");
-     
             Evaluation evaluatedBoard = new Evaluation(chessBoard);
             return evaluatedBoard.eval();
         }
@@ -368,6 +364,7 @@ public class Brain {
             if (chessBoard.getWhites().size() == 1 && chessBoard.getBlacks().size() == 1) {
                 return 0;
             } else {
+                System.out.println("intra pe return -1 cand un rege e in sah");
                 return -1;
             }
         }
@@ -385,6 +382,9 @@ public class Brain {
                 if(depth == 2)
                     bestMove = move;
             }
+        }
+        if(bestMove == null){
+            bestMove = moves.get(0);
         }
         return bestScore;
 	}

@@ -194,7 +194,7 @@ public class ChessBoardConnect {
                     // generate response move
                     //String move = Brain.think();
                     Brain.bestMove = null;
-                    //System.out.println("Plansa inainte de mutare este:\n" + chessBoard.printBoard());
+                    System.out.println("Plansa inainte de mutare este:\n" + chessBoard.printBoard());
                     Clone clone = chessBoard.newClone();
                     Brain.negaMax(clone, 2);
                     //System.out.println("Clona este:\n" + clone.printBoard());
@@ -202,7 +202,7 @@ public class ChessBoardConnect {
                     //System.out.println("muatarea gandita este: " + move);
                     // and then apply it
                     if (chessBoard.moveMyPiece(new Move(move))) {
-                        //System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
+                        System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
                         Functions.output("move " + move);
                         onTurn = false;
                     } else {

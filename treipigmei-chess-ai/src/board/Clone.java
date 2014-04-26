@@ -206,9 +206,11 @@ public class Clone {
                                 auxPiece = getPiece(move.getTo());
                                 setPiece(move.getTo(), piece);
                                 setPiece(move.getFrom(), null);
-                                if (!isPositionAttacked(currentKing.getPosition())) {
-                                    //System.out.println("Mutarile ");
-                                    //System.out.println(move.toString());
+                                if(piece instanceof King){
+                                    if(!isPositionAttacked(piece.getPosition())){
+                                        array.add(move);
+                                    }
+                                } else if (!isPositionAttacked(currentKing.getPosition())) {
                                     array.add(move);
                                 }
 

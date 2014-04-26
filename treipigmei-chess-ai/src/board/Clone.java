@@ -423,6 +423,8 @@ public class Clone {
                     // the piece is a sliding one
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -438,6 +440,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -453,6 +457,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -468,6 +474,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -483,6 +491,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -498,6 +508,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -513,6 +525,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -528,6 +542,8 @@ public class Clone {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -543,6 +559,8 @@ public class Clone {
                     } else {
                         if(piece instanceof Knight) {
                             return true;
+                        } else {
+                            break;
                         }
                     }
                 }
@@ -591,5 +609,43 @@ public class Clone {
         
         return false;
     }
+    
+    /* Testing */
+    
+    /*public static void main(String[] args) {
+        Board b = Board.getInstance();
+        Piece[][] p = b.getField();
+        
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                p[i][j] = null;
+            }
+        }
+        
+        p[4][4] = new Queen(Colour.BLACK, new int[]{4, 4});
+        p[4][2] = new Bishop(Colour.BLACK, new int[]{4, 2});
+        
+        Clone c = b.newClone();
+  
+        System.out.println(b.printBoard());
+        System.out.println(c.printBoard());
+        
+        ChessBoardConnect con = ChessBoardConnect.getInstance();
+        con.setColour(Colour.WHITE);
+        
+        int[] m = new int[2];
+        
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(i == 4 && (j == 4 || j == 2)) {
+                    System.out.print("x ");
+                    continue;
+                } 
+                m[0] = i; m[1] = j;
+                System.out.print((c.isPositionAttacked(m) ? "1" : "0") + " ");
+            }
+            System.out.println();
+        }
+    }*/
 
 }

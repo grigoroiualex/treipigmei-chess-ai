@@ -506,5 +506,10 @@ public class Board {
 	public Clone newClone() {
 	    return new Clone(field, whites, blacks);
 	}
-	            
+	
+	
+	/* Testing */
+	public Piece[][] getField() {
+	    return field;
+	}
 }

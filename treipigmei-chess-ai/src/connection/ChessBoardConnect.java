@@ -1,6 +1,7 @@
 package connection;
 
 import helpers.*;
+import helpers.Flags.Colour;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -217,5 +218,10 @@ public class ChessBoardConnect {
                 cachedMove = new String(input);
             }
         }
+    }
+    
+    /* Testing */
+    public void setColour(Flags.Colour c) {
+        chessEngineColour = c;
     }
 }

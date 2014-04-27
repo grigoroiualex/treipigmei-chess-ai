@@ -647,6 +647,13 @@ public class Clone {
                         setPiece(new int[]{x, y}, king);
                         System.out.println("Piesa: king" +  " mutarea: " + (8 - x) +" " +(y + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                         break;
+                    } else if(posWhere == null){
+                        m.setFrom(new int[]{x, y});
+                        m.setTo(new int[]{nextRow, nextColumn});
+                        move = m.toString();
+                        setPiece(new int[]{x, y}, king);
+                        System.out.println("Piesa: king" +  " mutarea: " + (8 - x) +" " +(y + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                        break;
                     }
                 }
                 

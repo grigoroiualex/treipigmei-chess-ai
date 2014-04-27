@@ -258,7 +258,7 @@ public class Board {
 		
 		currentPiece.setPosition(move.getTo());
 		
-		setPiece(move.getTo(), getPiece(move.getFrom()));
+		setPiece(move.getTo(), currentPiece);
 		setPiece(move.getFrom(), null);
 		
 	}

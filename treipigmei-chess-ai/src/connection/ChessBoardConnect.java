@@ -212,32 +212,6 @@ public class ChessBoardConnect {
                         
                         move = clone.getKingOutOfCheck(chessEngineColour);
                         
-                        /*int[] kx, ky;
-                        kx = king.getX();
-                        ky = king.getY();
-                        Move m = new Move();
-                        
-                        // verific toate pozitiile de primprejurul regelui daca sunt valide
-                        for(int i = 0; i < 8; i++) {
-                            if(Piece.isValid(x + kx[i], y + ky[i])) {
-                                if(!clone.isPositionAttacked(new int[]{x + kx[i], y + ky[i]})) {
-                                    // daca am gasit una o setez ca mutare
-                                    m.setFrom(new int[]{x, y});
-                                    m.setTo(new int[]{x + kx[i], y + ky[i]});
-                                    move = m.toString();
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        // daca nu am gasit nici una, dau o mutare in afara tablei de joc
-                        // ca sa dea resign programul
-                        if(move == null) {
-                            m.setFrom(new int[]{x, y});
-                            m.setTo(new int[]{8, 8});
-                            move = m.toString();
-                        }*/
-                        
                         System.out.println("Move (was in check): " + move);
                         
                     } else {

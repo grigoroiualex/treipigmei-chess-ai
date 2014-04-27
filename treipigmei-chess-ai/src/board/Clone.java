@@ -303,8 +303,7 @@ public class Clone {
                         // daca nu ies din matrice
                         if (Piece.isValid(nextRow, nextColumn)) {
 
-                            Piece posWhere = getPiece(new int[] {
-                                    nextRow, nextColumn });
+                            Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
                             // daca am piese pe pozitia unde vreau sa mut
                             if (posWhere != null) {
                                 /*
@@ -312,8 +311,7 @@ public class Clone {
                                  * altfel adaug pozitia ca mutare valida si apoi
                                  * ma opresc
                                  */
-                                if (posWhere.getColor() == pieceToMove
-                                        .getColor()) {
+                                if (posWhere.getColor() == pieceToMove.getColor()) {
                                     break;
                                 } else {
                                     //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
@@ -331,14 +329,29 @@ public class Clone {
                             break;
                         }
                     }
-                } else {
-
+                } else if(pieceToMove instanceof King){
                     nextRow = (row + pieceToMove.getY()[i]);
                     nextColumn = (column + pieceToMove.getX()[i]);
 
                     if (Piece.isValid(nextRow, nextColumn)) {
-                        Piece posWhere = getPiece(new int[] {
-                                nextRow, nextColumn });
+                        Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
+                        setPiece(new int[]{row, column}, null);
+                        
+                        if(!isPositionAttacked(new int[]{nextRow, nextColumn})) {
+                            if((posWhere != null) && (posWhere.getColor() != pieceToMove.getColor())) {
+                                array.add(nextRow * 8 + nextColumn);
+                                System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                            }
+                        }
+                        
+                        setPiece(new int[]{row, column}, pieceToMove);
+                    }
+                } else {
+                    nextRow = (row + pieceToMove.getY()[i]);
+                    nextColumn = (column + pieceToMove.getX()[i]);
+
+                    if (Piece.isValid(nextRow, nextColumn)) {
+                        Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
                         // daca am piese pe pozitia unde vreau sa mut
                         if (posWhere != null) {
                             /*
@@ -346,8 +359,7 @@ public class Clone {
                              * altfel adaug pozitia ca mutare valida si apoi
                              * ma opresc
                              */
-                            if (posWhere.getColor() == pieceToMove
-                                    .getColor()) {
+                            if (posWhere.getColor() == pieceToMove.getColor()) {
                                 break;
                             } else {
                                 //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row ) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
@@ -608,6 +620,51 @@ public class Clone {
         return false;
     }
     
+    public String getKingOutOfCheck(Colour chessEngineColour) {
+        Move m = new Move();
+        String move = null;
+        int x, y, nextRow, nextColumn;
+        Piece king = (chessEngineColour == Colour.WHITE) ? Flags.WHITE_KING : Flags.BLACK_KING; 
+        x = king.getPosition()[0];
+        y = king.getPosition()[1];
+        int[] kx, ky;
+        kx = king.getX();
+        ky = king.getY();
+        
+        // verific toate pozitiile de primprejurul regelui daca sunt valide
+        for(int i = 0; i < 8; i++) {
+            nextRow = x + kx[i];
+            nextColumn = y + ky[i];
+            
+            if(Piece.isValid(nextRow, nextColumn)) {
+                Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
+                setPiece(new int[]{x, y}, null);
+                if(!isPositionAttacked(new int[]{nextRow, nextColumn})) {
+                    if((posWhere != null) && (posWhere.getColor() != chessEngineColour)) {
+                        m.setFrom(new int[]{x, y});
+                        m.setTo(new int[]{nextRow, nextColumn});
+                        move = m.toString();
+                        setPiece(new int[]{x, y}, king);
+                        System.out.println("Piesa: king" +  " mutarea: " + (8 - x) +" " +(y + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                        break;
+                    }
+                }
+                
+                setPiece(new int[]{x, y}, king);
+            }
+        }
+        
+        // daca nu am gasit nici una, dau o mutare in afara tablei de joc
+        // ca sa dea resign programul
+        if(move == null) {
+            m.setFrom(new int[]{x, y});
+            m.setTo(new int[]{8, 8});
+            move = m.toString();
+        }
+        
+        return move;
+    }
+    
     /* Testing */
     
     public static void main(String[] args) {
@@ -620,7 +677,7 @@ public class Clone {
             }
         }
         
-        p[0][0] = new Rook(Colour.BLACK, new int[]{0, 0});
+        /*p[0][0] = new Rook(Colour.BLACK, new int[]{0, 0});
         p[0][2] = new Bishop(Colour.BLACK, new int[]{0, 2});
         p[0][3] = new Queen(Colour.BLACK, new int[]{0,3});
         p[0][4] = new King(Colour.BLACK, new int[]{0,4});
@@ -646,15 +703,26 @@ public class Clone {
         p[7][0] = new Rook(Colour.WHITE, new int[]{7,0});
         p[7][4] = new King(Colour.WHITE, new int[]{7,4});
         p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
-        p[7][7] = new Rook(Colour.WHITE, new int[]{7,7});
+        p[7][7] = new Rook(Colour.WHITE, new int[]{7,7});*/
+        
+        p[0][4] = new Rook(Colour.WHITE, new int[]{0,4});
+        p[1][0] = new King(Colour.BLACK, new int[]{1,0});
+        p[2][0] = new WhitePawn(Colour.WHITE, new int[]{2,0});
+        p[4][2] = new WhitePawn(Colour.WHITE, new int[]{4,2});
+        p[4][3] = new WhitePawn(Colour.WHITE, new int[]{4,3});
+        p[5][1] = new King(Colour.WHITE, new int[]{5,1});
         
         Clone c = b.newClone();
         ChessBoardConnect con = ChessBoardConnect.getInstance();
-        con.setColour(Colour.WHITE);
+        con.setColour(Colour.BLACK);
         
         System.out.println(c.printBoard());
         System.out.println();
-        System.out.println(c.isPositionAttacked(new int[]{7,4}));
+        System.out.println(c.isPositionAttacked(new int[]{0,0}));
+        System.out.println(c.isPositionAttacked(new int[]{0,1}));
+        System.out.println(c.isPositionAttacked(new int[]{1,1}));
+        System.out.println(c.isPositionAttacked(new int[]{2,1}));
+        System.out.println(c.isPositionAttacked(new int[]{2,0}));
     }
 
 }

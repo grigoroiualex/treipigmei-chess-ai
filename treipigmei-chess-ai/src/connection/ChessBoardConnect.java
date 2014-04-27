@@ -209,7 +209,10 @@ public class ChessBoardConnect {
                     
                     if(clone.isPositionAttacked(new int[]{x, y})) {
                         System.out.println("Regele " + chessEngineColour + " e atacat");
-                        int[] kx, ky;
+                        
+                        move = clone.getKingOutOfCheck(chessEngineColour);
+                        
+                        /*int[] kx, ky;
                         kx = king.getX();
                         ky = king.getY();
                         Move m = new Move();
@@ -233,7 +236,7 @@ public class ChessBoardConnect {
                             m.setFrom(new int[]{x, y});
                             m.setTo(new int[]{8, 8});
                             move = m.toString();
-                        }
+                        }*/
                         
                         System.out.println("Move (was in check): " + move);
                         

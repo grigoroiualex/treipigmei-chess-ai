@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import piece.BlackPawn;
+import piece.Piece;
 import board.Board;
 import board.Clone;
 import board.Move;
@@ -194,13 +196,54 @@ public class ChessBoardConnect {
                 if (legalMove) {
                     // generate response move
                     //String move = Brain.think();
+                    String move = null;
                     Brain.bestMove = null;
                     System.out.println("Plansa inainte de mutare este:\n" + chessBoard.printBoard());
                     Clone clone = chessBoard.newClone();
-                    Brain.negaMax(clone, 2);
-                    //System.out.println("Clona este:\n" + clone.printBoard());
-                    String move = Brain.bestMove.toString();
-                    //System.out.println("muatarea gandita este: " + move);
+
+                    // Verific prima data daca regele e in sah
+                    int x, y;
+                    Piece king = (chessEngineColour == Colour.WHITE) ? Flags.WHITE_KING : Flags.BLACK_KING; 
+                    x = king.getPosition()[0];
+                    y = king.getPosition()[1];
+                    
+                    if(clone.isPositionAttacked(new int[]{x, y})) {
+                        System.out.println("Regele " + chessEngineColour + " e atacat");
+                        int[] kx, ky;
+                        kx = king.getX();
+                        ky = king.getY();
+                        Move m = new Move();
+                        
+                        // verific toate pozitiile de primprejurul regelui daca sunt valide
+                        for(int i = 0; i < 8; i++) {
+                            if(Piece.isValid(x + kx[i], y + ky[i])) {
+                                if(!clone.isPositionAttacked(new int[]{x + kx[i], y + ky[i]})) {
+                                    // daca am gasit una o setez ca mutare
+                                    m.setFrom(new int[]{x, y});
+                                    m.setTo(new int[]{x + kx[i], y + ky[i]});
+                                    move = m.toString();
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // daca nu am gasit nici una, dau o mutare in afara tablei de joc
+                        // ca sa dea resign programul
+                        if(move == null) {
+                            m.setFrom(new int[]{x, y});
+                            m.setTo(new int[]{8, 8});
+                            move = m.toString();
+                        }
+                        
+                        System.out.println("Move (was in check): " + move);
+                        
+                    } else {
+                        Brain.negaMax(clone, 2);
+                        //System.out.println("Clona este:\n" + clone.printBoard());
+                        move = Brain.bestMove.toString();
+                        //System.out.println("muatarea gandita este: " + move);
+                    }
+                    
                     // and then apply it
                     if (chessBoard.moveMyPiece(new Move(move))) {
                         System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());

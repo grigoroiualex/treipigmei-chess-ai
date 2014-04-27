@@ -182,6 +182,8 @@ public class Brain {
                     // the piece is a sliding one
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
 	        }
@@ -197,6 +199,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -212,6 +216,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
 	        }
@@ -227,6 +233,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Rook || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
 	        }
@@ -242,6 +250,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
 	        }
@@ -257,6 +267,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -272,6 +284,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -287,6 +301,8 @@ public class Brain {
                 } else {
                     if(piece instanceof Bishop || piece instanceof Queen) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }

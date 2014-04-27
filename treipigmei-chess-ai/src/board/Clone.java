@@ -408,10 +408,10 @@ public class Clone {
         int y = pos[1];
         int i, j;
         int[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
-        int[] ky = {-1, 1, -2, 2, -2, 2, -1, 2};
+        int[] ky = {-1, 1, -2, 2, -2, 2, -1, 1};
         
         i = y - 1;
-        // for every position upwards
+        // for every position to the left
         while(Piece.isValid(x, i)) {
             // checks for any piece
             if((piece = board.getPiece(new int[]{x, i})) != null) {
@@ -432,7 +432,7 @@ public class Clone {
         }
         
         i = y + 1;
-        // for every position upwards
+        // for every position to the right
         while(Piece.isValid(x, i)) {
             if((piece = board.getPiece(new int[]{x, i})) != null) {
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
@@ -449,7 +449,7 @@ public class Clone {
         }
         
         i = x - 1;
-        // for every position to the left       
+        // for every position upwards   
         while(Piece.isValid(i, y)) {
             if((piece = board.getPiece(new int[]{i, y})) != null) {
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
@@ -466,7 +466,7 @@ public class Clone {
         }
         
         i = x + 1;
-        // for every position to the right
+        // for every position downwards
         while(Piece.isValid(i, y)) {
             if((piece = board.getPiece(new int[]{i, y})) != null) {
                 if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
@@ -559,8 +559,6 @@ public class Clone {
                     } else {
                         if(piece instanceof Knight) {
                             return true;
-                        } else {
-                            break;
                         }
                     }
                 }
@@ -612,7 +610,7 @@ public class Clone {
     
     /* Testing */
     
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         Board b = Board.getInstance();
         Piece[][] p = b.getField();
         
@@ -622,30 +620,41 @@ public class Clone {
             }
         }
         
-        p[4][4] = new Queen(Colour.BLACK, new int[]{4, 4});
-        p[4][2] = new Bishop(Colour.BLACK, new int[]{4, 2});
+        p[0][0] = new Rook(Colour.BLACK, new int[]{0, 0});
+        p[0][2] = new Bishop(Colour.BLACK, new int[]{0, 2});
+        p[0][3] = new Queen(Colour.BLACK, new int[]{0,3});
+        p[0][4] = new King(Colour.BLACK, new int[]{0,4});
+        p[0][7] = new Rook(Colour.BLACK, new int[]{0,7});
+        p[1][1] = new BlackPawn(Colour.BLACK, new int[]{1,1});
+        p[1][2] = new BlackPawn(Colour.BLACK, new int[]{1,2});
+        p[1][5] = new BlackPawn(Colour.BLACK, new int[]{1,5});
+        p[2][0] = new BlackPawn(Colour.BLACK, new int[]{2,0});
+        p[2][5] = new BlackPawn(Colour.BLACK, new int[]{2,5});
+        p[2][7] = new BlackPawn(Colour.BLACK, new int[]{2,7});
+        p[3][1] = new WhitePawn(Colour.WHITE, new int[]{3,1});
+        p[3][3] = new WhitePawn(Colour.WHITE, new int[]{3,3});
+        p[4][1] = new Knight(Colour.BLACK, new int[]{4,3});
+        p[4][5] = new BlackPawn(Colour.BLACK, new int[]{4,5});
+        p[5][2] = new Knight(Colour.WHITE, new int[]{5,2});
+        p[5][5] = new WhitePawn(Colour.WHITE, new int[]{5,5});
+        p[6][0] = new WhitePawn(Colour.WHITE, new int[]{6,0});
+        p[6][1] = new WhitePawn(Colour.WHITE, new int[]{6,1});
+        p[6][2] = new WhitePawn(Colour.WHITE, new int[]{6,2});
+        p[6][4] = new Knight(Colour.WHITE, new int[]{6,4});
+        p[6][6] = new WhitePawn(Colour.WHITE, new int[]{6,6});
+        p[6][7] = new WhitePawn(Colour.WHITE, new int[]{6,7});
+        p[7][0] = new Rook(Colour.WHITE, new int[]{7,0});
+        p[7][4] = new King(Colour.WHITE, new int[]{7,4});
+        p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
+        p[7][7] = new Rook(Colour.WHITE, new int[]{7,7});
         
         Clone c = b.newClone();
-  
-        System.out.println(b.printBoard());
-        System.out.println(c.printBoard());
-        
         ChessBoardConnect con = ChessBoardConnect.getInstance();
         con.setColour(Colour.WHITE);
         
-        int[] m = new int[2];
-        
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                if(i == 4 && (j == 4 || j == 2)) {
-                    System.out.print("x ");
-                    continue;
-                } 
-                m[0] = i; m[1] = j;
-                System.out.print((c.isPositionAttacked(m) ? "1" : "0") + " ");
-            }
-            System.out.println();
-        }
-    }*/
+        System.out.println(c.printBoard());
+        System.out.println();
+        System.out.println(c.isPositionAttacked(new int[]{7,4}));
+    }
 
 }

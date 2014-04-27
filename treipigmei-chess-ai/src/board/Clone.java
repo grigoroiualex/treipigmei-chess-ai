@@ -101,13 +101,13 @@ public class Clone {
         Piece currentPiece = getPiece(move.getFrom());
 
         // daca mut un rege, salvez pozitia unde il mut
-        if (currentPiece instanceof King) {
+        /*if (currentPiece instanceof King) {
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
                 Flags.WHITE_KING.setPosition(move.getTo());
             } else {
                 Flags.BLACK_KING.setPosition(move.getTo());
             }
-        }
+        }*/
 
         // daca se face promovarea pionului il elimin din lista de piese si pun 
         // o regina in locul lui, ca mai apoi sa se execute mutarea

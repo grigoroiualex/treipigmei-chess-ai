@@ -307,8 +307,9 @@ public class Clone {
             nextRow = (row + pieceToMove.getY()[0]);
             nextColumn = (column + pieceToMove.getX()[0]);
             Piece posWhere = null;
-            if(nextRow < 8 && nextColumn < 8){
-                    posWhere = getPiece(new int[] { nextRow, nextColumn });
+//            if(nextRow < 8 && nextColumn < 8){
+            if(Piece.isValid(nextRow, nextColumn)) {
+                posWhere = getPiece(new int[] { nextRow, nextColumn });
             }
            
             if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {

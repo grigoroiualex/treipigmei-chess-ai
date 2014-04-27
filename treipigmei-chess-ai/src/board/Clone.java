@@ -444,7 +444,7 @@ public class Clone {
         return q;
     }
     
-    public boolean isPositionAttacked(int[] pos) {
+    /*public boolean isPositionAttacked(int[] pos) {
         Clone board = this;
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Piece piece;
@@ -650,6 +650,149 @@ public class Clone {
         }
         
         return false;
+    }*/
+    
+    public boolean isPositionAttacked(int[] pos) {
+        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+        Piece p = getPiece(pos);
+        /*if(p != null && p.getColor() != chessBoardConnect.getChessEngineColour()) {
+            return false;
+        }*/
+        
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                p = getPiece(new int[]{i, j});
+                if(p != null && p.getColor() != chessBoardConnect.getChessEngineColour()) {
+                    if(p instanceof Rook || p instanceof Queen) {
+                        // check upwards
+                        int k = i + 1;
+                        while(Piece.isValid(k, j)) {
+                            if(pos[0] == k && pos[1] == j) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{k, j}) != null) {
+                                break;
+                            }
+                            
+                            k++;
+                        }
+                        
+                        // check downwards
+                        k = i - 1;
+                        while(Piece.isValid(k, j)) {
+                            if(pos[0] == k && pos[1] == j) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{k, j}) != null) {
+                                break;
+                            }
+                            
+                            k--;
+                        }
+                        
+                        // check to the right
+                        k = j + 1;
+                        while(Piece.isValid(i, k)) {
+                            if(pos[0] == i && pos[1] == k) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{i, k}) != null) {
+                                break;
+                            }
+                            
+                            k++;
+                        }
+                        
+                        // check to the left
+                        k = j - 1;
+                        while(Piece.isValid(i, k)) {
+                            if(pos[0] == i && pos[1] == k) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{i, k}) != null) {
+                                break;
+                            }
+                            
+                            k--;
+                        }
+                    } else if(p instanceof Bishop || p instanceof Queen) {
+                        int k, l;
+                        
+                        // check NE
+                        k = i + 1; l = j - 1;
+                        while(Piece.isValid(k, l)) {
+                            if(pos[0] == k && pos[1] == l) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{k, l}) != null) {
+                                break;
+                            }
+                            
+                            k++; l--;
+                        } 
+                        
+                        // check SE
+                        k = i + 1; l = j + 1;
+                        while(Piece.isValid(k, l)) {
+                            if(pos[0] == k && pos[1] == l) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{k, l}) != null) {
+                                break;
+                            }
+                            
+                            k++; l++;
+                        }
+                        
+                        // check SW
+                        k = i - 1; l = j + 1;
+                        while(Piece.isValid(k, l)) {
+                            if(pos[0] == k && pos[1] == l) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{k, l}) != null) {
+                                break;
+                            }
+                            
+                            k--; l++;
+                        }
+                        
+                        // check NW
+                        k = i - 1; l = j - 1;
+                        while(Piece.isValid(k, l)) {
+                            if(pos[0] == k && pos[1] == l) {
+                                return true;
+                            }
+                            
+                            if(getPiece(new int[]{k, l}) != null) {
+                                break;
+                            }
+                            
+                            k--; l--;
+                        }
+                    } else if(p instanceof Knight || p instanceof BlackPawn || p instanceof WhitePawn || p instanceof King) {
+                        int[] ky = p.getX();
+                        int[] kx = p.getY();
+                        
+                        for(int k = 0; k < p.getX().length; k++) {
+                            if((i + kx[k] == pos[0]) && (j + ky[k] == pos[1])) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        return false;
     }
     
     public String getKingOutOfCheck(Colour chessEngineColour) {
@@ -660,8 +803,8 @@ public class Clone {
         x = king.getPosition()[0];
         y = king.getPosition()[1];
         int[] kx, ky;
-        kx = king.getX();
-        ky = king.getY();
+        ky = king.getX();
+        kx = king.getY();
         
         // verific toate pozitiile de primprejurul regelui daca sunt valide
         for(int i = 0; i < 8; i++) {
@@ -745,24 +888,32 @@ public class Clone {
         p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
         p[7][7] = new Rook(Colour.WHITE, new int[]{7,7});*/
         
-        p[0][4] = new Rook(Colour.WHITE, new int[]{0,4});
+        /*p[0][4] = new Rook(Colour.WHITE, new int[]{0,4});
         p[1][0] = new King(Colour.BLACK, new int[]{1,0});
         p[2][0] = new WhitePawn(Colour.WHITE, new int[]{2,0});
         p[4][2] = new WhitePawn(Colour.WHITE, new int[]{4,2});
         p[4][3] = new WhitePawn(Colour.WHITE, new int[]{4,3});
-        p[5][1] = new King(Colour.WHITE, new int[]{5,1});
+        p[5][1] = new King(Colour.WHITE, new int[]{5,1});*/
+        
+        p[7][3] = new Queen(Colour.BLACK, new int[]{7,3});
+        p[7][4] = new King(Colour.WHITE, new int[]{7,4});
+        p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
+        p[6][5] = new WhitePawn(Colour.WHITE, new int[]{6,5});
         
         Clone c = b.newClone();
         ChessBoardConnect con = ChessBoardConnect.getInstance();
-        con.setColour(Colour.BLACK);
+        con.setColour(Colour.WHITE);
         
         System.out.println(c.printBoard());
         System.out.println();
-        System.out.println(c.isPositionAttacked(new int[]{0,0}));
-        System.out.println(c.isPositionAttacked(new int[]{0,1}));
-        System.out.println(c.isPositionAttacked(new int[]{1,1}));
-        System.out.println(c.isPositionAttacked(new int[]{2,1}));
-        System.out.println(c.isPositionAttacked(new int[]{2,0}));
+        System.out.println(c.isPositionAttacked(new int[]{7,3}));
+        
+        /*System.out.println();
+        System.out.println(c.isPositionAttackedAlt(new int[]{0,0}));
+        System.out.println(c.isPositionAttackedAlt(new int[]{0,1}));
+        System.out.println(c.isPositionAttackedAlt(new int[]{1,1}));
+        System.out.println(c.isPositionAttackedAlt(new int[]{2,1}));
+        System.out.println(c.isPositionAttackedAlt(new int[]{2,0}));*/
     }
 
 }

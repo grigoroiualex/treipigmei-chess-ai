@@ -95,6 +95,34 @@ public class Clone {
         return field[i][j];
     }
 
+    public int[] getKingPosition(Flags.Colour engineColour) { 
+        
+        if(engineColour == Flags.Colour.WHITE) {
+            for(int i = 7; i >= 0; i--) {
+                for(int j = 7; j >= 0; j--) {
+                    Piece piece = getPiece(new int[] {i, j});
+                    if(piece != null) {
+                        if(piece instanceof King && piece.getColor() == engineColour) {
+                            return new int[]{i, j};
+                        }
+                    }
+                }
+            }
+        } else {
+            for(int i = 0; i < 8; i++) {
+                for(int j = 0; j < 8; j++) {
+                    Piece piece = getPiece(new int[]{i, j});
+                    if(piece != null) {
+                        if(piece instanceof King && piece.getColor() == engineColour) {
+                            return new int[]{i, j};
+                        }
+                    }
+                }
+            }
+        }
+        return new int[]{0,0};
+    }
+    
     public void applyPieceMove(Move move) {
 
         Piece posWhere = getPiece(move.getTo());
@@ -158,7 +186,7 @@ public class Clone {
        
 //        currentPiece.setPosition(move.getTo());
 
-        setPiece(move.getTo(), getPiece(move.getFrom()));
+        setPiece(move.getTo(), currentPiece);
         setPiece(move.getFrom(), null);
 
     }
@@ -170,15 +198,18 @@ public class Clone {
     public ArrayList<Move> getAllMoves() {
         ArrayList<Move> array = new ArrayList<Move>();
         King currentKing;
+        int[] kingPosition = new int[2];
 
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
         if (chessEngineColour == Flags.Colour.WHITE) {
-            currentKing = Flags.WHITE_KING;
+            //currentKing = Flags.WHITE_KING;
+            kingPosition = getKingPosition(Flags.Colour.WHITE);
         } else {
-            currentKing = Flags.BLACK_KING;
+            //currentKing = Flags.BLACK_KING;
+            kingPosition = getKingPosition(Flags.Colour.BLACK);
         }
-
+        
         Piece piece, auxPiece;
         ArrayList<Integer> allValidMoves;
         
@@ -210,7 +241,7 @@ public class Clone {
                                     if(!isPositionAttacked(piece.getPosition())){
                                         array.add(move);
                                     }
-                                } else if (!isPositionAttacked(currentKing.getPosition())) {
+                                } else if (!isPositionAttacked(kingPosition)) {
                                     array.add(move);
                                 }
 
@@ -639,6 +670,7 @@ public class Clone {
             if(Piece.isValid(nextRow, nextColumn)) {
                 Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
                 setPiece(new int[]{x, y}, null);
+                System.out.println("getKingOut..: pozitia verificata: " + (8-nextRow) + " "+ (nextColumn+1));
                 if(!isPositionAttacked(new int[]{nextRow, nextColumn})) {
                     if((posWhere != null) && (posWhere.getColor() != chessEngineColour)) {
                         m.setFrom(new int[]{x, y});

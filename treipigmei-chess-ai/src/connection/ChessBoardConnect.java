@@ -1,13 +1,13 @@
 package connection;
 
 import helpers.*;
+
 import helpers.Flags.Colour;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import piece.BlackPawn;
 import piece.Piece;
 import board.Board;
 import board.Clone;
@@ -185,6 +185,9 @@ public class ChessBoardConnect {
             if(input.matches("[a-h][1-8][a-h][1-8][q]*")) {
                 onTurn = true;
                 
+                if(input.length() == 5){
+                    Flags.PROMOTION = true;
+                }
                 // Apply the received move on the board,
                 if (chessBoard.movePiece(new Move(input))) {
                     legalMove = true;
@@ -194,8 +197,6 @@ public class ChessBoardConnect {
                 }
 
                 if (legalMove) {
-                    // generate response move
-                    //String move = Brain.think();
                     String move = null;
                     Brain.bestMove = null;
                     System.out.println("Plansa inainte de mutare este:\n" + chessBoard.printBoard());
@@ -217,15 +218,18 @@ public class ChessBoardConnect {
                     } else {
                         Brain.negaMax(clone, 2);
                         //System.out.println("Clona este:\n" + clone.printBoard());
-                        move = Brain.bestMove.toString();
+                        if(Brain.bestMove != null)
+                            move = Brain.bestMove.toString();
                         //System.out.println("muatarea gandita este: " + move);
                     }
                     
                     // and then apply it
-                    if (chessBoard.moveMyPiece(new Move(move))) {
-                        System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
-                        Functions.output("move " + move);
-                        onTurn = false;
+                    if (move == null) {
+                        Functions.output("resign");
+                    } else if (chessBoard.moveMyPiece(new Move(move))) {
+                            System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
+                            Functions.output("move " + move);
+                            onTurn = false;
                     } else {
                         Functions.output("resign");
                     }

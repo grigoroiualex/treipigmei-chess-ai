@@ -23,12 +23,14 @@ import piece.WhitePawn;
 public class Clone {
     private ArrayList<Piece> whites, blacks;
     private Piece[][] field;
+    private boolean promotion = false; 
+    private Flags.Colour engineColour;
 
     public Clone() {
 
     }
 
-    public Clone(Piece [][] f, ArrayList<Piece> w, ArrayList<Piece> b) {
+    public Clone(Piece [][] f, ArrayList<Piece> w, ArrayList<Piece> b, boolean promotion, Flags.Colour engineColour) {
 
         field = new Piece[8][8];
         whites = new ArrayList<>();
@@ -47,15 +49,16 @@ public class Clone {
         for (int i = 0; i < b.size(); i++) {
             this.blacks.add(b.get(i));
         }
-        
-        //System.out.println("Clona:\n" + printBoard());
+
+        this.promotion = promotion;
+        this.engineColour = engineColour;
     }
 
     /**
      * @return a copy of current clone
      */
     public Clone newClone() {
-        return new Clone(field, whites, blacks);
+        return new Clone(field, whites, blacks, promotion, engineColour);
     }
 
     /**
@@ -95,14 +98,25 @@ public class Clone {
         return field[i][j];
     }
 
-    public int[] getKingPosition(Flags.Colour engineColour) { 
-        
-        if(engineColour == Flags.Colour.WHITE) {
+    /**
+     * @return the colour of the engine
+     */
+    public Flags.Colour getEnginesColour() {
+        return this.engineColour;
+    }
+    /**
+     * get king's positiom on board
+     * @param engineColour player's colour
+     * @return the position of king
+     */
+    public int[] getKingPosition(Flags.Colour kingColor) { 
+
+        if(kingColor == Flags.Colour.WHITE) {
             for(int i = 7; i >= 0; i--) {
                 for(int j = 7; j >= 0; j--) {
                     Piece piece = getPiece(new int[] {i, j});
                     if(piece != null) {
-                        if(piece instanceof King && piece.getColor() == engineColour) {
+                        if(piece instanceof King && piece.getColor() == kingColor) {
                             return new int[]{i, j};
                         }
                     }
@@ -113,7 +127,7 @@ public class Clone {
                 for(int j = 0; j < 8; j++) {
                     Piece piece = getPiece(new int[]{i, j});
                     if(piece != null) {
-                        if(piece instanceof King && piece.getColor() == engineColour) {
+                        if(piece instanceof King && piece.getColor() == kingColor) {
                             return new int[]{i, j};
                         }
                     }
@@ -122,30 +136,29 @@ public class Clone {
         }
         return new int[]{0,0};
     }
-    
+
     public void applyPieceMove(Move move) {
 
         Piece posWhere = getPiece(move.getTo());
         Piece currentPiece = getPiece(move.getFrom());
 
-        // daca mut un rege, salvez pozitia unde il mut
-        /*if (currentPiece instanceof King) {
-            if (currentPiece.getColor() == Flags.Colour.WHITE) {
-                Flags.WHITE_KING.setPosition(move.getTo());
-            } else {
-                Flags.BLACK_KING.setPosition(move.getTo());
-            }
-        }*/
+        // verific daca se face promovarea pionului
+        if ((currentPiece instanceof BlackPawn && move.getTo()[0] == 7) ||
+                (currentPiece instanceof WhitePawn) && move.getTo()[0] == 0) {
+            this.promotion = true; 
+        }
 
         // daca se face promovarea pionului il elimin din lista de piese si pun 
         // o regina in locul lui, ca mai apoi sa se execute mutarea
-        if(Flags.PROMOTION) {
+        if (promotion) {
+
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
                 for (int i = 0; i < whites.size(); i++) {
                     if (currentPiece.equals(whites.get(i))) {
                         whites.remove(i);
                         currentPiece = new Queen(Colour.WHITE, move.getFrom());
                         whites.add(currentPiece);
+                        this.promotion = false;
                         break;
                     }
                 }
@@ -155,6 +168,7 @@ public class Clone {
                         blacks.remove(i);
                         currentPiece = new Queen(Colour.BLACK, move.getFrom());
                         blacks.add(currentPiece);
+                        this.promotion = false;
                         break;
                     }
                 }
@@ -171,7 +185,7 @@ public class Clone {
                     if (posWhere.equals(whites.get(i))) {
                         whites.remove(i);
                         break;
-                    
+
                     }
                 }
             } else {
@@ -183,8 +197,6 @@ public class Clone {
                 }
             }
         }
-       
-//        currentPiece.setPosition(move.getTo());
 
         setPiece(move.getTo(), currentPiece);
         setPiece(move.getFrom(), null);
@@ -197,30 +209,27 @@ public class Clone {
      */
     public ArrayList<Move> getAllMoves() {
         ArrayList<Move> array = new ArrayList<Move>();
-        King currentKing;
+        //King currentKing;
         int[] kingPosition = new int[2];
 
-        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
-        if (chessEngineColour == Flags.Colour.WHITE) {
-            //currentKing = Flags.WHITE_KING;
-            kingPosition = getKingPosition(Flags.Colour.WHITE);
-        } else {
-            //currentKing = Flags.BLACK_KING;
-            kingPosition = getKingPosition(Flags.Colour.BLACK);
-        }
-        
+        //ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
+        //Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
+        //if (chessEngineColour == Flags.Colour.WHITE) {
+        kingPosition = getKingPosition(engineColour);
+        //} else {
+        //kingPosition = getKingPosition(Flags.Colour.BLACK);
+        // }
+
         Piece piece, auxPiece;
         ArrayList<Integer> allValidMoves;
-        
-        //System.out.println(printBoard());
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // verific daca se afla vreo piesa pe pozitia [i, j]
                 piece = getPiece(new int [] {i, j});
                 if (piece != null) {
                     // daca da, verific ce culoare are
-                    if (piece.getColor() == chessEngineColour) {
+                    if (piece.getColor() == engineColour) {
                         // daca e piesa mea, ii calculez toate pseudo-mutarile
                         allValidMoves = getValidMoves(piece, i, j);
 
@@ -267,10 +276,7 @@ public class Clone {
 
     public ArrayList<Integer> getValidMoves(Piece pieceToMove, int row, int column) {
 
-        int /*row, column,*/ nextRow, nextColumn;
-
-//        row = pieceToMove.getPosition()[0];
-//        column = pieceToMove.getPosition()[1];
+        int nextRow, nextColumn;
 
         ArrayList<Integer> array = new ArrayList<Integer>();
         //Board board = Board.getInstance();
@@ -295,8 +301,6 @@ public class Clone {
                          * adaug pozitia ca mutare valida si apoi ma opresc
                          */
                         if (posWhere.getColor() != pieceToMove.getColor()) {
-                            //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
-                            
                             array.add(nextRow * 8 + nextColumn);
                         }
                     }
@@ -307,13 +311,13 @@ public class Clone {
             nextRow = (row + pieceToMove.getY()[0]);
             nextColumn = (column + pieceToMove.getX()[0]);
             Piece posWhere = null;
-//            if(nextRow < 8 && nextColumn < 8){
+            //            if(nextRow < 8 && nextColumn < 8){
             if(Piece.isValid(nextRow, nextColumn)) {
                 posWhere = getPiece(new int[] { nextRow, nextColumn });
             }
-           
+
             if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
-               // System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
+                // System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                 array.add(nextRow * 8 + nextColumn);
             }
 
@@ -346,7 +350,6 @@ public class Clone {
                                 if (posWhere.getColor() == pieceToMove.getColor()) {
                                     break;
                                 } else {
-                                    //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                                     array.add(nextRow * 8 + nextColumn);
                                     break;
                                 }
@@ -354,7 +357,6 @@ public class Clone {
                                 // daca nu e piesa machez pozitia ca mutare
                                 // valida
                             } else {
-                                //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                                 array.add(nextRow * 8 + nextColumn);
                             }
                         } else {
@@ -368,14 +370,14 @@ public class Clone {
                     if (Piece.isValid(nextRow, nextColumn)) {
                         Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
                         setPiece(new int[]{row, column}, null);
-                        
+
                         if(!isPositionAttacked(new int[]{nextRow, nextColumn})) {
                             if((posWhere != null) && (posWhere.getColor() != pieceToMove.getColor())) {
                                 array.add(nextRow * 8 + nextColumn);
                                 System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                             }
                         }
-                        
+
                         setPiece(new int[]{row, column}, pieceToMove);
                     }
                 } else {
@@ -394,14 +396,12 @@ public class Clone {
                             if (posWhere.getColor() == pieceToMove.getColor()) {
                                 break;
                             } else {
-                                //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row ) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                                 array.add(nextRow * 8 + nextColumn);
                                 break;
                             }
 
                             // daca nu e piesa machez pozitia ca mutare valida
                         } else {
-                            //System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                             array.add(nextRow * 8 + nextColumn);
                         }
                     }
@@ -424,11 +424,11 @@ public class Clone {
     public ArrayList<Piece> getBlacks() {
         return blacks;
     }
-    
+
     public String printBoard() {
         String q = new String();
         Piece p;
-        
+
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 p = getPiece(new int[] {i, j});
@@ -439,11 +439,11 @@ public class Clone {
                 }
             }
             q = q.concat("\n");
-            
+
         }
         return q;
     }
-    
+
     /*public boolean isPositionAttacked(int[] pos) {
         Clone board = this;
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
@@ -453,7 +453,7 @@ public class Clone {
         int i, j;
         int[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
         int[] ky = {-1, 1, -2, 2, -2, 2, -1, 1};
-        
+
         i = y - 1;
         // for every position to the left
         while(Piece.isValid(x, i)) {
@@ -474,7 +474,7 @@ public class Clone {
             }
             i--;
         }
-        
+
         i = y + 1;
         // for every position to the right
         while(Piece.isValid(x, i)) {
@@ -491,7 +491,7 @@ public class Clone {
             }
             i++;
         }
-        
+
         i = x - 1;
         // for every position upwards   
         while(Piece.isValid(i, y)) {
@@ -508,7 +508,7 @@ public class Clone {
             }
             i--;
         }
-        
+
         i = x + 1;
         // for every position downwards
         while(Piece.isValid(i, y)) {
@@ -525,7 +525,7 @@ public class Clone {
             }
             i++;
         }
-        
+
         i = x + 1; j = y + 1;
         // for every diagonal position NE
         while(Piece.isValid(i, j)) {
@@ -542,7 +542,7 @@ public class Clone {
             }
             i++; j++;
         }
-        
+
         i = x + 1; j = y - 1;
         // for every diagonal position SE
         while(Piece.isValid(i, j)) {
@@ -559,7 +559,7 @@ public class Clone {
             }
             i++; j--;
         }
-        
+
         i = x - 1; j = y - 1;
         // for every diagonal position SV
         while(Piece.isValid(i, j)) {
@@ -576,7 +576,7 @@ public class Clone {
             }
             i--; j--;
         }
-        
+
         i = x - 1; j = y + 1;
         // for every diagonal position NV
         while(Piece.isValid(i, j)) {
@@ -593,7 +593,7 @@ public class Clone {
             }
             i--; j++;
         }
-        
+
         // for every possible knight position
         for(int k = 0; k < 8; k++) {
             if(Piece.isValid(x + kx[k], y + ky[k])) {
@@ -608,7 +608,7 @@ public class Clone {
                 }
             }
         }
-        
+
         // for black pawns
         if(Piece.isValid(x - 1, y - 1)) {
             if((piece = board.getPiece(new int[]{x - 1, y - 1})) != null) {
@@ -618,7 +618,7 @@ public class Clone {
                 }
             }
         }
-        
+
         // for black pawns
         if(Piece.isValid(x - 1, y + 1)) {
             if((piece = board.getPiece(new int[]{x - 1, y + 1})) != null) {
@@ -628,7 +628,7 @@ public class Clone {
                 }
             }
         }
-        
+
         // for white pawns
         if(Piece.isValid(x + 1, y + 1)) {
             if((piece = board.getPiece(new int[]{x + 1, y + 1})) != null) {
@@ -638,7 +638,7 @@ public class Clone {
                 }
             }
         }
-        
+
         // for white pawns
         if(Piece.isValid(x + 1, y - 1)) {
             if((piece = board.getPiece(new int[]{x + 1, y - 1})) != null) {
@@ -648,21 +648,18 @@ public class Clone {
                 }
             }
         }
-        
+
         return false;
     }*/
-    
+
     public boolean isPositionAttacked(int[] pos) {
-        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        Piece p = getPiece(pos);
-        /*if(p != null && p.getColor() != chessBoardConnect.getChessEngineColour()) {
-            return false;
-        }*/
+        Piece p;
+        int l;
         
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 p = getPiece(new int[]{i, j});
-                if(p != null && p.getColor() != chessBoardConnect.getChessEngineColour()) {
+                if(p != null && p.getColor() != engineColour) {
                     if(p instanceof Rook || p instanceof Queen) {
                         // check upwards
                         int k = i + 1;
@@ -670,131 +667,192 @@ public class Clone {
                             if(pos[0] == k && pos[1] == j) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{k, j}) != null) {
                                 break;
                             }
-                            
+
                             k++;
                         }
-                        
+
                         // check downwards
                         k = i - 1;
                         while(Piece.isValid(k, j)) {
                             if(pos[0] == k && pos[1] == j) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{k, j}) != null) {
                                 break;
                             }
-                            
+
                             k--;
                         }
-                        
+
                         // check to the right
                         k = j + 1;
                         while(Piece.isValid(i, k)) {
                             if(pos[0] == i && pos[1] == k) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{i, k}) != null) {
                                 break;
                             }
-                            
+
                             k++;
                         }
-                        
+
                         // check to the left
                         k = j - 1;
                         while(Piece.isValid(i, k)) {
                             if(pos[0] == i && pos[1] == k) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{i, k}) != null) {
                                 break;
                             }
-                            
+
                             k--;
                         }
-                    } else if(p instanceof Bishop || p instanceof Queen) {
-                        int k, l;
-                        
+                        if(p instanceof Queen) {
+                            k = i + 1; l = j - 1;
+                            while(Piece.isValid(k, l)) {
+                                if(pos[0] == k && pos[1] == l) {
+                                    return true;
+                                }
+
+                                if(getPiece(new int[]{k, l}) != null) {
+                                    break;
+                                }
+
+                                k++; l--;
+                            } 
+
+                            // check SE
+                            k = i + 1; l = j + 1;
+                            while(Piece.isValid(k, l)) {
+                                if(pos[0] == k && pos[1] == l) {
+                                    return true;
+                                }
+
+                                if(getPiece(new int[]{k, l}) != null) {
+                                    break;
+                                }
+
+                                k++; l++;
+                            }
+
+                            // check SW
+                            k = i - 1; l = j + 1;
+                            while(Piece.isValid(k, l)) {
+                                if(pos[0] == k && pos[1] == l) {
+                                    return true;
+                                }
+
+                                if(getPiece(new int[]{k, l}) != null) {
+                                    break;
+                                }
+
+                                k--; l++;
+                            }
+
+                            // check NW
+                            k = i - 1; l = j - 1;
+                            while(Piece.isValid(k, l)) {
+                                if(pos[0] == k && pos[1] == l) {
+                                    return true;
+                                }
+
+                                if(getPiece(new int[]{k, l}) != null) {
+                                    break;
+                                }
+
+                                k--; l--;
+                            }
+                        }
+                    } else if(p instanceof Bishop) {
+                        int k;
+
                         // check NE
                         k = i + 1; l = j - 1;
                         while(Piece.isValid(k, l)) {
                             if(pos[0] == k && pos[1] == l) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{k, l}) != null) {
                                 break;
                             }
-                            
+
                             k++; l--;
                         } 
-                        
+
                         // check SE
                         k = i + 1; l = j + 1;
                         while(Piece.isValid(k, l)) {
                             if(pos[0] == k && pos[1] == l) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{k, l}) != null) {
                                 break;
                             }
-                            
+
                             k++; l++;
                         }
-                        
+
                         // check SW
                         k = i - 1; l = j + 1;
                         while(Piece.isValid(k, l)) {
                             if(pos[0] == k && pos[1] == l) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{k, l}) != null) {
                                 break;
                             }
-                            
+
                             k--; l++;
                         }
-                        
+
                         // check NW
                         k = i - 1; l = j - 1;
                         while(Piece.isValid(k, l)) {
                             if(pos[0] == k && pos[1] == l) {
                                 return true;
                             }
-                            
+
                             if(getPiece(new int[]{k, l}) != null) {
                                 break;
                             }
-                            
+
                             k--; l--;
                         }
                     } else if(p instanceof Knight || p instanceof BlackPawn || p instanceof WhitePawn || p instanceof King) {
                         int[] ky = p.getX();
                         int[] kx = p.getY();
-                        
+
                         for(int k = 0; k < p.getX().length; k++) {
                             if((i + kx[k] == pos[0]) && (j + ky[k] == pos[1])) {
-                                return true;
+                                if( (p instanceof WhitePawn && (kx[k] + ky[k] != -1)) ||
+                                        (p instanceof BlackPawn && (kx[k] + ky[k] != 1)) ) {
+                                    return true;
+                                } else if (p instanceof Knight || p instanceof King) {
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
-        
-        
+
         return false;
     }
-    
+
     public String getKingOutOfCheck(Colour chessEngineColour) {
         Move m = new Move();
         String move = null;
@@ -805,12 +863,12 @@ public class Clone {
         int[] kx, ky;
         ky = king.getX();
         kx = king.getY();
-        
+
         // verific toate pozitiile de primprejurul regelui daca sunt valide
         for(int i = 0; i < 8; i++) {
             nextRow = x + kx[i];
             nextColumn = y + ky[i];
-            
+
             if(Piece.isValid(nextRow, nextColumn)) {
                 Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
                 setPiece(new int[]{x, y}, null);
@@ -832,11 +890,11 @@ public class Clone {
                         break;
                     }
                 }
-                
+
                 setPiece(new int[]{x, y}, king);
             }
         }
-        
+
         // daca nu am gasit nici una, dau o mutare in afara tablei de joc
         // ca sa dea resign programul
         if(move == null) {
@@ -844,22 +902,22 @@ public class Clone {
             m.setTo(new int[]{8, 8});
             move = m.toString();
         }
-        
+
         return move;
     }
-    
+
     /* Testing */
-    
+
     public static void main(String[] args) {
         Board b = Board.getInstance();
         Piece[][] p = b.getField();
-        
+
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 p[i][j] = null;
             }
         }
-        
+
         /*p[0][0] = new Rook(Colour.BLACK, new int[]{0, 0});
         p[0][2] = new Bishop(Colour.BLACK, new int[]{0, 2});
         p[0][3] = new Queen(Colour.BLACK, new int[]{0,3});
@@ -887,27 +945,27 @@ public class Clone {
         p[7][4] = new King(Colour.WHITE, new int[]{7,4});
         p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
         p[7][7] = new Rook(Colour.WHITE, new int[]{7,7});*/
-        
+
         /*p[0][4] = new Rook(Colour.WHITE, new int[]{0,4});
         p[1][0] = new King(Colour.BLACK, new int[]{1,0});
         p[2][0] = new WhitePawn(Colour.WHITE, new int[]{2,0});
         p[4][2] = new WhitePawn(Colour.WHITE, new int[]{4,2});
         p[4][3] = new WhitePawn(Colour.WHITE, new int[]{4,3});
         p[5][1] = new King(Colour.WHITE, new int[]{5,1});*/
-        
+
         p[7][3] = new Queen(Colour.BLACK, new int[]{7,3});
         p[7][4] = new King(Colour.WHITE, new int[]{7,4});
         p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
         p[6][5] = new WhitePawn(Colour.WHITE, new int[]{6,5});
-        
+
         Clone c = b.newClone();
         ChessBoardConnect con = ChessBoardConnect.getInstance();
         con.setColour(Colour.WHITE);
-        
+
         System.out.println(c.printBoard());
         System.out.println();
         System.out.println(c.isPositionAttacked(new int[]{7,3}));
-        
+
         /*System.out.println();
         System.out.println(c.isPositionAttackedAlt(new int[]{0,0}));
         System.out.println(c.isPositionAttackedAlt(new int[]{0,1}));

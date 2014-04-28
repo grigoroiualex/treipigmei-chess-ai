@@ -70,7 +70,7 @@ public class Clone {
     /**
      * Put <i>piece</i> at position <i>pos</i>.
      * 
-     * @param position The position to set the given piece at
+     * @param pos The position to set the given piece at
      * @param piece The piece to set
      */
     public void setPiece(int[] pos, Piece piece) {
@@ -82,7 +82,7 @@ public class Clone {
     /**
      * Get <i>piece</i> from position <i>pos</i>.
      * 
-     * @param position The position from where to get the wnated piece
+     * @param pos The position from where to get the wnated piece
      * @return piece The piece at the position given
      */
     public Piece getPiece(int[] pos) {
@@ -103,7 +103,7 @@ public class Clone {
     /**
      * Get the king's position on board
      * 
-     * @param engineColour Player's colour
+     * @param kingColor Player's colour
      * @return position The position of the king
      */
     public int[] getKingPosition(Flags.Colour kingColor) { 

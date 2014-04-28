@@ -11,7 +11,7 @@ public class Move {
     /**
      * Receives the input string and transforms it in table coordinates
      * 
-     * @param move The received move
+     * @param s The received move
      */
     public Move(String s) {
         this.move = new String(s);

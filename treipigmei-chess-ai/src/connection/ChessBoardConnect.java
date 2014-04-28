@@ -70,13 +70,15 @@ public class ChessBoardConnect {
     /**
      * Tells the engine's colour
      * 
-     * @return chessEngineColour
+     * @return chessEngineColour The chess engine colour
      */
     public Flags.Colour getChessEngineColour() {
         return this.chessEngineColour;
     }
 
-    // Takes an input from the input stream
+    /**
+     * Takes an input from the input stream
+     */
     public void readInput() {
 
         try {
@@ -127,11 +129,19 @@ public class ChessBoardConnect {
                 Clone clone = chessBoard.newClone();
                 String move = null;
                 Brain.bestMove = null;
+                int x, y;
+                Piece king = (chessEngineColour == Colour.WHITE) ? Flags.WHITE_KING : Flags.BLACK_KING; 
+                x = king.getPosition()[0];
+                y = king.getPosition()[1];
+                    
                 if(onTurn) {
-                    //                    String move = Brain.think();
-                    Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
-                    if(Brain.bestMove != null) {
-                        move = Brain.bestMove.toString();
+                    if(clone.isPositionAttacked(new int[]{x, y})) {
+                        move = clone.getKingOutOfCheck(chessEngineColour);
+                    } else {
+                        Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                        if(Brain.bestMove != null) {
+                            move = Brain.bestMove.toString();
+                        }
                     }
 
                     if(move == null) {
@@ -151,10 +161,13 @@ public class ChessBoardConnect {
                             legalMove = false;
                         }
 
-                        //                        String move = Brain.think();
-                        Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
-                        if(Brain.bestMove != null) {
-                            move = Brain.bestMove.toString();
+                        if(clone.isPositionAttacked(new int[]{x, y})) {
+                            move = clone.getKingOutOfCheck(chessEngineColour);
+                        } else {
+                            Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                            if(Brain.bestMove != null) {
+                                move = Brain.bestMove.toString();
+                            }
                         }
 
                         if(move == null) {
@@ -167,7 +180,6 @@ public class ChessBoardConnect {
                         }
                     }
                 }
-
                 break;
 
             case "white":
@@ -214,36 +226,24 @@ public class ChessBoardConnect {
                 if (legalMove) {
                     String move = null;
                     Brain.bestMove = null;
-                    System.out.println("Plansa inainte de mutare este:\n" + chessBoard.printBoard());
                     Clone clone = chessBoard.newClone();
-
-                    // Verific prima data daca regele e in sah
                     int x, y;
                     Piece king = (chessEngineColour == Colour.WHITE) ? Flags.WHITE_KING : Flags.BLACK_KING; 
                     x = king.getPosition()[0];
                     y = king.getPosition()[1];
 
                     if(clone.isPositionAttacked(new int[]{x, y})) {
-                        System.out.println("Regele " + chessEngineColour + " e atacat");
-
                         move = clone.getKingOutOfCheck(chessEngineColour);
-
-                        System.out.println("Move (was in check): " + move);
-
                     } else {
                         Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
-                        //System.out.println("Clona este:\n" + clone.printBoard());
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }
-                        //System.out.println("muatarea gandita este: " + move);
                     }
 
-                    // and then apply it
                     if (move == null) {
                         Functions.output("resign");
                     } else if (chessBoard.moveMyPiece(new Move(move))) {
-                        System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
                         Functions.output("move " + move);
                         onTurn = false;
                     } else {
@@ -258,10 +258,5 @@ public class ChessBoardConnect {
                 cachedMove = new String(input);
             }
         }
-    }
-
-    /* Testing */
-    public void setColour(Flags.Colour c) {
-        chessEngineColour = c;
     }
 }

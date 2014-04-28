@@ -6,7 +6,6 @@ import helpers.Flags.Colour;
 import java.util.ArrayList;
 
 import connection.ChessBoardConnect;
-import brain.Brain;
 import piece.*;
 
 /**
@@ -103,10 +102,8 @@ public class Board {
     /**
      * Put <i>piece</i> at position <i>pos</i>.
      * 
-     * @param position
-     *            wanted
-     * @param piece
-     *            that is at position <i>pos</i>
+     * @param pos The position wanted 
+     * @param piece The piece that is at position <i>pos</i>
      */
     public void setPiece(int[] pos, Piece piece) {
         int i = pos[0];
@@ -117,8 +114,7 @@ public class Board {
     /**
      * Get <i>piece</i> from position <i>pos</i>.
      * 
-     * @param position
-     *            on the board
+     * @param pos The position on the board
      * @return piece The piece that is at position pos
      */
     public Piece getPiece(int[] pos) {
@@ -263,145 +259,6 @@ public class Board {
     }
 
     /**
-     * Returns a list of Integers with all pseudo-valid positions where this
-     * piece can be moved. The position in the matrix can be obtained
-     * like this: row = number / 8 column = number % 8
-     * 
-     * @param pieceToMove The piece to be moved
-     * @return validMoves ArrayList with all the valid moves 
-     */
-    public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
-
-        int row, column, nextRow, nextColumn;
-
-        row = pieceToMove.getPosition()[0];
-        column = pieceToMove.getPosition()[1];
-
-        ArrayList<Integer> array = new ArrayList<Integer>();
-        Board board = Board.getInstance();
-
-        if (pieceToMove instanceof BlackPawn
-                || pieceToMove instanceof WhitePawn) {
-            // if it can attack
-            for (int i = 1; i < 3; i++) {
-                nextRow =   (row + pieceToMove.getY()[i]);
-                nextColumn =   (column + pieceToMove.getX()[i]);
-
-                // if it's within bounds
-                if (Piece.isValid(nextRow, nextColumn)) {
-
-                    Piece posWhere = board.getPiece(new int[] { nextRow,
-                            nextColumn });
-                    // if there is any piece
-                    if (posWhere != null) {
-                        // if the piece is of the same colour stops
-                        // otherwise, it adds the move as valid and stops
-                        if (posWhere.getColor() != pieceToMove.getColor()) {
-                            array.add(nextRow * 8 + nextColumn);
-                        }
-                    }
-                }
-            }
-
-            // else it tests if the pawn can advance
-            for(int i = 1; i < 3; i++) {
-            	
-				nextRow = (row + pieceToMove.getY()[0] * i);
-				nextColumn = (column + pieceToMove.getX()[0] * i);
-				
-				if (pieceToMove.getColor() == Colour.WHITE) {
-					if (i == 2 && pieceToMove.getPosition()[0] != 6) {
-						break;
-					}
-				} else {
-					if (i == 2 && pieceToMove.getPosition()[0] != 1) {
-						break;
-					}
-				}
-
-				Piece posWhere = board
-						.getPiece(new int[] { nextRow, nextColumn });
-
-				if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
-					array.add(nextRow * 8 + nextColumn);
-				} else {
-					break;
-				}
-            }
-
-        } else {
-
-            for (int i = 0; i < pieceToMove.getX().length; i++) {
-                if (pieceToMove instanceof Rook
-                        || pieceToMove instanceof Bishop
-                        || pieceToMove instanceof Queen) {
-                    for (int j = 1; j < 8; j++) {
-                        nextRow = (row + pieceToMove.getY()[i] * j);
-                        nextColumn = (column + pieceToMove.getX()[i] * j);
-
-                        // if it is within bounds
-                        if (Piece.isValid(nextRow, nextColumn)) {
-
-                            Piece posWhere = board.getPiece(new int[] {
-                                    nextRow, nextColumn });
-                            // if there is any piece
-                            if (posWhere != null) {
-                                // if the piece is of the same colour stops
-                                // otherwise, it adds the move as valid and stops
-                                if (posWhere.getColor() == pieceToMove
-                                        .getColor()) {
-                                    break;
-                                } else {
-                                    array.add(nextRow * 8 + nextColumn);
-                                    break;
-                                }
-
-                                // if there is no piece adds the move as valid
-                            } else {
-                                array.add(nextRow * 8 + nextColumn);
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                } else {
-
-                    nextRow = (row + pieceToMove.getY()[i]);
-                    nextColumn = (column + pieceToMove.getX()[i]);
-
-                    if (Piece.isValid(nextRow, nextColumn)) {
-                        Piece posWhere = board.getPiece(new int[] {
-                                nextRow, nextColumn });
-                        // if there is any piece
-                        if (posWhere != null) {
-                            // if the piece is of the same colour stops
-                            // otherwise, it adds the move as valid and stops
-                            if (posWhere.getColor() == pieceToMove
-                                    .getColor()) {
-                                break;
-                            } else {
-                                array.add(nextRow * 8 + nextColumn);
-                                break;
-                            }
-
-                            // if there is no piece adds the move as valid
-                        } else {
-                            array.add(nextRow * 8 + nextColumn);
-                        }
-                    } 
-                }
-            }
-        }
-
-        if (array.size() > 0) {
-            return array;
-        }
-
-        return null;
-
-    }
-
-    /**
      * Returns an instance of a random white piece
      * 
      * @return piece One instance of a random white piece
@@ -445,62 +302,6 @@ public class Board {
 
         }
         return q;
-    }
-
-    /**
-     * Creates a list with all valid moves for all pieces
-     * 
-     * @return allMoves An array with all possible moves
-     */
-    public ArrayList<Move> getAllMoves() {
-        ArrayList<Move> array = new ArrayList<Move>();
-        King currentKing;
-
-        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
-        if (chessEngineColour == Flags.Colour.WHITE) {
-            currentKing = Flags.WHITE_KING;
-        } else {
-            currentKing = Flags.BLACK_KING;
-        }
-
-        Piece piece, auxPiece;
-        ArrayList<Integer> allValidMoves;
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                // checks if there is any piece at position [i, j]
-                piece = getPiece(new int [] {i, j});
-                if (piece != null) {
-                    if (piece.getColor() == chessEngineColour) {
-                        // if it's own piece checks all valid moves
-                        allValidMoves = getValidMoves(piece);
-
-                        // from all pseudo-valid moves it only keeps the valid ones
-                        // (those that don't let the king in check)
-                        for (int k = 0; k < allValidMoves.size(); k++) {
-                            Move move = new Move();
-                            move.setFrom(new int [] {i, j});
-                            int row = allValidMoves.get(k) / 8;
-                            int column = allValidMoves.get(k) % 8;
-                            move.setTo(new int [] {row, column});
-                            auxPiece = getPiece(move.getTo());
-                            setPiece(move.getTo(), piece);
-                            setPiece(move.getFrom(), auxPiece);
-
-                            if (!Brain.isPositionAttacked(currentKing.getPosition())) {
-                                array.add(move);
-                            }
-
-                            setPiece(move.getFrom(), piece);
-                            setPiece(move.getTo(), auxPiece);
-                        }
-                    }
-                }
-            }
-        }
-
-        return array;
     }
 
     /**

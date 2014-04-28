@@ -24,7 +24,7 @@ import brain.Brain;
 public class ChessBoardConnect {
     private static ChessBoardConnect instance = null;
     private ArrayList<String> protocolCommands;
-    
+
     private Board chessBoard;
     private boolean legalMove, forceMode;
     private boolean onTurn;
@@ -38,7 +38,7 @@ public class ChessBoardConnect {
         setProtocolCommands();
         cachedMove = null;
     }
-    
+
     /**
      * The method below sets all recognizable protocol commands
      */
@@ -54,7 +54,7 @@ public class ChessBoardConnect {
         protocolCommands.add("resign");
         protocolCommands.add("protover 2");
     }
-    
+
     /**
      * Gets the current instance of the singleton class
      * 
@@ -128,13 +128,15 @@ public class ChessBoardConnect {
                 String move = null;
                 Brain.bestMove = null;
                 if(onTurn) {
-//                    String move = Brain.think();
+                    //                    String move = Brain.think();
                     Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
                     if(Brain.bestMove != null) {
                         move = Brain.bestMove.toString();
                     }
-    
-                    if (chessBoard.moveMyPiece(new Move(move))) {
+
+                    if(move == null) {
+                        Functions.output("resign");
+                    } else if (chessBoard.moveMyPiece(new Move(move))) {
                         Functions.output("move " + move);
                         onTurn = false;
                     } else {
@@ -148,14 +150,16 @@ public class ChessBoardConnect {
                             Functions.output("Illegal move: " + cachedMove);
                             legalMove = false;
                         }
-                        
-//                        String move = Brain.think();
+
+                        //                        String move = Brain.think();
                         Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }
-        
-                        if (chessBoard.moveMyPiece(new Move(move))) {
+
+                        if(move == null) {
+                            Functions.output("resign");
+                        } else if (chessBoard.moveMyPiece(new Move(move))) {
                             Functions.output("move " + move);
                             onTurn = false;
                         } else {
@@ -163,7 +167,7 @@ public class ChessBoardConnect {
                         }
                     }
                 }
-                
+
                 break;
 
             case "white":
@@ -188,14 +192,14 @@ public class ChessBoardConnect {
                 break;
             }
         }
-        
-        
+
+
         // If the engine is in not force mode and the input is not a recognized
         // command, than it must be a move
         if(!forceMode) {
             if(input.matches("[a-h][1-8][a-h][1-8][q]*")) {
                 onTurn = true;
-                
+
                 if(input.length() == 5){
                     Flags.PROMOTION = true;
                 }
@@ -218,14 +222,14 @@ public class ChessBoardConnect {
                     Piece king = (chessEngineColour == Colour.WHITE) ? Flags.WHITE_KING : Flags.BLACK_KING; 
                     x = king.getPosition()[0];
                     y = king.getPosition()[1];
-                    
+
                     if(clone.isPositionAttacked(new int[]{x, y})) {
                         System.out.println("Regele " + chessEngineColour + " e atacat");
-                        
+
                         move = clone.getKingOutOfCheck(chessEngineColour);
-                        
+
                         System.out.println("Move (was in check): " + move);
-                        
+
                     } else {
                         Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
                         //System.out.println("Clona este:\n" + clone.printBoard());
@@ -234,14 +238,14 @@ public class ChessBoardConnect {
                         }
                         //System.out.println("muatarea gandita este: " + move);
                     }
-                    
+
                     // and then apply it
                     if (move == null) {
                         Functions.output("resign");
                     } else if (chessBoard.moveMyPiece(new Move(move))) {
-                            System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
-                            Functions.output("move " + move);
-                            onTurn = false;
+                        System.out.println("plansa dupa mutare este\n" + chessBoard.printBoard());
+                        Functions.output("move " + move);
+                        onTurn = false;
                     } else {
                         Functions.output("resign");
                     }
@@ -255,7 +259,7 @@ public class ChessBoardConnect {
             }
         }
     }
-    
+
     /* Testing */
     public void setColour(Flags.Colour c) {
         chessEngineColour = c;

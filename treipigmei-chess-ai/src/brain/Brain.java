@@ -422,7 +422,7 @@ public class Brain {
           
             if (score >= bestScore) {
                 bestScore = score;
-                if (depth == 2)
+                if (depth == Flags.NEGAMAX_DEPTH)  //adancimea maxima
                     bestMove = move;
             }
         }

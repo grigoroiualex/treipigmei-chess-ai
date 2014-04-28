@@ -316,12 +316,29 @@ public class Board {
             }
 
             // daca nu poate ataca pionul testez daca poate inainta
-            nextRow = (row + pieceToMove.getY()[0]);
-            nextColumn = (column + pieceToMove.getX()[0]);
-            Piece posWhere = board.getPiece(new int[] { nextRow, nextColumn });
+            for(int i = 1; i < 3; i++) {
+            	
+				nextRow = (row + pieceToMove.getY()[0] * i);
+				nextColumn = (column + pieceToMove.getX()[0] * i);
+				
+				if (pieceToMove.getColor() == Colour.WHITE) {
+					if (i == 2 && pieceToMove.getPosition()[0] != 6) {
+						break;
+					}
+				} else {
+					if (i == 2 && pieceToMove.getPosition()[0] != 1) {
+						break;
+					}
+				}
 
-            if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
-                array.add(nextRow * 8 + nextColumn);
+				Piece posWhere = board
+						.getPiece(new int[] { nextRow, nextColumn });
+
+				if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
+					array.add(nextRow * 8 + nextColumn);
+				} else {
+					break;
+				}
             }
 
         } else {

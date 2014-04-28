@@ -1,12 +1,16 @@
 package helpers;
 
+/**
+ * Class that has all the helper functions that are not specific for any other
+ * class.
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Functions {
-    public static int minimum(int x, int y) {
-        return x < y ? x : y;
-    }
-    
     /**
-     * Prints the desired string and makes a flush afterwards
+     * Prints the desired string and makes a flush afterwards. 
+     * Mainly for console debugging
      *  
      * @param output the desired string to be printed
      */

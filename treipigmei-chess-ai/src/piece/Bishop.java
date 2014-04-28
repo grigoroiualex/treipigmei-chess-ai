@@ -3,6 +3,12 @@ package piece;
 import helpers.Flags;
 import helpers.Flags.Colour;
 
+/**
+ * Class that represents the Bishop chess piece
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Bishop extends Piece {
     
     public Bishop(Colour color, int[] position) {
@@ -28,8 +34,8 @@ public class Bishop extends Piece {
     }
     
     /*
-     *  White Bishop position's value representation; for black use the same
-     *  matrix in the mirror
+     *  White Bishop position value representation; 
+     *  For black use mirrored matrix
      */
     public static int[][] positionValue = {
         {-20,-10,-10,-10,-10,-10,-10,-20},

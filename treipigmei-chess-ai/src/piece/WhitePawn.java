@@ -2,6 +2,12 @@ package piece;
 
 import helpers.Flags.Colour;
 
+/**
+ * Class that represents the White Pawn chess piece
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class WhitePawn extends Piece {
     
     public WhitePawn(Colour color, int[] position) {
@@ -22,6 +28,9 @@ public class WhitePawn extends Piece {
         return positionValues[x][y];
     }
     
+    /*
+     *  White Pawn position value representation; 
+     */
     public static int[][] positionValues = {
         { 0,  0,  0,  0,  0,  0,  0,  0},
         {50, 50, 50, 50, 50, 50, 50, 50},

@@ -3,6 +3,12 @@ package piece;
 import helpers.Flags;
 import helpers.Flags.Colour;
 
+/**
+ * Class that represents the Knight chess piece
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Knight extends Piece {
     
     public Knight(Colour color, int[] position) {
@@ -27,6 +33,10 @@ public class Knight extends Piece {
         return positionValues[x][y];
     }
     
+    /*
+     *  White Knight position value representation; 
+     *  For black use mirrored matrix
+     */
     private static int[][] positionValues = {
         {-50,-40,-30,-30,-30,-30,-40,-50},
         {-40,-20,  0,  0,  0,  0,-20,-40},

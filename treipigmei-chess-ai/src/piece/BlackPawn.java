@@ -2,6 +2,12 @@ package piece;
 
 import helpers.Flags.Colour;
 
+/**
+ * Class that represents the Black Pawn chess piece
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class BlackPawn extends Piece {
     
     public BlackPawn(Colour color, int[] position) {
@@ -23,6 +29,9 @@ public class BlackPawn extends Piece {
         return positionValues[x][y];
     }
     
+    /*
+     *  Black Pawn position value representation; 
+     */
     public static int[][] positionValues = {
         { 0,  0,  0,  0,  0,  0,  0,  0},
         {50, 50, 50, 50, 50, 50, 50, 50},

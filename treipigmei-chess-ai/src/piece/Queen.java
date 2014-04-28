@@ -3,6 +3,12 @@ package piece;
 import helpers.Flags;
 import helpers.Flags.Colour;
 
+/**
+ * Class that represents the Queen chess piece
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Queen extends Piece {
     
     public Queen(Colour color, int[] position) {
@@ -27,6 +33,10 @@ public class Queen extends Piece {
         return positionValues[x][y];
     }
     
+    /*
+     *  White Queen position value representation; 
+     *  For black use mirrored matrix
+     */
     public static int[][] positionValues = {
         {-20,-10,-10, -5, -5,-10,-10,-20},
         {-10,  0,  0,  0,  0,  0,  0,-10},

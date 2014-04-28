@@ -3,6 +3,12 @@ package piece;
 import helpers.Flags;
 import helpers.Flags.Colour;
 
+/**
+ * Class that represents the Rook chess piece
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Rook extends Piece {
     
     public Rook(Colour color, int[] position) {
@@ -27,6 +33,10 @@ public class Rook extends Piece {
         return positionValues[x][y];
     }
     
+    /*
+     *  White Rook position value representation; 
+     *  For black use mirrored matrix
+     */
     public static int[][] positionValues = {
        { 0,  0,  0,  0,  0,  0,  0,  0},
        { 5, 10, 10, 10, 10, 10, 10,  5},

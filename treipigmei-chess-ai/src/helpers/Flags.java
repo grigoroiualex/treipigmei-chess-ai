@@ -9,4 +9,5 @@ public class Flags {
     public static boolean PROMOTION;
     public static boolean CASTLING;
     public static King BLACK_KING, WHITE_KING;
+    public static int NEGAMAX_DEPTH = 2;
 }

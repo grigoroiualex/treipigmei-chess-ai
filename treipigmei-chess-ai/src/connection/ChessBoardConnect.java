@@ -124,8 +124,15 @@ public class ChessBoardConnect {
 
             case "go":
                 forceMode = false;
+                Clone clone = chessBoard.newClone();
+                String move = null;
+                Brain.bestMove = null;
                 if(onTurn) {
-                    String move = Brain.think();
+//                    String move = Brain.think();
+                    Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                    if(Brain.bestMove != null) {
+                        move = Brain.bestMove.toString();
+                    }
     
                     if (chessBoard.moveMyPiece(new Move(move))) {
                         Functions.output("move " + move);
@@ -142,7 +149,11 @@ public class ChessBoardConnect {
                             legalMove = false;
                         }
                         
-                        String move = Brain.think();
+//                        String move = Brain.think();
+                        Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                        if(Brain.bestMove != null) {
+                            move = Brain.bestMove.toString();
+                        }
         
                         if (chessBoard.moveMyPiece(new Move(move))) {
                             Functions.output("move " + move);
@@ -216,10 +227,11 @@ public class ChessBoardConnect {
                         System.out.println("Move (was in check): " + move);
                         
                     } else {
-                        Brain.negaMax(clone, 2);
+                        Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
                         //System.out.println("Clona este:\n" + clone.printBoard());
-                        if(Brain.bestMove != null)
+                        if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
+                        }
                         //System.out.println("muatarea gandita este: " + move);
                     }
                     

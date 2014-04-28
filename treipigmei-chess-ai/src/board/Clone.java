@@ -308,17 +308,29 @@ public class Clone {
             }
 
             // daca nu poate ataca pionul testez daca poate inainta
-            nextRow = (row + pieceToMove.getY()[0]);
-            nextColumn = (column + pieceToMove.getX()[0]);
-            Piece posWhere = null;
-            //            if(nextRow < 8 && nextColumn < 8){
-            if(Piece.isValid(nextRow, nextColumn)) {
-                posWhere = getPiece(new int[] { nextRow, nextColumn });
-            }
+            // daca nu poate ataca pionul testez daca poate inainta
+            for(int i = 1; i < 3; i++) {
+            	
+				nextRow = (row + pieceToMove.getY()[0] * i);
+				nextColumn = (column + pieceToMove.getX()[0] * i);
+				
+				if (pieceToMove.getColor() == Colour.WHITE) {
+					if (i == 2 && pieceToMove.getPosition()[0] != 6) {
+						break;
+					}
+				} else {
+					if (i == 2 && pieceToMove.getPosition()[0] != 1) {
+						break;
+					}
+				}
 
-            if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
-                // System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
-                array.add(nextRow * 8 + nextColumn);
+				Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
+
+				if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
+					array.add(nextRow * 8 + nextColumn);
+				} else {
+					break;
+				}
             }
 
         } else {

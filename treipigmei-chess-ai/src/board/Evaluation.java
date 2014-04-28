@@ -3,7 +3,12 @@ import connection.ChessBoardConnect;
 import piece.Piece;
 import helpers.Flags;
 
-
+/**
+ * Class that evaluates the score of the current state
+ * 
+ * @author grigoroiualex
+ *
+ */
 public class Evaluation {
     Clone board;
 
@@ -11,6 +16,11 @@ public class Evaluation {
         board = chessBoard;
     }
 
+    /**
+     * Gets the score for each piece and returns the global score
+     *  
+     * @return score
+     */
     public int eval(){
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         int whiteScore = 0;

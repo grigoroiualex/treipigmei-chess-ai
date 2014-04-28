@@ -2,17 +2,9 @@ package board;
 
 import java.util.ArrayList;
 
-import connection.ChessBoardConnect;
 import helpers.Flags;
 import helpers.Flags.Colour;
-import piece.Bishop;
-import piece.BlackPawn;
-import piece.King;
-import piece.Knight;
-import piece.Piece;
-import piece.Queen;
-import piece.Rook;
-import piece.WhitePawn;
+import piece.*;
 
 /**
  * Class that clone an instance of Board class.
@@ -55,15 +47,19 @@ public class Clone {
     }
 
     /**
-     * @return a copy of current clone
+     * Creates a copy of the current clone
+     * 
+     * @return clone
      */
     public Clone newClone() {
         return new Clone(field, whites, blacks, promotion, engineColour);
     }
 
     /**
-     * @param move
-     * @return current instance with "move" applied
+     * Creates a copy of the new clone and applies the given move
+     * 
+     * @param move The move to be made to the current copy
+     * @return clone Current instance with "move" applied
      */
     public Clone getCloneWithMove(Move move) {
         applyPieceMove(move);
@@ -74,10 +70,8 @@ public class Clone {
     /**
      * Put <i>piece</i> at position <i>pos</i>.
      * 
-     * @param position
-     *            wanted
-     * @param piece
-     *            that is at position <i>pos</i>
+     * @param position The position to set the given piece at
+     * @param piece The piece to set
      */
     public void setPiece(int[] pos, Piece piece) {
         int i = pos[0];
@@ -88,9 +82,8 @@ public class Clone {
     /**
      * Get <i>piece</i> from position <i>pos</i>.
      * 
-     * @param position
-     *            on the board
-     * @return the piece that is at position pos
+     * @param position The position from where to get the wnated piece
+     * @return piece The piece at the position given
      */
     public Piece getPiece(int[] pos) {
         int i = pos[0];
@@ -99,15 +92,19 @@ public class Clone {
     }
 
     /**
-     * @return the colour of the engine
+     * Returns the colour of the engine
+     * 
+     * @return colour The colour of the engine
      */
     public Flags.Colour getEnginesColour() {
         return this.engineColour;
     }
+    
     /**
-     * get king's positiom on board
-     * @param engineColour player's colour
-     * @return the position of king
+     * Get the king's position on board
+     * 
+     * @param engineColour Player's colour
+     * @return position The position of the king
      */
     public int[] getKingPosition(Flags.Colour kingColor) { 
 
@@ -142,14 +139,12 @@ public class Clone {
         Piece posWhere = getPiece(move.getTo());
         Piece currentPiece = getPiece(move.getFrom());
 
-        // verific daca se face promovarea pionului
+        // Checks for pawn promotion
         if ((currentPiece instanceof BlackPawn && move.getTo()[0] == 7) ||
                 (currentPiece instanceof WhitePawn) && move.getTo()[0] == 0) {
             this.promotion = true; 
         }
-
-        // daca se face promovarea pionului il elimin din lista de piese si pun 
-        // o regina in locul lui, ca mai apoi sa se execute mutarea
+        
         if (promotion) {
 
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
@@ -175,11 +170,9 @@ public class Clone {
             }
 
         }
-
-        // daca este luata vreo piesa
+        
         if (posWhere != null) {
-
-            // daca piesa este alba o caut in tabloul pieselor albe s-o elimin
+            
             if (posWhere.getColor() == Flags.Colour.WHITE) {
                 for (int i = 0; i < whites.size(); i++) {
                     if (posWhere.equals(whites.get(i))) {
@@ -204,39 +197,27 @@ public class Clone {
     }
 
     /**
+     * Creates a list with all valid moves for all pieces
      * 
-     * @return a list with all valid moves for all pieces
+     * @return allMoves A list with all valid moves for all pieces
      */
     public ArrayList<Move> getAllMoves() {
         ArrayList<Move> array = new ArrayList<Move>();
-        //King currentKing;
         int[] kingPosition = new int[2];
 
-        //ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        //Flags.Colour chessEngineColour = chessBoardConnect.getChessEngineColour();
-        //if (chessEngineColour == Flags.Colour.WHITE) {
         kingPosition = getKingPosition(engineColour);
-        //} else {
-        //kingPosition = getKingPosition(Flags.Colour.BLACK);
-        // }
 
         Piece piece, auxPiece;
         ArrayList<Integer> allValidMoves;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                // verific daca se afla vreo piesa pe pozitia [i, j]
                 piece = getPiece(new int [] {i, j});
                 if (piece != null) {
-                    // daca da, verific ce culoare are
                     if (piece.getColor() == engineColour) {
-                        // daca e piesa mea, ii calculez toate pseudo-mutarile
                         allValidMoves = getValidMoves(piece, i, j);
 
                         if(allValidMoves != null){
-                            /* din toate pseudo-mutarile, le pastrez doar pe cele
-                             * care nu lasa regele in sah*/
-                            //System.out.println("Piesa: " + piece.toString());
                             for (int k = 0; k < allValidMoves.size(); k++) {
                                 Move move = new Move();
                                 move.setFrom(new int [] {i, j});
@@ -266,40 +247,30 @@ public class Clone {
     }
 
     /**
-     * @param pieceToMove
-     * @return a list of Integers with all pseudo-valid positions where this
-     *         piece can be moved. The position in the matrix can be obtained
-     *         like this: row = number / 8 column = number % 8
+     * Returns a list of Integers with all pseudo-valid positions where this
+     * piece can be moved. The position in the matrix can be obtained
+     * like this: row = number / 8 column = number % 8
+     * 
+     * @param pieceToMove The piece to be moved
+     * @return validMoves ArrayList with all the valid moves 
      */
-
-    //Linia din matrice este modificata de vectorul y din piese
-
     public ArrayList<Integer> getValidMoves(Piece pieceToMove, int row, int column) {
 
         int nextRow, nextColumn;
 
         ArrayList<Integer> array = new ArrayList<Integer>();
-        //Board board = Board.getInstance();
 
-        // daca piesa este pion
         if (pieceToMove instanceof BlackPawn
                 || pieceToMove instanceof WhitePawn) {
-            // daca poate ataca
             for (int i = 1; i < 3; i++) {
                 nextRow =   (row + pieceToMove.getY()[i]);
                 nextColumn =   (column + pieceToMove.getX()[i]);
 
-                // daca nu ies din matrice
                 if (Piece.isValid(nextRow, nextColumn)) {
 
                     Piece posWhere = getPiece(new int[] { nextRow,
                             nextColumn });
-                    // daca am piese pe pozitia unde vreau sa mut
                     if (posWhere != null) {
-                        /*
-                         * daca am piesa de aceeasi culoare ma opresc altfel
-                         * adaug pozitia ca mutare valida si apoi ma opresc
-                         */
                         if (posWhere.getColor() != pieceToMove.getColor()) {
                             array.add(nextRow * 8 + nextColumn);
                         }
@@ -307,8 +278,6 @@ public class Clone {
                 }
             }
 
-            // daca nu poate ataca pionul testez daca poate inainta
-            // daca nu poate ataca pionul testez daca poate inainta
             for(int i = 1; i < 3; i++) {
             	
 				nextRow = (row + pieceToMove.getY()[0] * i);
@@ -336,38 +305,22 @@ public class Clone {
         } else {
 
             for (int i = 0; i < pieceToMove.getX().length; i++) {
-
-                /*
-                 * daca piesa este tura, nebun sau regina iau un for de la 1 la
-                 * 7 si generez toate mutarile posibile
-                 */
                 if (pieceToMove instanceof Rook
                         || pieceToMove instanceof Bishop
                         || pieceToMove instanceof Queen) {
                     for (int j = 1; j < 8; j++) {
                         nextRow = (row + pieceToMove.getY()[i] * j);
                         nextColumn = (column + pieceToMove.getX()[i] * j);
-
-                        // daca nu ies din matrice
                         if (Piece.isValid(nextRow, nextColumn)) {
 
                             Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
-                            // daca am piese pe pozitia unde vreau sa mut
                             if (posWhere != null) {
-                                /*
-                                 * daca am piesa de aceeasi culoare ma opresc
-                                 * altfel adaug pozitia ca mutare valida si apoi
-                                 * ma opresc
-                                 */
                                 if (posWhere.getColor() == pieceToMove.getColor()) {
                                     break;
                                 } else {
                                     array.add(nextRow * 8 + nextColumn);
                                     break;
                                 }
-
-                                // daca nu e piesa machez pozitia ca mutare
-                                // valida
                             } else {
                                 array.add(nextRow * 8 + nextColumn);
                             }
@@ -398,21 +351,13 @@ public class Clone {
 
                     if (Piece.isValid(nextRow, nextColumn)) {
                         Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
-                        // daca am piese pe pozitia unde vreau sa mut
                         if (posWhere != null) {
-                            /*
-                             * daca am piesa de aceeasi culoare ma opresc
-                             * altfel adaug pozitia ca mutare valida si apoi
-                             * ma opresc
-                             */
                             if (posWhere.getColor() == pieceToMove.getColor()) {
                                 break;
                             } else {
                                 array.add(nextRow * 8 + nextColumn);
                                 break;
                             }
-
-                            // daca nu e piesa machez pozitia ca mutare valida
                         } else {
                             array.add(nextRow * 8 + nextColumn);
                         }
@@ -455,215 +400,14 @@ public class Clone {
         }
         return q;
     }
-
-    /*public boolean isPositionAttacked(int[] pos) {
-        Clone board = this;
-        ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
-        Piece piece;
-        int x = pos[0];
-        int y = pos[1];
-        int i, j;
-        int[] kx = {-2, -2, -1, -1, 1, 1, 2, 2};
-        int[] ky = {-1, 1, -2, 2, -2, 2, -1, 1};
-
-        i = y - 1;
-        // for every position to the left
-        while(Piece.isValid(x, i)) {
-            // checks for any piece
-            if((piece = board.getPiece(new int[]{x, i})) != null) {
-                // If it's own engine's colour it's ok
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                // otherwise
-                } else {
-                    // the piece is a sliding one
-                    if(piece instanceof Rook || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i--;
-        }
-
-        i = y + 1;
-        // for every position to the right
-        while(Piece.isValid(x, i)) {
-            if((piece = board.getPiece(new int[]{x, i})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Rook || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i++;
-        }
-
-        i = x - 1;
-        // for every position upwards   
-        while(Piece.isValid(i, y)) {
-            if((piece = board.getPiece(new int[]{i, y})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Rook || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i--;
-        }
-
-        i = x + 1;
-        // for every position downwards
-        while(Piece.isValid(i, y)) {
-            if((piece = board.getPiece(new int[]{i, y})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Rook || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i++;
-        }
-
-        i = x + 1; j = y + 1;
-        // for every diagonal position NE
-        while(Piece.isValid(i, j)) {
-            if((piece = board.getPiece(new int[]{i, j})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Bishop || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i++; j++;
-        }
-
-        i = x + 1; j = y - 1;
-        // for every diagonal position SE
-        while(Piece.isValid(i, j)) {
-            if((piece = board.getPiece(new int[]{i, j})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Bishop || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i++; j--;
-        }
-
-        i = x - 1; j = y - 1;
-        // for every diagonal position SV
-        while(Piece.isValid(i, j)) {
-            if((piece = board.getPiece(new int[]{i, j})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Bishop || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i--; j--;
-        }
-
-        i = x - 1; j = y + 1;
-        // for every diagonal position NV
-        while(Piece.isValid(i, j)) {
-            if((piece = board.getPiece(new int[]{i, j})) != null) {
-                if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                    break;
-                } else {
-                    if(piece instanceof Bishop || piece instanceof Queen) {
-                        return true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-            i--; j++;
-        }
-
-        // for every possible knight position
-        for(int k = 0; k < 8; k++) {
-            if(Piece.isValid(x + kx[k], y + ky[k])) {
-                if((piece = board.getPiece(new int[]{x + kx[k], y + ky[k]})) != null) {
-                    if(piece.getColor() == chessBoardConnect.getChessEngineColour()) {
-                        break;
-                    } else {
-                        if(piece instanceof Knight) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        // for black pawns
-        if(Piece.isValid(x - 1, y - 1)) {
-            if((piece = board.getPiece(new int[]{x - 1, y - 1})) != null) {
-                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
-                        piece instanceof BlackPawn) {
-                    return true;
-                }
-            }
-        }
-
-        // for black pawns
-        if(Piece.isValid(x - 1, y + 1)) {
-            if((piece = board.getPiece(new int[]{x - 1, y + 1})) != null) {
-                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
-                        piece instanceof BlackPawn) {
-                    return true;
-                }
-            }
-        }
-
-        // for white pawns
-        if(Piece.isValid(x + 1, y + 1)) {
-            if((piece = board.getPiece(new int[]{x + 1, y + 1})) != null) {
-                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
-                        piece instanceof WhitePawn) {
-                    return true;
-                }
-            }
-        }
-
-        // for white pawns
-        if(Piece.isValid(x + 1, y - 1)) {
-            if((piece = board.getPiece(new int[]{x + 1, y - 1})) != null) {
-                if(piece.getColor() != chessBoardConnect.getChessEngineColour() &&
-                        piece instanceof WhitePawn) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }*/
-
+    
+    /**
+     * Checks if the given position is attacked by going to each of the opponent's
+     * piece and tests if the given position is on its way.
+     * 
+     * @param pos The position to be checked
+     * @return boolean Wheter the position is attacked or not
+     */
     public boolean isPositionAttacked(int[] pos) {
         Piece p;
         int l;
@@ -865,6 +609,13 @@ public class Clone {
         return false;
     }
 
+    /**
+     * Checks if the king has any possible move to get its self out of check
+     * and the first it finds, translates it to a move and applies it.
+     * 
+     * @param chessEngineColour The chess engine's colour
+     * @return move The move for the king
+     */
     public String getKingOutOfCheck(Colour chessEngineColour) {
         Move m = new Move();
         String move = null;
@@ -876,7 +627,6 @@ public class Clone {
         ky = king.getX();
         kx = king.getY();
 
-        // verific toate pozitiile de primprejurul regelui daca sunt valide
         for(int i = 0; i < 8; i++) {
             nextRow = x + kx[i];
             nextColumn = y + ky[i];
@@ -884,21 +634,18 @@ public class Clone {
             if(Piece.isValid(nextRow, nextColumn)) {
                 Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
                 setPiece(new int[]{x, y}, null);
-                System.out.println("getKingOut..: pozitia verificata: " + (8-nextRow) + " "+ (nextColumn+1));
                 if(!isPositionAttacked(new int[]{nextRow, nextColumn})) {
                     if((posWhere != null) && (posWhere.getColor() != chessEngineColour)) {
                         m.setFrom(new int[]{x, y});
                         m.setTo(new int[]{nextRow, nextColumn});
                         move = m.toString();
                         setPiece(new int[]{x, y}, king);
-                        System.out.println("Piesa: king" +  " mutarea: " + (8 - x) +" " +(y + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                         break;
                     } else if(posWhere == null){
                         m.setFrom(new int[]{x, y});
                         m.setTo(new int[]{nextRow, nextColumn});
                         move = m.toString();
                         setPiece(new int[]{x, y}, king);
-                        System.out.println("Piesa: king" +  " mutarea: " + (8 - x) +" " +(y + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                         break;
                     }
                 }
@@ -907,8 +654,7 @@ public class Clone {
             }
         }
 
-        // daca nu am gasit nici una, dau o mutare in afara tablei de joc
-        // ca sa dea resign programul
+        // if no move was found, returns an invalid move
         if(move == null) {
             m.setFrom(new int[]{x, y});
             m.setTo(new int[]{8, 8});
@@ -917,73 +663,4 @@ public class Clone {
 
         return move;
     }
-
-    /* Testing */
-
-    public static void main(String[] args) {
-        Board b = Board.getInstance();
-        Piece[][] p = b.getField();
-
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                p[i][j] = null;
-            }
-        }
-
-        /*p[0][0] = new Rook(Colour.BLACK, new int[]{0, 0});
-        p[0][2] = new Bishop(Colour.BLACK, new int[]{0, 2});
-        p[0][3] = new Queen(Colour.BLACK, new int[]{0,3});
-        p[0][4] = new King(Colour.BLACK, new int[]{0,4});
-        p[0][7] = new Rook(Colour.BLACK, new int[]{0,7});
-        p[1][1] = new BlackPawn(Colour.BLACK, new int[]{1,1});
-        p[1][2] = new BlackPawn(Colour.BLACK, new int[]{1,2});
-        p[1][5] = new BlackPawn(Colour.BLACK, new int[]{1,5});
-        p[2][0] = new BlackPawn(Colour.BLACK, new int[]{2,0});
-        p[2][5] = new BlackPawn(Colour.BLACK, new int[]{2,5});
-        p[2][7] = new BlackPawn(Colour.BLACK, new int[]{2,7});
-        p[3][1] = new WhitePawn(Colour.WHITE, new int[]{3,1});
-        p[3][3] = new WhitePawn(Colour.WHITE, new int[]{3,3});
-        p[4][1] = new Knight(Colour.BLACK, new int[]{4,3});
-        p[4][5] = new BlackPawn(Colour.BLACK, new int[]{4,5});
-        p[5][2] = new Knight(Colour.WHITE, new int[]{5,2});
-        p[5][5] = new WhitePawn(Colour.WHITE, new int[]{5,5});
-        p[6][0] = new WhitePawn(Colour.WHITE, new int[]{6,0});
-        p[6][1] = new WhitePawn(Colour.WHITE, new int[]{6,1});
-        p[6][2] = new WhitePawn(Colour.WHITE, new int[]{6,2});
-        p[6][4] = new Knight(Colour.WHITE, new int[]{6,4});
-        p[6][6] = new WhitePawn(Colour.WHITE, new int[]{6,6});
-        p[6][7] = new WhitePawn(Colour.WHITE, new int[]{6,7});
-        p[7][0] = new Rook(Colour.WHITE, new int[]{7,0});
-        p[7][4] = new King(Colour.WHITE, new int[]{7,4});
-        p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
-        p[7][7] = new Rook(Colour.WHITE, new int[]{7,7});*/
-
-        /*p[0][4] = new Rook(Colour.WHITE, new int[]{0,4});
-        p[1][0] = new King(Colour.BLACK, new int[]{1,0});
-        p[2][0] = new WhitePawn(Colour.WHITE, new int[]{2,0});
-        p[4][2] = new WhitePawn(Colour.WHITE, new int[]{4,2});
-        p[4][3] = new WhitePawn(Colour.WHITE, new int[]{4,3});
-        p[5][1] = new King(Colour.WHITE, new int[]{5,1});*/
-
-        p[7][3] = new Queen(Colour.BLACK, new int[]{7,3});
-        p[7][4] = new King(Colour.WHITE, new int[]{7,4});
-        p[7][5] = new Bishop(Colour.WHITE, new int[]{7,5});
-        p[6][5] = new WhitePawn(Colour.WHITE, new int[]{6,5});
-
-        Clone c = b.newClone();
-        ChessBoardConnect con = ChessBoardConnect.getInstance();
-        con.setColour(Colour.WHITE);
-
-        System.out.println(c.printBoard());
-        System.out.println();
-        System.out.println(c.isPositionAttacked(new int[]{7,3}));
-
-        /*System.out.println();
-        System.out.println(c.isPositionAttackedAlt(new int[]{0,0}));
-        System.out.println(c.isPositionAttackedAlt(new int[]{0,1}));
-        System.out.println(c.isPositionAttackedAlt(new int[]{1,1}));
-        System.out.println(c.isPositionAttackedAlt(new int[]{2,1}));
-        System.out.println(c.isPositionAttackedAlt(new int[]{2,0}));*/
-    }
-
 }

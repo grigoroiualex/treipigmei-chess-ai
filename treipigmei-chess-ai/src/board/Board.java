@@ -73,7 +73,7 @@ public class Board {
      * Creates an instance of the class (if there wasn't one created else it
      * uses the same) and returns it.
      * 
-     * @return instance of the class
+     * @return instance The current instance of the class
      */
     public static Board getInstance() {
         if (instance == null) {
@@ -93,7 +93,7 @@ public class Board {
     /**
      * Creates a new instance of the class and returns it.
      * 
-     * @return new instance of the class
+     * @return instance  New instance of the class
      */
     public static Board getNewInstance() {
         Board.initialize();
@@ -119,7 +119,7 @@ public class Board {
      * 
      * @param position
      *            on the board
-     * @return the piece that is at position pos
+     * @return piece The piece that is at position pos
      */
     public Piece getPiece(int[] pos) {
         int i = pos[0];
@@ -130,22 +130,18 @@ public class Board {
     /**
      * Moves a piece on the chess board if possible
      * 
-     * @param the
-     *            move to execute
+     * @param move The move to execute
      * @return true if the move is executed, false otherwise
      */
     public boolean movePiece(Move move) {
-        // aici o sa verificam daca mutarea primita e valida
-
-        //daca piesa este rege si este mutata 2 pozitii inseamna ca este rocada
+        // if the piece is moved two positions then it's castling
         Piece currentPiece = getPiece(move.getFrom());
         if (currentPiece instanceof King
                 && Math.abs(move.getFrom()[1] - move.getTo()[1]) > 1) {
             Move rookMove;
-            //daca este regele alb
+            // if it's the white king
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
-
-                //daca se face rocada in stanga sau in dreapta
+                // if the castling is to the left or right
                 if(move.getFrom()[1] > move.getTo()[1]) {
                     rookMove = new Move("a1d1");
                 } else {
@@ -154,7 +150,7 @@ public class Board {
 
             } else {
 
-                //daca se face rocada in stanga sau in dreapta
+                // if the castling is to the left or right
                 if(move.getFrom()[1] > move.getTo()[1]) {
                     rookMove = new Move("a8d8 	");
                 } else {
@@ -163,7 +159,6 @@ public class Board {
             }
 
             applyPieceMove(rookMove);
-            System.out.println("Am facut rocada");
         }
 
         applyPieceMove(move);
@@ -173,8 +168,7 @@ public class Board {
     /**
      * Moves one of our pieces
      * 
-     * @param the
-     *            move we want to apply
+     * @param move The move we want to apply
      * @return true if the move is executed, false otherwise
      */
     public boolean moveMyPiece(Move move) {
@@ -182,7 +176,7 @@ public class Board {
         int x = move.getTo()[0];
         int y = move.getTo()[1];
 
-        //daca mutare iese din tabla, am generat cazul asta cand regele nu are mutari valide.
+        // if the move is out of the table. This case is when the king has no valid moves
         if(!Piece.isValid(x, y)) {
             return false;
         }
@@ -193,8 +187,7 @@ public class Board {
     /**
      * Applies a move on the chess board without verifying if it is valid
      * 
-     * @param the
-     *            move to be executes
+     * @param move The move to be executed
      */
     public void applyPieceMove(Move move) {
 
@@ -206,7 +199,7 @@ public class Board {
                 (currentPiece instanceof WhitePawn) && move.getTo()[0] == 0) {
             Flags.PROMOTION = true;
         }
-        // daca mut un rege, salvez pozitia unde il mut
+        // if a king is moved, its position is savrd
         if (currentPiece instanceof King) {
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
                 Flags.WHITE_KING.setPosition(move.getTo());
@@ -215,8 +208,7 @@ public class Board {
             }
         }
 
-        // daca se face promovarea pionului il elimin din lista de piese si pun 
-        // o regina in locul lui, ca mai apoi sa se execute mutarea
+        // in case of pawn promotion, exchange it for a queen 
         if(Flags.PROMOTION) {
             if (currentPiece.getColor() == Flags.Colour.WHITE) {
                 for (int i = 0; i < whites.size(); i++) {
@@ -242,10 +234,10 @@ public class Board {
 
         }
 
-        // daca este luata vreo piesa
+        // if any piece is taken
         if (posWhere != null) {
 
-            // daca piesa este alba o caut in tabloul pieselor albe s-o elimin
+            // if the piece is white, search for it in the whites array
             if (posWhere.getColor() == Flags.Colour.WHITE) {
                 for (int i = 0; i < whites.size(); i++) {
                     if (posWhere.equals(whites.get(i))) {
@@ -271,14 +263,13 @@ public class Board {
     }
 
     /**
-     * @param pieceToMove
-     * @return a list of Integers with all pseudo-valid positions where this
-     *         piece can be moved. The position in the matrix can be obtained
-     *         like this: row = number / 8 column = number % 8
+     * Returns a list of Integers with all pseudo-valid positions where this
+     * piece can be moved. The position in the matrix can be obtained
+     * like this: row = number / 8 column = number % 8
+     * 
+     * @param pieceToMove The piece to be moved
+     * @return validMoves ArrayList with all the valid moves 
      */
-
-    //Linia din matrice este modificata de vectorul y din piese
-
     public ArrayList<Integer> getValidMoves(Piece pieceToMove) {
 
         int row, column, nextRow, nextColumn;
@@ -289,25 +280,22 @@ public class Board {
         ArrayList<Integer> array = new ArrayList<Integer>();
         Board board = Board.getInstance();
 
-        // daca piesa este pion
         if (pieceToMove instanceof BlackPawn
                 || pieceToMove instanceof WhitePawn) {
-            // daca poate ataca
+            // if it can attack
             for (int i = 1; i < 3; i++) {
                 nextRow =   (row + pieceToMove.getY()[i]);
                 nextColumn =   (column + pieceToMove.getX()[i]);
 
-                // daca nu ies din matrice
+                // if it's within bounds
                 if (Piece.isValid(nextRow, nextColumn)) {
 
                     Piece posWhere = board.getPiece(new int[] { nextRow,
                             nextColumn });
-                    // daca am piese pe pozitia unde vreau sa mut
+                    // if there is any piece
                     if (posWhere != null) {
-                        /*
-                         * daca am piesa de aceeasi culoare ma opresc altfel
-                         * adaug pozitia ca mutare valida si apoi ma opresc
-                         */
+                        // if the piece is of the same colour stops
+                        // otherwise, it adds the move as valid and stops
                         if (posWhere.getColor() != pieceToMove.getColor()) {
                             array.add(nextRow * 8 + nextColumn);
                         }
@@ -315,7 +303,7 @@ public class Board {
                 }
             }
 
-            // daca nu poate ataca pionul testez daca poate inainta
+            // else it tests if the pawn can advance
             for(int i = 1; i < 3; i++) {
             	
 				nextRow = (row + pieceToMove.getY()[0] * i);
@@ -344,11 +332,6 @@ public class Board {
         } else {
 
             for (int i = 0; i < pieceToMove.getX().length; i++) {
-
-                /*
-                 * daca piesa este tura, nebun sau regina iau un for de la 1 la
-                 * 7 si generez toate mutarile posibile
-                 */
                 if (pieceToMove instanceof Rook
                         || pieceToMove instanceof Bishop
                         || pieceToMove instanceof Queen) {
@@ -356,18 +339,15 @@ public class Board {
                         nextRow = (row + pieceToMove.getY()[i] * j);
                         nextColumn = (column + pieceToMove.getX()[i] * j);
 
-                        // daca nu ies din matrice
+                        // if it is within bounds
                         if (Piece.isValid(nextRow, nextColumn)) {
 
                             Piece posWhere = board.getPiece(new int[] {
                                     nextRow, nextColumn });
-                            // daca am piese pe pozitia unde vreau sa mut
+                            // if there is any piece
                             if (posWhere != null) {
-                                /*
-                                 * daca am piesa de aceeasi culoare ma opresc
-                                 * altfel adaug pozitia ca mutare valida si apoi
-                                 * ma opresc
-                                 */
+                                // if the piece is of the same colour stops
+                                // otherwise, it adds the move as valid and stops
                                 if (posWhere.getColor() == pieceToMove
                                         .getColor()) {
                                     break;
@@ -376,8 +356,7 @@ public class Board {
                                     break;
                                 }
 
-                                // daca nu e piesa machez pozitia ca mutare
-                                // valida
+                                // if there is no piece adds the move as valid
                             } else {
                                 array.add(nextRow * 8 + nextColumn);
                             }
@@ -385,8 +364,6 @@ public class Board {
                             break;
                         }
                     }
-
-                    //daca este rege sau cal
                 } else {
 
                     nextRow = (row + pieceToMove.getY()[i]);
@@ -395,13 +372,10 @@ public class Board {
                     if (Piece.isValid(nextRow, nextColumn)) {
                         Piece posWhere = board.getPiece(new int[] {
                                 nextRow, nextColumn });
-                        // daca am piese pe pozitia unde vreau sa mut
+                        // if there is any piece
                         if (posWhere != null) {
-                            /*
-                             * daca am piesa de aceeasi culoare ma opresc
-                             * altfel adaug pozitia ca mutare valida si apoi
-                             * ma opresc
-                             */
+                            // if the piece is of the same colour stops
+                            // otherwise, it adds the move as valid and stops
                             if (posWhere.getColor() == pieceToMove
                                     .getColor()) {
                                 break;
@@ -410,7 +384,7 @@ public class Board {
                                 break;
                             }
 
-                            // daca nu e piesa machez pozitia ca mutare valida
+                            // if there is no piece adds the move as valid
                         } else {
                             array.add(nextRow * 8 + nextColumn);
                         }
@@ -428,8 +402,9 @@ public class Board {
     }
 
     /**
+     * Returns an instance of a random white piece
      * 
-     * @return one instance of a random white piece
+     * @return piece One instance of a random white piece
      */
     public Piece getWhitePiece() {
 
@@ -438,8 +413,9 @@ public class Board {
     }
 
     /**
+     * Returns an instance of a random black piece
      * 
-     * @return one instance of a random black piece
+     * @return piece One instance of a random black piece
      */
     public Piece getBlackPiece() {
 
@@ -472,8 +448,9 @@ public class Board {
     }
 
     /**
+     * Creates a list with all valid moves for all pieces
      * 
-     * @return a list with all valid moves for all pieces
+     * @return allMoves An array with all possible moves
      */
     public ArrayList<Move> getAllMoves() {
         ArrayList<Move> array = new ArrayList<Move>();
@@ -492,16 +469,15 @@ public class Board {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                // verific daca se afla vreo piesa pe pozitia [i, j]
+                // checks if there is any piece at position [i, j]
                 piece = getPiece(new int [] {i, j});
                 if (piece != null) {
-                    // daca da, verific ce culoare are
                     if (piece.getColor() == chessEngineColour) {
-                        // daca e piesa mea, ii calculez toate pseudo-mutarile
+                        // if it's own piece checks all valid moves
                         allValidMoves = getValidMoves(piece);
 
-                        /* din toate pseudo-mutarile, le pastrez doar pe cele
-                         * care nu lasa regele in sah*/
+                        // from all pseudo-valid moves it only keeps the valid ones
+                        // (those that don't let the king in check)
                         for (int k = 0; k < allValidMoves.size(); k++) {
                             Move move = new Move();
                             move.setFrom(new int [] {i, j});
@@ -527,14 +503,13 @@ public class Board {
         return array;
     }
 
+    /**
+     * Creates o clone of the current board
+     * 
+     * @return clone
+     */
     public Clone newClone() {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         return new Clone(field, whites, blacks, Flags.PROMOTION, chessBoardConnect.getChessEngineColour());
-    }
-
-
-    /* Testing */
-    public Piece[][] getField() {
-        return field;
     }
 }

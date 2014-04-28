@@ -283,6 +283,10 @@ public class Clone {
 				nextRow = (row + pieceToMove.getY()[0] * i);
 				nextColumn = (column + pieceToMove.getX()[0] * i);
 				
+				if(!Piece.isValid(nextRow, nextColumn)) {
+				    continue;
+				}
+				
 				if (pieceToMove.getColor() == Colour.WHITE) {
 					if (i == 2 && pieceToMove.getPosition()[0] != 6) {
 						break;
@@ -295,7 +299,7 @@ public class Clone {
 
 				Piece posWhere = getPiece(new int[] { nextRow, nextColumn });
 
-				if (Piece.isValid(nextRow, nextColumn) && posWhere == null) {
+				if (posWhere == null) {
 					array.add(nextRow * 8 + nextColumn);
 				} else {
 					break;
@@ -339,7 +343,6 @@ public class Clone {
                         if(!isPositionAttacked(new int[]{nextRow, nextColumn})) {
                             if((posWhere != null) && (posWhere.getColor() != pieceToMove.getColor())) {
                                 array.add(nextRow * 8 + nextColumn);
-                                System.out.println("Piesa: " + pieceToMove.toString() + " mutarea: " + (8 - row) +" " +(column + 1) + " " + (8 - nextRow) + " " + (nextColumn + 1));
                             }
                         }
 

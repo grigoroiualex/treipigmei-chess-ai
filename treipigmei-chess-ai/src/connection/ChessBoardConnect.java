@@ -117,7 +117,6 @@ public class ChessBoardConnect {
             case "new":
                 chessBoard = Board.getNewInstance();
                 chessEngineColour = Flags.Colour.BLACK;
-                Flags.resetParams();
                 forceMode = false;
                 break;
 
@@ -239,7 +238,12 @@ public class ChessBoardConnect {
                         move = clone.getKingOutOfCheck(chessEngineColour);
                     } else {
                         //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
-                        Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        //Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        Brain.principalVariation(clone, 4, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        System.out.println(Brain.bestMove == null);
+                        if(Brain.bestMove != null) {
+                           System.out.println(Brain.bestMove.toString());
+                        }
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }

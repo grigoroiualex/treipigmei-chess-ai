@@ -130,8 +130,9 @@ public class Brain {
         clonedBoard = clonedBoard.getCloneWithMove(m);
         
        best = -principalVariation(clonedBoard, depth - 1, -beta, -alfa);
-       if(depth == Flags.NEGAMAX_DEPTH)
+       if(depth == Flags.NEGAMAX_DEPTH) {
            bestMove = m;
+       }
        
        while(moves.size() > 0 && best < beta) {
            Move m1 = moves.remove(0);

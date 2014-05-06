@@ -138,7 +138,8 @@ public class ChessBoardConnect {
                     if(clone.isPositionAttacked(new int[]{x, y})) {
                         move = clone.getKingOutOfCheck(chessEngineColour);
                     } else {
-                        Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                        //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                        Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }
@@ -164,7 +165,8 @@ public class ChessBoardConnect {
                         if(clone.isPositionAttacked(new int[]{x, y})) {
                             move = clone.getKingOutOfCheck(chessEngineColour);
                         } else {
-                            Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                            //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                            Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MIN_VALUE);
                             if(Brain.bestMove != null) {
                                 move = Brain.bestMove.toString();
                             }
@@ -235,7 +237,8 @@ public class ChessBoardConnect {
                     if(clone.isPositionAttacked(new int[]{x, y})) {
                         move = clone.getKingOutOfCheck(chessEngineColour);
                     } else {
-                        Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                        //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
+                        Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }

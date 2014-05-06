@@ -117,6 +117,7 @@ public class ChessBoardConnect {
             case "new":
                 chessBoard = Board.getNewInstance();
                 chessEngineColour = Flags.Colour.BLACK;
+                Flags.resetParams();
                 forceMode = false;
                 break;
 

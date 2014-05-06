@@ -19,7 +19,7 @@ public class Board {
     private static Board instance = null;
     private Piece[][] field;
     private ArrayList<Piece> whites, blacks;
-
+    Move lastMove;
 
     private Board() {
         field = new Piece[8][8];
@@ -66,6 +66,7 @@ public class Board {
         Flags.BLACK_KING = (King) getPiece(new int[] { 0, 4 });
         Flags.WHITE_KING = (King) getPiece(new int[] { 7, 4 });
         
+        lastMove = null;
     }
 
     /**
@@ -176,6 +177,12 @@ public class Board {
         if(!Piece.isValid(x, y)) {
             return false;
         }
+        
+        checkForRepetition(move);
+        if(resignByRepetition() || resignByExtraMoves()) {
+            return false;
+        }
+        
         applyPieceMove(move);
         return true;
     }
@@ -186,7 +193,6 @@ public class Board {
      * @param move The move to be executed
      */
     public void applyPieceMove(Move move) {
-
         Board board = Board.getInstance();
         Piece posWhere = getPiece(move.getTo());
         Piece currentPiece = board.getPiece(move.getFrom());
@@ -312,5 +318,36 @@ public class Board {
     public Clone newClone() {
         ChessBoardConnect chessBoardConnect = ChessBoardConnect.getInstance();
         return new Clone(field, whites, blacks, Flags.PROMOTION, chessBoardConnect.getChessEngineColour());
+    }
+    
+    /**
+     * Checks for move repetition that might end the game 
+     * 
+     * @return boolean True if repetition threshold has been 
+     */
+    public boolean resignByRepetition() {
+        return Flags.REPETITION > Flags.REPETITION_LIMIT ? true : false;
+    }
+    
+    public boolean resignByExtraMoves() {
+        return Flags.MOVES > Flags.MOVES_LIMIT ? true : false;
+    }
+    
+    public void checkForRepetition(Move move) {
+        Flags.MOVES++;
+        
+        if(lastMove == null) {
+            lastMove = move;
+            return;
+        }
+        
+        if(lastMove.getTo()[0] == move.getFrom()[0] && lastMove.getTo()[1] == move.getFrom()[1]
+                && lastMove.getFrom()[0] == move.getTo()[0] && lastMove.getFrom()[1] == move.getTo()[1]) {
+            Flags.REPETITION++;
+        } else {
+            Flags.REPETITION = 0;
+        }
+        
+        lastMove = move;
     }
 }

@@ -85,13 +85,13 @@ public class Brain {
         for(Move m : moves) {
             Clone clonedBoard = chessBoard.newClone();
             clonedBoard = clonedBoard.getCloneWithMove(m);
-       
+
             if(bestScore > alfa) {
                 alfa = bestScore;
             }
-            
+
             int score = -alfaBeta(clonedBoard, depth - 1, -beta, -alfa);
-            
+
             if(score > bestScore) {
                 bestScore = score;
                 if(depth == Flags.NEGAMAX_DEPTH) {
@@ -105,13 +105,13 @@ public class Brain {
         }
         return bestScore;
     }
-    
-    public static int principalVariation(Clone chessBoard, int depth, int alfa, int beta) {
+
+    public static int negaScout(Clone chessBoard, int depth, int alpha, int beta) {
         if(depth == 0) {
             Evaluation evaluatedBoard = new Evaluation(chessBoard);
             return evaluatedBoard.eval();
         }
-        
+
         ArrayList<Move> moves = chessBoard.getAllMoves();
 
         if (moves.isEmpty()) {
@@ -122,36 +122,36 @@ public class Brain {
                 return 10000;
             }
         }
-        
+
         int best = Integer.MIN_VALUE;
-        Move m = moves.remove(0);
-        
-        Clone clonedBoard = chessBoard.newClone();
-        clonedBoard = clonedBoard.getCloneWithMove(m);
-        
-       best = -principalVariation(clonedBoard, depth - 1, -beta, -alfa);
-       if(depth == Flags.NEGAMAX_DEPTH) {
-           bestMove = m;
-       }
-       
-       while(moves.size() > 0 && best < beta) {
-           Move m1 = moves.remove(0);
-           Clone newClone = chessBoard.newClone();
-           newClone = newClone.getCloneWithMove(m1);
-           if(best > alfa) {
-               alfa = best;
-           }
-           int score = -principalVariation(newClone, depth-1, -alfa-1, -alfa);
-           if(score > alfa && score < beta) {
-               best = -principalVariation(chessBoard,  depth-1, -beta, -score);
-               if(depth == Flags.NEGAMAX_DEPTH)
-                   bestMove = m1;
-           } else if (score > best) {
-               best = score;
-               if(depth == 4)
-                   bestMove = m1;
-           }
-       }
-       return best;
+        int n = beta;
+
+        if(depth == Flags.NEGAMAX_DEPTH)
+            bestMove = moves.get(0);
+    
+        while(moves.size() > 0) {
+            Move m = moves.remove(0);
+            Clone clone = chessBoard.newClone();
+            clone = clone.getCloneWithMove(m);
+            int score = -negaScout(clone, depth - 1, -n, -Math.max(alpha, best));
+         
+            if(score > best) {
+                if(n == beta || depth <= 2) {
+                    best = score;
+                    if(depth == Flags.NEGAMAX_DEPTH){
+                        bestMove = m;
+                    }
+                } else {
+                    best = -negaScout(clone, depth-1, -beta, -score);
+                    if(depth == Flags.NEGAMAX_DEPTH) 
+                        bestMove = m;
+                }
+            }
+            n = Math.max(alpha, best);
+        }
+        if(bestMove == null){
+            bestMove = moves.get(0);
+        }
+        return best;
     }
 } 

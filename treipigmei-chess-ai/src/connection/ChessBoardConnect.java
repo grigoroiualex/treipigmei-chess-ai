@@ -140,7 +140,8 @@ public class ChessBoardConnect {
                         move = clone.getKingOutOfCheck(chessEngineColour);
                     } else {
                         //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
-                        Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        //Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        Brain.negaScout(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }
@@ -167,7 +168,8 @@ public class ChessBoardConnect {
                             move = clone.getKingOutOfCheck(chessEngineColour);
                         } else {
                             //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
-                            Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MIN_VALUE);
+                            //Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MIN_VALUE);
+                            Brain.negaScout(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
                             if(Brain.bestMove != null) {
                                 move = Brain.bestMove.toString();
                             }
@@ -240,11 +242,8 @@ public class ChessBoardConnect {
                     } else {
                         //Brain.negaMax(clone, Flags.NEGAMAX_DEPTH);
                         //Brain.alfaBeta(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
-                        Brain.principalVariation(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
-                        System.out.println(Brain.bestMove == null);
-                        if(Brain.bestMove != null) {
-                           System.out.println(Brain.bestMove.toString());
-                        }
+                        //Brain.principalVariation(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        Brain.negaScout(clone, Flags.NEGAMAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
                         if(Brain.bestMove != null) {
                             move = Brain.bestMove.toString();
                         }

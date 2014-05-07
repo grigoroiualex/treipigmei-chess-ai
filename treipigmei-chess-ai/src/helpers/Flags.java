@@ -21,6 +21,9 @@ public class Flags {
     public static int REPETITION = 0;
     public static int REPETITION_LIMIT = 3;
     
+    /**
+     * Resets the flags preparing the engine for a new game
+     */
     public static void resetParams() {
         MOVES = 0;
         REPETITION = 0;

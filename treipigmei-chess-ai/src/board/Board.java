@@ -329,10 +329,20 @@ public class Board {
         return Flags.REPETITION > Flags.REPETITION_LIMIT ? true : false;
     }
     
+    /**
+     * Checks if the engine executed more moves than it was allowed to
+     * 
+     * @return boolean True if too many moves have been executed
+     */
     public boolean resignByExtraMoves() {
         return Flags.MOVES > Flags.MOVES_LIMIT ? true : false;
     }
     
+    /**
+     * Checks if move represents a repetition 
+     * 
+     * @param move A move that the engine decides to execute
+     */
     public void checkForRepetition(Move move) {
         Flags.MOVES++;
         

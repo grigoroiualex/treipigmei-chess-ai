@@ -20,7 +20,7 @@ public class Brain {
     public static Move badMove;
 
     /**
-     * Implementation of the negamax algorithm
+     * Implementation of the Negamax algorithm
      * 
      * @param chessBoard Current board instance
      * @param depth Depth of the search
@@ -62,6 +62,15 @@ public class Brain {
         return bestScore;
     }
 
+    /**
+     * Implementation of the Alpha Beta Pruning algorithm
+     * 
+     * @param chessBoard The clone to work with
+     * @param depth The depth that has been reached so far
+     * @param alpha Engine score
+     * @param beta Opponent score
+     * @return score Best score that was found
+     */
     public static int alfaBeta(Clone chessBoard, int depth, int alfa, int beta) {
 
         if(depth == 0) {
@@ -106,6 +115,15 @@ public class Brain {
         return bestScore;
     }
 
+    /**
+     * Implementation of the Negascout algorithm
+     * 
+     * @param chessBoard The clone to work with
+     * @param depth The depth that has been reached so far
+     * @param alpha Engine score
+     * @param beta Opponent score
+     * @return score Best score that was found
+     */
     public static int negaScout(Clone chessBoard, int depth, int alpha, int beta) {
         if(depth == 0) {
             Evaluation evaluatedBoard = new Evaluation(chessBoard);
